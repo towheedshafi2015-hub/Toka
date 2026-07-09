@@ -1,0 +1,6 @@
+{
+  "name": "Strategic Call Process",
+  "description": "An interactive, responsive 4-step Strategic Call process visualizer with fluid bubble animations and a modern, high-conversion landing page layout.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

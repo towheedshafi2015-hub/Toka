@@ -1,0 +1,2480 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TOKA — Build More Than a Website. Build a Business.</title>
+  <meta name="description" content="TOKA engineers complete growth systems for D2C brands — Shopify, Meta Ads, AI agents, WhatsApp automation, and conversion optimization." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ── Reset ─────────────────────────────────────────── */
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: auto; }
+    :root {
+      --orange: #f27d26;
+      --bg: #080809;
+      --fs: 'Inter', sans-serif;
+      --fd: 'Space Grotesk', sans-serif;
+      --fm: 'JetBrains Mono', monospace;
+    }
+    body { background: var(--bg); color: #f1f5f9; font-family: var(--fs); overflow-x: hidden; }
+
+    /* ── Scrollbar ─────────────────────────────────────── */
+    ::-webkit-scrollbar { width: 5px; }
+    ::-webkit-scrollbar-track { background: #080809; }
+    ::-webkit-scrollbar-thumb { background: rgba(255,255,255,.08); border-radius: 9999px; }
+    ::-webkit-scrollbar-thumb:hover { background: rgba(242,125,38,.2); }
+
+    /* ── Loader ────────────────────────────────────────── */
+    #loader {
+      position: fixed; inset: 0; z-index: 9999;
+      background: #000;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center; gap: 14px;
+      transition: opacity .8s ease;
+    }
+    #loader.fade { opacity: 0; pointer-events: none; }
+    #bar-track { width: 160px; height: 1px; background: rgba(255,255,255,.1); border-radius: 2px; overflow: hidden; }
+    #bar-fill { height: 100%; width: 0%; background: #fff; border-radius: 2px; transition: width .08s linear; }
+    #pct { font-family: var(--fm); font-size: 11px; letter-spacing: .14em; color: rgba(255,255,255,.3); }
+
+    /* ── Section 1 driver ─────────────────────────────── */
+    #driver { position: relative; }
+
+    /* ── Sticky canvas background ─────────────────────── */
+    #sticky {
+      position: sticky; top: 0;
+      width: 100%; height: 100vh;
+      overflow: hidden; background: #000;
+      z-index: 1;
+    }
+    #c { display: block; position: absolute; inset: 0; width: 100%; height: 100%; }
+
+    /* ── Content layer: scrolls over the canvas ────────── */
+    #toka-content {
+      position: relative;
+      margin-top: -100vh;   /* pull up to overlap the sticky canvas */
+      z-index: 10;
+    }
+
+    /* ── Watermark ─────────────────────────────────────── */
+    .watermark {
+      position: fixed; inset: 0; z-index: 2;
+      display: flex; align-items: center; justify-content: center;
+      pointer-events: none; overflow: hidden;
+    }
+    .watermark-text {
+      font-family: var(--fd); font-size: 15vw; font-weight: 900;
+      letter-spacing: -.05em; text-transform: uppercase;
+      color: rgba(255,255,255,.012);
+    }
+
+    /* ── Guide lines ───────────────────────────────────── */
+    .guide { position: fixed; top: 0; bottom: 0; width: 1px; pointer-events: none; z-index: 2;
+      background: linear-gradient(to bottom, rgba(255,255,255,.025), rgba(255,255,255,.004), rgba(255,255,255,.025)); }
+    .guide-l { left: 8%; }
+    .guide-r { right: 8%; }
+    @media(min-width: 1024px) { .guide-l { left: 28%; } .guide-r { right: 28%; } }
+
+    /* ── Container ─────────────────────────────────────── */
+    .wrap { max-width: 1280px; margin: 0 auto; padding: 0 24px; }
+    @media(min-width: 768px) { .wrap { padding: 0 48px; } }
+
+    /* ── Header ────────────────────────────────────────── */
+    header {
+      position: relative; z-index: 20;
+      width: 100%; padding: 0;
+    }
+    .header-inner {
+      display: flex; align-items: center; justify-content: space-between;
+      height: 72px;
+      border-radius: 20px;
+      border: 1px solid rgba(255,255,255,.07);
+      background: rgba(8,8,9,.6); backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      padding: 0 24px;
+      margin: 12px 24px;
+      box-shadow: 0 0 0 1px rgba(255,255,255,.05) inset, 0 8px 24px rgba(0,0,0,.3);
+    }
+    @media(min-width: 768px) { .header-inner { padding: 0 32px; margin: 14px 48px; } }
+
+    .logo { display: flex; align-items: center; gap: 8px; cursor: pointer; text-decoration: none; }
+    .logo-icon {
+      width: 32px; height: 32px; border-radius: 8px;
+      background: var(--orange); padding: 1px;
+      box-shadow: 0 0 15px -3px rgba(242,125,38,.5);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .logo-icon-inner {
+      width: 100%; height: 100%; border-radius: 7px;
+      background: var(--bg);
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--fd); font-weight: 700; font-size: 14px; color: #fff;
+    }
+    .logo-text { font-family: var(--fd); font-weight: 800; font-size: 18px; letter-spacing: .1em; color: #fff; }
+    .logo-text span { color: var(--orange); }
+    .nav-cta {
+      display: flex; align-items: center; gap: 6px;
+      padding: 8px 16px; border-radius: 10px;
+      border: 1px solid rgba(255,255,255,.1);
+      background: rgba(255,255,255,.02);
+      color: #fff; font-family: var(--fm);
+      font-size: 10px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase;
+      cursor: pointer; transition: background .3s, color .3s;
+    }
+    @media(min-width: 768px) { .nav-cta { font-size: 11px; } }
+    .nav-cta:hover { background: var(--orange); color: #000; }
+    .nav-cta svg { width: 14px; height: 14px; }
+
+    /* ── Main content wrapper ──────────────────────────── */
+    main {
+      position: relative; z-index: 20;
+      max-width: 1280px; margin: 0 auto;
+      padding: 0 24px 160px;
+    }
+    @media(min-width: 768px) { main { padding: 0 48px 160px; } }
+
+    /* ── Ping dot ──────────────────────────────────────── */
+    .ping-wrap { position: relative; display: flex; width: 8px; height: 8px; }
+    .ping-ring {
+      position: absolute; inset: 0; border-radius: 50%;
+      background: var(--orange); opacity: .75;
+      animation: ping 1.2s cubic-bezier(0,0,.2,1) infinite;
+    }
+    .ping-core { position: relative; width: 8px; height: 8px; border-radius: 50%; background: var(--orange); }
+    @keyframes ping { 75%, 100% { transform: scale(2); opacity: 0; } }
+
+    /* ── Badge pills ───────────────────────────────────── */
+    .badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 4px 12px;
+      background: rgba(242,125,38,.1); border: 1px solid rgba(242,125,38,.2);
+      border-radius: 9999px;
+      font-family: var(--fm); font-size: 10px; font-weight: 700;
+      letter-spacing: .08em; text-transform: uppercase; color: var(--orange);
+    }
+
+    /* ── Hero Section ──────────────────────────────────── */
+    .hero {
+      padding-top: 12px; padding-bottom: 60px;
+    }
+    @media(min-width: 768px) { .hero { padding-top: 12px; padding-bottom: 80px; } }
+    .hero-badge { margin-bottom: 28px; }
+    .hero-h1 {
+      font-family: var(--fd); font-weight: 700;
+      font-size: clamp(38px, 6.5vw, 72px);
+      line-height: 1.05; letter-spacing: -.02em;
+      color: #fff; margin-bottom: 10px;
+    }
+    .hero-h1-grad {
+      font-family: var(--fd); font-weight: 700;
+      font-size: clamp(38px, 6.5vw, 72px);
+      line-height: 1.05; letter-spacing: -.02em;
+      background: linear-gradient(to right, var(--orange), #fff, rgba(255,255,255,.4));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+      margin-bottom: 32px;
+    }
+    .hero-copy {
+      color: #cbd5e1; font-size: 14px; line-height: 1.75;
+      max-width: 720px; margin-bottom: 40px;
+    }
+    @media(min-width: 768px) { .hero-copy { font-size: 17px; } }
+    .hero-copy strong { color: #fff; font-weight: 600; }
+
+    /* ── CTA buttons ───────────────────────────────────── */
+    .cta-row { display: flex; flex-direction: column; gap: 14px; margin-bottom: 32px; }
+    @media(min-width: 640px) { .cta-row { flex-direction: row; align-items: center; } }
+    .btn-primary {
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      background: var(--orange); color: #000;
+      font-family: var(--fs); font-weight: 700;
+      font-size: 11px; letter-spacing: .1em; text-transform: uppercase;
+      padding: 16px 28px; border-radius: 12px; border: none; cursor: pointer;
+      transition: transform .3s, box-shadow .3s;
+    }
+    .btn-primary:hover { transform: scale(1.04); box-shadow: 0 0 30px rgba(242,125,38,.4); }
+    @media(min-width: 768px) { .btn-primary { font-size: 13px; } }
+    .btn-secondary {
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      background: rgba(255,255,255,.02); color: #fff;
+      font-family: var(--fs); font-weight: 700;
+      font-size: 11px; letter-spacing: .1em; text-transform: uppercase;
+      padding: 16px 28px; border-radius: 12px;
+      border: 1px solid rgba(255,255,255,.08); cursor: pointer;
+      transition: background .3s, border-color .3s; backdrop-filter: blur(12px);
+    }
+    .btn-secondary:hover { background: rgba(255,255,255,.05); border-color: rgba(255,255,255,.18); }
+    @media(min-width: 768px) { .btn-secondary { font-size: 13px; } }
+    .btn-icon { width: 16px; height: 16px; flex-shrink: 0; }
+
+    /* ── Trust bar ─────────────────────────────────────── */
+    .trust-bar {
+      display: flex; align-items: center; gap: 8px;
+      padding-top: 20px; border-top: 1px solid rgba(255,255,255,.05);
+      max-width: 540px; color: #94a3b8; font-size: 12px; font-weight: 500;
+    }
+    .trust-bar svg { width: 16px; height: 16px; color: #34d399; flex-shrink: 0; }
+
+    /* ── Section spacing ───────────────────────────────── */
+    .section { padding-top: 100px; }
+    @media(min-width: 768px) { .section { padding-top: 140px; } }
+
+    .section-label {
+      font-family: var(--fm); font-size: 10px; font-weight: 700;
+      letter-spacing: .14em; text-transform: uppercase;
+      color: var(--orange); display: block; margin-bottom: 8px;
+    }
+    .section-title {
+      font-family: var(--fd); font-weight: 700;
+      font-size: clamp(22px, 3.5vw, 38px);
+      letter-spacing: -.01em; color: #fff;
+      margin-bottom: 8px;
+    }
+    .section-title span { color: #64748b; }
+    .section-sub {
+      font-size: 13px; color: #94a3b8; line-height: 1.6;
+      max-width: 440px; margin-top: 6px;
+    }
+
+    /* ── 12-col grid ───────────────────────────────────── */
+    .grid12 { display: grid; grid-template-columns: repeat(12, 1fr); gap: 16px; margin-top: 40px; }
+    @media(min-width: 1024px) { .grid12 { gap: 24px; } }
+    .col-5 { grid-column: span 12; }
+    .col-5r { grid-column: span 12; }
+    @media(min-width: 1024px) {
+      .col-5  { grid-column: span 5; }
+      .col-5r { grid-column: 8 / span 5; }
+    }
+
+    /* ── Liquid Glass card ──────────────────────────────── */
+    .glass-card {
+      position: relative;
+      border-radius: 22px;
+      border: 1px solid rgba(255,255,255,.13);
+      background: linear-gradient(135deg,
+        rgba(255,255,255,.07) 0%,
+        rgba(255,255,255,.02) 50%,
+        rgba(255,255,255,.04) 100%);
+      backdrop-filter: blur(40px) saturate(180%);
+      -webkit-backdrop-filter: blur(40px) saturate(180%);
+      padding: 28px; overflow: hidden;
+      display: flex; flex-direction: column; gap: 20px;
+      box-shadow:
+        0 0 0 1px rgba(255,255,255,.06) inset,
+        0 8px 32px rgba(0,0,0,.35),
+        0 0 80px rgba(242,125,38,.04);
+      transition: border-color .4s, box-shadow .4s;
+    }
+    .glass-card:hover {
+      border-color: rgba(255,255,255,.22);
+      box-shadow:
+        0 0 0 1px rgba(255,255,255,.1) inset,
+        0 12px 40px rgba(0,0,0,.4),
+        0 0 60px rgba(242,125,38,.08);
+    }
+    /* Top-left shimmer */
+    .glass-card::before {
+      content: ''; position: absolute;
+      top: 0; left: 0; right: 0; height: 1px;
+      background: linear-gradient(90deg,
+        transparent 0%,
+        rgba(255,255,255,.35) 40%,
+        rgba(255,255,255,.1) 70%,
+        transparent 100%);
+      border-radius: 22px 22px 0 0;
+      pointer-events: none;
+    }
+    /* Inner light reflection */
+    .glass-card::after {
+      content: ''; position: absolute;
+      top: 1px; left: 1px; right: 1px;
+      height: 45%;
+      background: linear-gradient(180deg,
+        rgba(255,255,255,.06) 0%,
+        transparent 100%);
+      border-radius: 21px 21px 0 0;
+      pointer-events: none;
+    }
+    .glass-card.glow-card {
+      border-color: rgba(242,125,38,.2);
+      box-shadow:
+        0 0 0 1px rgba(242,125,38,.12) inset,
+        0 8px 32px rgba(0,0,0,.35),
+        0 0 60px rgba(242,125,38,.1),
+        0 0 120px rgba(242,125,38,.04);
+    }
+    .glass-card.glow-card:hover {
+      border-color: rgba(242,125,38,.35);
+      box-shadow:
+        0 0 0 1px rgba(242,125,38,.2) inset,
+        0 12px 40px rgba(0,0,0,.4),
+        0 0 80px rgba(242,125,38,.15);
+    }
+
+    /* ── Card icon box ─────────────────────────────────── */
+    .icon-box {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 36px; height: 36px; border-radius: 10px;
+      background: rgba(255,255,255,.02); border: 1px solid rgba(255,255,255,.06);
+    }
+    .icon-box svg { width: 18px; height: 18px; }
+
+    /* ── Checklist ─────────────────────────────────────── */
+    .checklist { display: flex; flex-direction: column; gap: 10px; }
+    .check-item { display: flex; align-items: center; gap: 10px; font-family: var(--fm); font-size: 11px; color: #cbd5e1; }
+    .check-item svg { width: 16px; height: 16px; color: #34d399; flex-shrink: 0; }
+
+    /* ── Alternating pillar rows ───────────────────────── */
+    .pillar-row { display: grid; grid-template-columns: 1fr; margin-top: 56px; }
+    @media(min-width: 1024px) {
+      .pillar-row { grid-template-columns: repeat(12, 1fr); gap: 16px; }
+      .pillar-left  { grid-column: span 5; }
+      .pillar-right { grid-column: 8 / span 5; }
+    }
+
+    /* ── Pillar liquid glass card ───────────────────────── */
+    .pillar-card {
+      position: relative;
+      border-radius: 22px;
+      border: 1px solid rgba(255,255,255,.12);
+      background: linear-gradient(135deg,
+        rgba(255,255,255,.065) 0%,
+        rgba(255,255,255,.015) 50%,
+        rgba(255,255,255,.035) 100%);
+      backdrop-filter: blur(40px) saturate(180%);
+      -webkit-backdrop-filter: blur(40px) saturate(180%);
+      padding: 20px 24px;
+      display: flex; flex-direction: column; gap: 14px;
+      box-shadow:
+        0 0 0 1px rgba(255,255,255,.06) inset,
+        0 8px 28px rgba(0,0,0,.3);
+      transition: border-color .35s, box-shadow .35s;
+    }
+    .pillar-card:hover {
+      border-color: rgba(242,125,38,.3);
+      box-shadow:
+        0 0 0 1px rgba(242,125,38,.1) inset,
+        0 12px 36px rgba(0,0,0,.4),
+        0 0 50px rgba(242,125,38,.08);
+    }
+    /* Edge shimmer line */
+    .pillar-card::before {
+      content: ''; position: absolute;
+      top: 0; left: 0; right: 0; height: 1px;
+      background: linear-gradient(90deg,
+        transparent 0%,
+        rgba(255,255,255,.3) 40%,
+        rgba(255,255,255,.08) 70%,
+        transparent 100%);
+      border-radius: 22px 22px 0 0;
+      pointer-events: none;
+    }
+    /* Inner reflection */
+    .pillar-card::after {
+      content: ''; position: absolute;
+      top: 1px; left: 1px; right: 1px; height: 40%;
+      background: linear-gradient(180deg, rgba(255,255,255,.05) 0%, transparent 100%);
+      border-radius: 21px 21px 0 0;
+      pointer-events: none;
+    }
+    .pillar-card-header {
+      display: flex; justify-content: space-between;
+      align-items: center;
+      padding-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,.05);
+    }
+    .pillar-card-hd-left { display: flex; align-items: center; gap: 8px; }
+    .pillar-num { font-family: var(--fm); font-size: 9px; color: var(--orange); font-weight: 700; text-transform: uppercase; letter-spacing: .12em; display: block; }
+    .pillar-cat { font-family: var(--fm); font-size: 8px; color: #64748b; text-transform: uppercase; letter-spacing: .1em; display: block; }
+    .live-badge { font-family: var(--fm); font-size: 9px; font-weight: 700; color: #64748b; background: rgba(255,255,255,.02); border: 1px solid rgba(255,255,255,.05); padding: 2px 8px; border-radius: 4px; text-transform: uppercase; }
+    .pillar-title { font-family: var(--fd); font-weight: 700; font-size: 17px; color: #fff; }
+    .pillar-desc { font-size: 12px; color: #cbd5e1; line-height: 1.65; }
+    .pillar-details {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 8px; font-family: var(--fm); font-size: 10px; color: #94a3b8;
+      padding-top: 10px; border-top: 1px solid rgba(255,255,255,.04);
+    }
+    .detail-item { display: flex; align-items: flex-start; gap: 6px; }
+    .dot { width: 4px; height: 4px; border-radius: 50%; background: var(--orange); flex-shrink: 0; margin-top: 4px; }
+    .pillar-footer { display: flex; align-items: center; gap: 4px; font-family: var(--fm); font-size: 10px; font-weight: 700; color: var(--orange); cursor: pointer; }
+    .pillar-footer svg { width: 12px; height: 12px; }
+
+    /* ── Stats grid ────────────────────────────────────── */
+    .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .stat-card {
+      position: relative; border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.07);
+      background: rgba(8,8,9,.72); backdrop-filter: blur(20px);
+      padding: 14px; overflow: hidden;
+      display: flex; flex-direction: column; justify-content: space-between;
+      transition: border-color .3s, transform .3s;
+    }
+    .stat-card:hover { border-color: rgba(242,125,38,.2); transform: scale(1.01); }
+    .stat-card::before {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(135deg, rgba(255,255,255,.012) 0%, transparent 60%);
+      border-radius: inherit; pointer-events: none;
+    }
+    .stat-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
+    .stat-row svg { width: 16px; height: 16px; }
+    .stat-meta { font-family: var(--fm); font-size: 8px; color: #64748b; text-transform: uppercase; letter-spacing: .08em; }
+    .stat-value { font-family: var(--fd); font-weight: 900; font-size: clamp(22px, 4vw, 28px); color: #fff; }
+    .stat-label { font-family: var(--fm); font-size: 8px; color: #94a3b8; text-transform: uppercase; letter-spacing: .08em; }
+
+    /* ── Founder card ──────────────────────────────────── */
+    .founder-card {
+      position: relative; border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.07);
+      background: rgba(8,8,9,.72); backdrop-filter: blur(20px);
+      padding: 18px 20px;
+      display: flex; flex-direction: column; gap: 14px;
+      box-shadow: 0 15px 40px rgba(0,0,0,.4);
+    }
+    .founder-card::before {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(135deg, rgba(255,255,255,.015) 0%, transparent 60%);
+      border-radius: inherit; pointer-events: none;
+    }
+    .quote-head { display: flex; align-items: center; gap: 6px; }
+    .quote-head svg { width: 14px; height: 14px; color: rgba(242,125,38,.6); }
+    .quote-label { font-family: var(--fm); font-size: 8px; color: var(--orange); font-weight: 700; text-transform: uppercase; letter-spacing: .1em; }
+    .quote-text { font-size: 11px; color: #cbd5e1; font-style: italic; line-height: 1.7; }
+    .founder-sig { display: flex; align-items: center; gap: 8px; padding-top: 10px; border-top: 1px solid rgba(255,255,255,.04); }
+    .founder-avatar { width: 28px; height: 28px; border-radius: 50%; background: #1e293b; border: 1px solid rgba(255,255,255,.1); display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700; color: #fff; flex-shrink: 0; }
+    .founder-name { font-size: 12px; font-weight: 700; color: #fff; }
+    .founder-role { font-family: var(--fm); font-size: 8px; color: #64748b; text-transform: uppercase; letter-spacing: .08em; }
+
+    /* ── Section 2 driver ─────────────────────────────── */
+    #driver2 { position: relative; height: 800vh; }
+    #sticky2 {
+      position: sticky; top: 0;
+      width: 100%; height: 100vh;
+      overflow: hidden; background: #000;
+    }
+    #c2 { display: block; position: absolute; inset: 0; width: 100%; height: 100%; }
+
+    /* ── Section 2 content overlay ─────────────────────── */
+    #sec2-overlay {
+      position: absolute; inset: 0;
+      z-index: 10;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: flex-end;
+      padding-bottom: 0;
+      pointer-events: none;
+    }
+
+    /* ── Sec2 top fade-in header ────────────────────────── */
+    #sec2-header {
+      position: absolute; top: 0; left: 0; right: 0;
+      padding: 20px 20px 0;
+      display: flex; align-items: flex-start; justify-content: space-between;
+      gap: 16px; flex-wrap: wrap;
+      opacity: 0;
+      transform: translateY(-24px);
+      transition: opacity .7s ease, transform .7s ease;
+      pointer-events: auto;
+    }
+    @media(min-width: 768px) { #sec2-header { padding: 40px 48px 0; gap: 24px; flex-wrap: nowrap; } }
+    #sec2-header.visible { opacity: 1; transform: translateY(0); }
+    .sec2-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 4px 10px; border-radius: 9999px;
+      background: rgba(242,125,38,.12); border: 1px solid rgba(242,125,38,.3);
+      font-family: var(--fm); font-size: 9px; font-weight: 700;
+      letter-spacing: .1em; text-transform: uppercase; color: var(--orange);
+      box-shadow: 0 0 20px rgba(242,125,38,.15);
+    }
+    @media(min-width: 768px) { .sec2-badge { font-size: 10px; padding: 5px 14px; } }
+    .sec2-title {
+      font-family: var(--fd); font-weight: 700;
+      font-size: clamp(22px, 5vw, 52px);
+      line-height: 1.08; letter-spacing: -.02em; color: #fff;
+      text-shadow: 0 2px 40px rgba(0,0,0,.7);
+    }
+    .sec2-title em {
+      font-style: normal;
+      background: linear-gradient(90deg, var(--orange), #fff 60%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .sec2-right-card {
+      flex-shrink: 0;
+      padding: 10px 14px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.1);
+      background: rgba(8,8,9,.65);
+      backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+      display: flex; align-items: center; gap: 10px;
+    }
+    @media(min-width: 768px) { .sec2-right-card { padding: 14px 20px; gap: 14px; } }
+    /* hide right stats card on very small screens */
+    @media(max-width: 480px) { .sec2-right-card { display: none; } }
+    .sec2-stat-num {
+      font-family: var(--fd); font-size: 22px; font-weight: 900;
+      background: linear-gradient(135deg, var(--orange) 0%, #fff 80%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    @media(min-width: 768px) { .sec2-stat-num { font-size: 28px; } }
+    .sec2-stat-label { font-family: var(--fm); font-size: 8px; color: #94a3b8; text-transform: uppercase; letter-spacing: .1em; }
+    .sec2-stat-sub { font-size: 10px; color: #e2e8f0; font-weight: 600; margin-top: 2px; }
+    @media(min-width: 768px) { .sec2-stat-label { font-size: 9px; } .sec2-stat-sub { font-size: 11px; } }
+
+    /* ── Brand Slider Tray (slides up from bottom) ──────── */
+    #sec2-tray {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      padding-bottom: 0;
+      opacity: 0;
+      transform: translateY(60px);
+      transition: opacity .8s cubic-bezier(.16,1,.3,1), transform .8s cubic-bezier(.16,1,.3,1);
+      pointer-events: auto;
+    }
+    #sec2-tray.visible { opacity: 1; transform: translateY(0); }
+
+    /* tray glass band */
+    .tray-band {
+      background: linear-gradient(to top,
+        rgba(5,5,7,.97) 0%,
+        rgba(5,5,7,.85) 55%,
+        transparent 100%);
+      padding: 20px 0 16px;
+    }
+    @media(min-width: 768px) { .tray-band { padding: 28px 0 24px; } }
+
+    /* slider label row */
+    .slider-label-row {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 16px 10px;
+    }
+    @media(min-width: 768px) { .slider-label-row { padding: 0 32px 16px; } }
+    .slider-label {
+      font-family: var(--fm); font-size: 8px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: .14em; color: #64748b;
+    }
+    @media(min-width: 768px) { .slider-label { font-size: 9px; letter-spacing: .16em; } }
+    .slider-count {
+      font-family: var(--fm); font-size: 9px; color: #64748b; letter-spacing: .08em;
+    }
+
+    /* ── Scroll-rail: horizontal brand cards ────────────── */
+    #brand-rail-wrap {
+      position: relative;
+      mask-image: linear-gradient(to right, transparent, #000 5%, #000 95%, transparent);
+      -webkit-mask-image: linear-gradient(to right, transparent, #000 5%, #000 95%, transparent);
+    }
+    @media(min-width: 768px) {
+      #brand-rail-wrap {
+        mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
+        -webkit-mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
+      }
+    }
+    #brand-rail {
+      display: flex; gap: 12px;
+      padding: 12px 16px;
+      overflow-x: auto;
+      scrollbar-width: none;
+      cursor: grab;
+      user-select: none;
+    }
+    @media(min-width: 768px) { #brand-rail { gap: 16px; padding: 8px 32px; } }
+    #brand-rail::-webkit-scrollbar { display: none; }
+    #brand-rail.dragging { cursor: grabbing; }
+
+    /* ── Brand Card ─────────────────────────────────────── */
+    .bc {
+      flex-shrink: 0;
+      width: 220px;
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(12,12,16,.72);
+      backdrop-filter: blur(28px); -webkit-backdrop-filter: blur(28px);
+      overflow: hidden;
+      /* will-change: transform lets the browser GPU-accelerate the center-lift */
+      will-change: transform;
+      transition: border-color .4s, box-shadow .35s;
+      box-shadow: 0 8px 32px rgba(0,0,0,.45);
+    }
+    @media(min-width: 640px)  { .bc { width: 250px; } }
+    @media(min-width: 1024px) { .bc { width: 280px; } }
+
+    /* center card highlight state (set by JS) */
+    .bc.bc-center {
+      border-color: rgba(242,125,38,.35);
+      box-shadow: 0 16px 48px rgba(0,0,0,.55), 0 0 36px rgba(242,125,38,.15);
+    }
+    .bc:hover {
+      border-color: rgba(242,125,38,.4);
+      box-shadow: 0 16px 48px rgba(0,0,0,.6), 0 0 40px rgba(242,125,38,.12);
+    }
+    .bc-img-wrap { position: relative; width: 100%; height: 120px; overflow: hidden; background: #0a0a10; }
+    @media(min-width: 768px) { .bc-img-wrap { height: 150px; } }
+    .bc-img-wrap img {
+      width: 100%; height: 100%; object-fit: cover;
+      opacity: .85; transition: transform .6s ease, opacity .3s ease;
+    }
+    .bc:hover .bc-img-wrap img { transform: scale(1.06); opacity: 1; }
+    .bc-img-grad {
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(8,8,12,.95) 0%, transparent 55%);
+    }
+    .bc-metric {
+      position: absolute; top: 8px; right: 8px;
+      font-family: var(--fm); font-size: 8px; font-weight: 700;
+      padding: 2px 8px; border-radius: 9999px;
+      border: 1px solid; backdrop-filter: blur(8px);
+      text-transform: uppercase; letter-spacing: .08em;
+    }
+    @media(min-width: 768px) { .bc-metric { font-size: 9px; padding: 3px 9px; top: 10px; right: 10px; } }
+    .bc-metric.green { background: rgba(52,211,153,.1); border-color: rgba(52,211,153,.25); color: #34d399; }
+    .bc-metric.orange { background: rgba(242,125,38,.1); border-color: rgba(242,125,38,.25); color: var(--orange); }
+    .bc-metric.purple { background: rgba(139,92,246,.1); border-color: rgba(139,92,246,.25); color: #a78bfa; }
+    .bc-body { padding: 10px 12px 12px; display: flex; flex-direction: column; gap: 6px; }
+    @media(min-width: 768px) { .bc-body { padding: 14px 16px 16px; gap: 8px; } }
+    .bc-cat {
+      font-family: var(--fm); font-size: 8px; text-transform: uppercase;
+      letter-spacing: .12em; color: #64748b; display: flex; align-items: center; gap: 5px;
+    }
+    .bc-cat-dot { width: 3px; height: 3px; border-radius: 50%; background: var(--orange); flex-shrink: 0; }
+    .bc-name { font-family: var(--fd); font-size: 13px; font-weight: 700; color: #fff; line-height: 1.2; }
+    @media(min-width: 768px) { .bc-name { font-size: 15px; } }
+    .bc-desc { font-size: 10px; color: #94a3b8; line-height: 1.55; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+    @media(min-width: 768px) { .bc-desc { font-size: 11px; } }
+    .bc-footer {
+      display: flex; align-items: center; justify-content: space-between;
+      padding-top: 8px; border-top: 1px solid rgba(255,255,255,.05);
+    }
+    .bc-link { font-family: var(--fm); font-size: 8px; font-weight: 700; text-transform: uppercase; letter-spacing: .1em; color: var(--orange); display: flex; align-items: center; gap: 4px; }
+    .bc-link svg { width: 10px; height: 10px; }
+    .bc-blank {
+      border: 2px dashed rgba(255,255,255,.08) !important;
+      background: rgba(255,255,255,.01) !important;
+      backdrop-filter: none !important;
+      display: flex; align-items: center; justify-content: center;
+      flex-direction: column; gap: 10px;
+      padding: 20px;
+      text-align: center;
+    }
+    .bc-blank:hover {
+      border-color: rgba(242,125,38,.3) !important;
+      background: rgba(242,125,38,.02) !important;
+    }
+
+    /* ── Dot pagination ─────────────────────────────────── */
+    .sec2-dots {
+      display: flex; align-items: center; justify-content: center;
+      gap: 6px; padding: 10px 0 0;
+    }
+    @media(min-width: 768px) { .sec2-dots { padding: 12px 0 0; } }
+    .sec2-dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: rgba(255,255,255,.15);
+      transition: all .35s cubic-bezier(.16,1,.3,1); cursor: pointer; border: none;
+    }
+    .sec2-dot.active { background: var(--orange); width: 20px; border-radius: 3px; }
+
+    /* ── Navigation arrows ─────────────────────────────── */
+    .rail-nav {
+      position: absolute; top: 50%; transform: translateY(-50%);
+      width: 32px; height: 32px; border-radius: 50%;
+      border: 1px solid rgba(255,255,255,.1);
+      background: rgba(8,8,9,.6); backdrop-filter: blur(12px);
+      color: #fff; display: flex; align-items: center; justify-content: center;
+      cursor: pointer; z-index: 20;
+      opacity: 0; transition: opacity .3s, background .3s, transform .3s;
+    }
+    @media(min-width: 768px) { .rail-nav { width: 36px; height: 36px; } }
+    /* always visible on touch devices */
+    @media(hover: none) { .rail-nav { opacity: 1; } }
+    #brand-rail-wrap:hover .rail-nav { opacity: 1; }
+    .rail-nav:hover { background: var(--orange); transform: translateY(-50%) scale(1.08); }
+    .rail-nav svg { width: 14px; height: 14px; }
+    @media(min-width: 768px) { .rail-nav svg { width: 16px; height: 16px; } }
+    #rail-prev { left: 2px; }
+    #rail-next { right: 2px; }
+    @media(min-width: 768px) { #rail-prev { left: 4px; } #rail-next { right: 4px; } }
+
+    /* ── Scroll progress indicator ──────────────────────── */
+    #sec2-progress {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      height: 2px; background: rgba(255,255,255,.04);
+    }
+    #sec2-progress-bar {
+      height: 100%;
+      background: linear-gradient(90deg, var(--orange), rgba(255,200,100,.6));
+      width: 0%; transition: width .1s linear;
+      box-shadow: 0 0 8px rgba(242,125,38,.5);
+    }
+
+    /* ── Modal ─────────────────────────────────────────── */
+    #modal-overlay {
+      display: none; position: fixed; inset: 0; z-index: 9000;
+      align-items: center; justify-content: center;
+      padding: 16px;
+      background: rgba(2,6,23,.82); backdrop-filter: blur(14px);
+    }
+    #modal-overlay.open { display: flex; }
+    .modal-box {
+      position: relative; width: 100%; max-width: 480px;
+      background: rgba(12,12,13,.96);
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 20px; padding: 32px;
+      box-shadow: 0 25px 60px rgba(0,0,0,.5);
+      backdrop-filter: blur(24px);
+      max-height: 90vh; overflow-y: auto;
+    }
+    .modal-close {
+      position: absolute; top: 14px; right: 14px;
+      background: rgba(255,255,255,.03); border: none;
+      border-radius: 50%; padding: 6px; cursor: pointer;
+      color: #94a3b8; display: flex; transition: color .2s, background .2s;
+    }
+    .modal-close:hover { color: #fff; background: rgba(255,255,255,.08); }
+    .modal-close svg { width: 18px; height: 18px; }
+    .modal-badges { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+    .modal-pill { font-family: var(--fm); font-size: 10px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; background: rgba(242,125,38,.1); color: var(--orange); padding: 2px 10px; border-radius: 9999px; }
+    .modal-sparkle { display: flex; align-items: center; gap: 4px; font-family: var(--fm); font-size: 10px; color: #fbbf24; }
+    .modal-sparkle svg { width: 13px; height: 13px; }
+    .modal-title { font-family: var(--fd); font-size: 21px; font-weight: 700; color: #fff; letter-spacing: -.01em; margin-bottom: 4px; }
+    .modal-sub { font-size: 12px; color: #94a3b8; margin-bottom: 20px; }
+    .slot-lbl { font-size: 12px; font-weight: 600; color: #cbd5e1; display: flex; align-items: center; gap: 6px; margin-bottom: 8px; }
+    .slot-lbl svg { width: 14px; height: 14px; color: var(--orange); }
+    .slot-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; max-height: 136px; overflow-y: auto; padding: 6px; background: rgba(0,0,0,.4); border-radius: 12px; border: 1px solid rgba(255,255,255,.05); margin-bottom: 18px; }
+    .slot-btn { text-align: left; padding: 10px; border-radius: 8px; border: 1px solid rgba(255,255,255,.05); background: rgba(255,255,255,.01); color: #cbd5e1; font-family: var(--fm); font-size: 11px; cursor: pointer; transition: border-color .2s, background .2s; display: flex; flex-direction: column; }
+    .slot-btn:disabled { opacity: .3; border-style: dashed; cursor: not-allowed; background: rgba(0,0,0,.2); }
+    .slot-btn.active { background: rgba(242,125,38,.1); border-color: var(--orange); color: #fff; font-weight: 700; }
+    .slot-btn:not(:disabled):not(.active):hover { border-color: rgba(255,255,255,.15); background: rgba(255,255,255,.02); }
+    .slot-date { font-size: 9px; color: #64748b; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; }
+    .slot-time { font-size: 11px; margin-top: 2px; }
+    .fg2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+    .fgrp { display: flex; flex-direction: column; gap: 4px; margin-bottom: 12px; }
+    .flbl { font-family: var(--fm); font-size: 10px; color: #94a3b8; text-transform: uppercase; letter-spacing: .08em; }
+    .finp, .fsel, .fta { background: rgba(0,0,0,.4); border: 1px solid rgba(255,255,255,.08); border-radius: 8px; padding: 10px; font-size: 12px; color: #fff; outline: none; transition: border-color .2s; font-family: var(--fs); width: 100%; }
+    .fsel { background: #131315; }
+    .fta { resize: none; }
+    .finp:focus, .fsel:focus, .fta:focus { border-color: rgba(242,125,38,.5); }
+    .modal-footer { display: flex; justify-content: space-between; align-items: center; padding-top: 12px; border-top: 1px solid rgba(255,255,255,.05); margin-top: 4px; }
+    .modal-trust { display: flex; align-items: center; gap: 6px; font-family: var(--fm); font-size: 10px; color: #64748b; }
+    .modal-trust svg { width: 13px; height: 13px; color: #34d399; }
+    .btn-submit { display: inline-flex; align-items: center; gap: 6px; background: var(--orange); color: #000; font-family: var(--fs); font-weight: 700; font-size: 11px; letter-spacing: .1em; text-transform: uppercase; padding: 10px 20px; border-radius: 8px; border: none; cursor: pointer; transition: transform .3s; box-shadow: 0 0 30px rgba(242,125,38,.2); }
+    .btn-submit:hover { transform: scale(1.04); }
+    .btn-submit svg { width: 13px; height: 13px; }
+    #modal-success { display: none; flex-direction: column; align-items: center; text-align: center; padding: 28px 0; gap: 18px; }
+    #modal-success.show { display: flex; }
+    .succ-icon-wrap { position: relative; }
+    .succ-glow { position: absolute; inset: -8px; background: rgba(52,211,153,.2); border-radius: 50%; filter: blur(16px); }
+    .succ-icon { position: relative; color: #34d399; }
+    .succ-icon svg { width: 60px; height: 60px; }
+    .succ-title { font-family: var(--fd); font-size: 21px; font-weight: 700; color: #fff; }
+    .succ-time { font-family: var(--fm); font-size: 12px; color: #cbd5e1; }
+    .succ-time span { color: var(--orange); font-weight: 700; }
+    .succ-fc { background: rgba(255,255,255,.02); border: 1px solid rgba(255,255,255,.05); border-radius: 12px; padding: 14px; max-width: 300px; text-align: left; }
+    .succ-quote { font-size: 11px; color: #cbd5e1; font-style: italic; line-height: 1.65; margin-bottom: 8px; }
+    .succ-sig { display: flex; align-items: center; gap: 8px; padding-top: 8px; border-top: 1px solid rgba(255,255,255,.04); }
+    .succ-av { width: 22px; height: 22px; border-radius: 50%; background: #1e293b; border: 1px solid rgba(255,255,255,.1); display: flex; align-items: center; justify-content: center; font-size: 9px; font-weight: 700; color: #fff; }
+    .succ-n { font-size: 10px; font-weight: 700; color: #fff; }
+    .succ-r { font-family: var(--fm); font-size: 8px; color: #64748b; text-transform: uppercase; letter-spacing: .08em; }
+    .btn-return { background: var(--orange); color: #000; font-family: var(--fs); font-weight: 700; font-size: 11px; letter-spacing: .1em; text-transform: uppercase; padding: 10px 24px; border-radius: 8px; border: none; cursor: pointer; transition: transform .3s; }
+    .btn-return:hover { transform: scale(1.04); }
+
+    /* ── inline svg util ───────────────────────────────── */
+    svg { display: inline-block; vertical-align: middle; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+    .fill-current { fill: currentColor; stroke: none; }
+
+    /* ══════════════════════════════════════════════════════
+       SECTION 3 — Tubes Interactive Background
+    ══════════════════════════════════════════════════════ */
+    #driver3 { position: relative; }
+    #sticky3 {
+      position: sticky; top: 0;
+      width: 100%; height: 100vh;
+      overflow: hidden; background: #000;
+      z-index: 1;
+    }
+    #tubes-canvas {
+      display: block; position: absolute; inset: 0;
+      width: 100%; height: 100%;
+      touch-action: none;
+    }
+
+    /* top-to-bottom dark vignette so text is readable */
+    #sec3-vignette {
+      position: absolute; inset: 0; z-index: 2; pointer-events: none;
+      background:
+        radial-gradient(ellipse 90% 60% at 50% 50%, transparent 20%, rgba(0,0,0,.60) 100%),
+        linear-gradient(to bottom, rgba(0,0,0,.5) 0%, transparent 18%, transparent 78%, rgba(0,0,0,.7) 100%);
+    }
+
+    /* full-bleed overlay container */
+    #sec3-overlay {
+      position: absolute; inset: 0; z-index: 10;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      padding: 24px;
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity .9s cubic-bezier(.16,1,.3,1), transform .9s cubic-bezier(.16,1,.3,1);
+      pointer-events: none;
+    }
+    #sec3-overlay.visible {
+      opacity: 1; transform: translateY(0);
+      pointer-events: auto;
+    }
+    @media(min-width: 768px) { #sec3-overlay { padding: 40px 48px; } }
+
+    /* ── Section 3 header ────────────────────────────────── */
+    .sec3-eyebrow {
+      font-family: var(--fm); font-size: 10px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: .14em; color: var(--orange);
+      background: rgba(242,125,38,.1); border: 1px solid rgba(242,125,38,.25);
+      padding: 4px 14px; border-radius: 9999px;
+      display: inline-flex; align-items: center; gap: 7px;
+      margin-bottom: 14px;
+    }
+    .sec3-title {
+      font-family: var(--fd); font-weight: 700;
+      font-size: clamp(22px, 4.5vw, 48px);
+      line-height: 1.06; letter-spacing: -.025em; color: #fff;
+      text-align: center; margin-bottom: 10px;
+      text-shadow: 0 2px 40px rgba(0,0,0,.8);
+    }
+    .sec3-title em {
+      font-style: italic; font-family: Georgia, serif;
+      background: linear-gradient(90deg, var(--orange) 0%, #fff 65%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .sec3-sub {
+      font-size: 13px; color: rgba(255,255,255,.6);
+      text-align: center; max-width: 520px; line-height: 1.65;
+      margin-bottom: 28px;
+    }
+
+    /* ── Step cards grid ─────────────────────────────────── */
+    #sec3-steps-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+      width: 100%; max-width: 1100px;
+      margin-bottom: 16px;
+    }
+    @media(min-width: 640px)  { #sec3-steps-grid { grid-template-columns: 1fr 1fr; } }
+    @media(min-width: 1024px) { #sec3-steps-grid { grid-template-columns: repeat(4,1fr); gap: 16px; } }
+
+    /* connector line (desktop) */
+    .sec3-connector {
+      display: none;
+    }
+    @media(min-width: 1024px) {
+      .sec3-steps-wrapper {
+        position: relative; width: 100%; max-width: 1100px;
+      }
+      .sec3-connector {
+        display: block;
+        position: absolute; top: 44px; left: 10%; right: 10%;
+        height: 1px;
+        background: linear-gradient(90deg,
+          rgba(242,125,38,.05) 0%,
+          rgba(242,125,38,.35) 50%,
+          rgba(242,125,38,.05) 100%);
+        pointer-events: none; z-index: 0;
+      }
+    }
+
+    /* Step card */
+    .sec3-card {
+      position: relative; z-index: 1;
+      border-radius: 20px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(15,15,18,.85);
+      backdrop-filter: blur(36px) saturate(160%);
+      -webkit-backdrop-filter: blur(36px) saturate(160%);
+      padding: 20px;
+      cursor: pointer;
+      transition: border-color .35s, box-shadow .35s, transform .35s cubic-bezier(.16,1,.3,1);
+      box-shadow: 0 8px 32px rgba(0,0,0,.5);
+      user-select: none;
+    }
+    .sec3-card::before {
+      content: ''; position: absolute;
+      top: 0; left: 0; right: 0; height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,.22) 40%, transparent 100%);
+      border-radius: 20px 20px 0 0; pointer-events: none;
+    }
+    .sec3-card:hover {
+      border-color: rgba(242,125,38,.3);
+      transform: translateY(-6px);
+      box-shadow: 0 20px 48px rgba(0,0,0,.55), 0 0 30px rgba(242,125,38,.08);
+    }
+    .sec3-card.active {
+      border-color: rgba(242,125,38,.55);
+      box-shadow: 0 20px 48px rgba(0,0,0,.55), 0 0 40px rgba(242,125,38,.15);
+    }
+    /* active glow bar at bottom */
+    .sec3-card.active::after {
+      content: ''; position: absolute;
+      bottom: -1px; left: 16px; right: 16px; height: 2px;
+      background: var(--orange);
+      border-radius: 9999px;
+      box-shadow: 0 0 12px rgba(242,125,38,.7);
+    }
+    .sec3-card-top {
+      display: flex; align-items: flex-start; justify-content: space-between;
+      margin-bottom: 12px;
+    }
+    .sec3-step-label {
+      font-family: var(--fm); font-size: 9px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: .12em; color: #64748b;
+      background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.06);
+      padding: 2px 8px; border-radius: 5px;
+    }
+    .sec3-icon-box {
+      width: 34px; height: 34px; border-radius: 10px;
+      background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.08);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      transition: transform .3s;
+    }
+    .sec3-card:hover .sec3-icon-box { transform: scale(1.1); }
+    .sec3-icon-box svg { width: 17px; height: 17px; color: var(--orange); }
+    .sec3-card-title {
+      font-family: var(--fd); font-weight: 700; font-size: 15px; color: #fff;
+      margin-bottom: 4px; line-height: 1.2;
+      transition: color .3s;
+    }
+    .sec3-card:hover .sec3-card-title { color: var(--orange); }
+    .sec3-card.active  .sec3-card-title { color: var(--orange); }
+    .sec3-card-sub {
+      font-family: var(--fm); font-size: 8px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: .1em; color: var(--orange);
+      margin-bottom: 8px;
+    }
+    .sec3-card-brief { font-size: 11px; color: #94a3b8; line-height: 1.6; }
+    .sec3-card-footer {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-top: 14px; padding-top: 10px; border-top: 1px solid rgba(255,255,255,.05);
+    }
+    .sec3-tagline { font-family: var(--fm); font-size: 9px; color: #64748b; }
+    .sec3-explore {
+      display: flex; align-items: center; gap: 4px;
+      font-family: var(--fm); font-size: 10px; font-weight: 700; color: #fff;
+      transition: transform .3s;
+    }
+    .sec3-card:hover .sec3-explore { transform: translateX(3px); }
+    .sec3-explore svg { width: 11px; height: 11px; color: var(--orange); }
+
+    /* ── Expanded detail panel ────────────────────────────── */
+    #sec3-detail-panel {
+      width: 100%; max-width: 1100px;
+      max-height: 0; overflow: hidden;
+      transition: max-height .5s cubic-bezier(.16,1,.3,1), opacity .4s ease;
+      opacity: 0;
+    }
+    #sec3-detail-panel.open {
+      max-height: 520px; opacity: 1;
+    }
+    .sec3-panel-inner {
+      border-radius: 22px;
+      border: 1px solid rgba(255,255,255,.1);
+      background: rgba(13,13,16,.9);
+      backdrop-filter: blur(40px);
+      -webkit-backdrop-filter: blur(40px);
+      padding: 24px;
+      margin-bottom: 16px;
+      position: relative; overflow: hidden;
+    }
+    .sec3-panel-inner::before {
+      content: ''; position: absolute;
+      top: 0; left: 0; right: 0; height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,.18) 40%, transparent 100%);
+      pointer-events: none;
+    }
+    .sec3-panel-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding-bottom: 16px; margin-bottom: 16px;
+      border-bottom: 1px solid rgba(255,255,255,.07);
+    }
+    .sec3-panel-title {
+      font-family: var(--fd); font-weight: 700; font-size: 18px; color: #fff;
+    }
+    .sec3-panel-sub { font-size: 11px; color: #94a3b8; margin-top: 2px; }
+    .sec3-panel-step-pill {
+      font-family: var(--fm); font-size: 10px; font-weight: 700;
+      background: var(--orange); color: #000;
+      padding: 2px 10px; border-radius: 6px;
+      letter-spacing: .08em; text-transform: uppercase;
+    }
+    .sec3-close-btn {
+      font-family: var(--fm); font-size: 10px; color: #94a3b8;
+      background: rgba(255,255,255,.03); border: 1px solid rgba(255,255,255,.08);
+      padding: 4px 12px; border-radius: 8px; cursor: pointer;
+      transition: color .2s, background .2s; display: flex; align-items: center; gap: 5px;
+    }
+    .sec3-close-btn:hover { color: #fff; background: rgba(255,255,255,.07); }
+    .sec3-close-btn svg { width: 12px; height: 12px; }
+
+    /* detail grid layouts */
+    .det-highlight {
+      background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.08);
+      border-radius: 14px; padding: 16px; margin-bottom: 14px;
+    }
+    .det-highlight-label {
+      font-family: var(--fm); font-size: 9px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: .12em; color: var(--orange);
+      display: block; margin-bottom: 8px;
+    }
+    .det-highlight-body { display: flex; align-items: center; gap: 10px; }
+    .det-highlight-body svg { width: 18px; height: 18px; color: var(--orange); flex-shrink: 0; }
+    .det-highlight-body .det-text { font-size: 13px; font-weight: 600; color: #fff; }
+    .det-caption { font-size: 11px; color: #94a3b8; line-height: 1.6; margin-top: 8px; }
+    .det-grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    @media(max-width: 640px) { .det-grid2 { grid-template-columns: 1fr; } }
+    .det-mini {
+      background: rgba(8,8,9,.65); border: 1px solid rgba(255,255,255,.06);
+      border-radius: 11px; padding: 12px;
+    }
+    .det-mini h5 { font-family: var(--fd); font-weight: 700; font-size: 12px; color: #fff; margin-bottom: 5px; }
+    .det-mini p  { font-size: 11px; color: #94a3b8; line-height: 1.6; }
+    /* audit list */
+    .det-audit-list { display: flex; flex-direction: column; gap: 6px; }
+    .det-audit-item {
+      display: flex; align-items: flex-start; gap: 8px;
+      background: rgba(8,8,9,.6); border: 1px solid rgba(255,255,255,.05);
+      border-radius: 9px; padding: 10px 12px;
+    }
+    .det-audit-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--orange); flex-shrink: 0; margin-top: 5px; }
+    .det-audit-title { font-size: 11px; font-weight: 700; color: #fff; }
+    .det-audit-desc  { font-size: 10px; color: #94a3b8; }
+    /* creative pillars */
+    .det-pillars { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; }
+    @media(max-width: 640px) { .det-pillars { grid-template-columns: 1fr; } }
+    .det-pillar {
+      background: rgba(8,8,9,.65); border: 1px solid rgba(255,255,255,.07);
+      border-radius: 12px; padding: 14px; text-align: center;
+    }
+    .det-pillar-icon {
+      width: 36px; height: 36px; border-radius: 10px;
+      background: rgba(242,125,38,.1); border: 1px solid rgba(242,125,38,.2);
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 10px;
+    }
+    .det-pillar-icon svg { width: 18px; height: 18px; color: var(--orange); }
+    .det-pillar h5 { font-family: var(--fd); font-weight: 700; font-size: 12px; color: #fff; margin-bottom: 5px; }
+    .det-pillar p  { font-size: 10px; color: #94a3b8; line-height: 1.55; }
+    /* timeline */
+    .det-timeline { display: flex; flex-direction: column; gap: 0; }
+    .det-week {
+      display: flex; align-items: flex-start; gap: 12px;
+      position: relative; padding-bottom: 14px;
+    }
+    .det-week:last-child { padding-bottom: 0; }
+    .det-week-line {
+      display: flex; flex-direction: column; align-items: center; flex-shrink: 0;
+    }
+    .det-week-dot {
+      width: 10px; height: 10px; border-radius: 50%;
+      background: var(--orange); border: 2px solid rgba(242,125,38,.35);
+      flex-shrink: 0;
+    }
+    .det-week-vline {
+      width: 1px; flex: 1; background: rgba(255,255,255,.07);
+      min-height: 24px;
+    }
+    .det-week:last-child .det-week-vline { display: none; }
+    .det-week-content { padding-top: 0; }
+    .det-week-label { font-family: var(--fm); font-size: 8px; font-weight: 700; color: var(--orange); text-transform: uppercase; letter-spacing: .1em; margin-bottom: 3px; }
+    .det-week-title { font-family: var(--fd); font-weight: 700; font-size: 13px; color: #fff; margin-bottom: 3px; }
+    .det-week-desc  { font-size: 11px; color: #94a3b8; line-height: 1.55; }
+
+    /* ── Section 3 CTA ────────────────────────────────────── */
+    .sec3-cta-row {
+      display: flex; flex-direction: column; align-items: center; gap: 12px;
+      margin-top: 16px;
+    }
+    .sec3-trust-row {
+      display: flex; align-items: center; gap: 16px;
+      font-family: var(--fm); font-size: 10px; color: #64748b;
+    }
+    .sec3-trust-row svg { width: 13px; height: 13px; color: var(--orange); }
+    .sec3-trust-item { display: flex; align-items: center; gap: 5px; }
+    .sec3-dot-sep { width: 4px; height: 4px; border-radius: 50%; background: #1e293b; }
+
+    /* click-hint pill */
+    #sec3-click-hint {
+      position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%);
+      display: flex; flex-direction: column; align-items: center; gap: 6px;
+      color: rgba(255,255,255,.3); font-family: var(--fm); font-size: 9px;
+      text-transform: uppercase; letter-spacing: .14em;
+      animation: pulse 2.2s ease-in-out infinite;
+      pointer-events: none; z-index: 20;
+    }
+    #sec3-click-hint svg { width: 18px; height: 18px; }
+    @keyframes pulse {
+      0%, 100% { opacity: .4; }
+      50%       { opacity: 1; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════════════
+     LOADER
+════════════════════════════════════════════════════════ -->
+<div id="loader">
+  <div id="bar-track"><div id="bar-fill"></div></div>
+  <span id="pct">Loading…</span>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+     BOOKING MODAL
+════════════════════════════════════════════════════════ -->
+<div id="modal-overlay">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal()">
+      <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+
+    <div id="modal-form">
+      <div class="modal-badges">
+        <span class="modal-pill">Growth Audit</span>
+        <span class="modal-sparkle">
+          <svg viewBox="0 0 24 24"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg>
+          1-on-1 with Tawheed
+        </span>
+      </div>
+      <h3 class="modal-title">Book Your Growth Strategy Call</h3>
+      <p class="modal-sub">Let's analyze your D2C system, conversion rate, ads strategy, and potential automations.</p>
+
+      <div class="slot-lbl">
+        <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        Select Date &amp; Time Slot:
+      </div>
+      <div class="slot-grid" id="slot-grid"></div>
+
+      <div class="fg2">
+        <div class="fgrp"><label class="flbl">Your Name *</label><input class="finp" id="f-name" type="text" placeholder="Tawheed" /></div>
+        <div class="fgrp"><label class="flbl">Work Email *</label><input class="finp" id="f-email" type="email" placeholder="growth@brand.com" /></div>
+      </div>
+      <div class="fg2">
+        <div class="fgrp"><label class="flbl">Current Website *</label><input class="finp" id="f-website" type="url" placeholder="https://yourbrand.com" /></div>
+        <div class="fgrp">
+          <label class="flbl">Monthly Revenue</label>
+          <select class="fsel" id="f-revenue"><option>Under $10k/mo</option><option>$10k – $50k/mo</option><option>$50k – $250k/mo</option><option>Over $250k/mo</option></select>
+        </div>
+      </div>
+      <div class="fgrp"><label class="flbl">Core bottleneck to discuss</label><textarea class="fta" id="f-notes" rows="2" placeholder="e.g. low Shopify load times, Meta ad account bans..."></textarea></div>
+
+      <div class="modal-footer">
+        <span class="modal-trust">
+          <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg>
+          Private Data Protection
+        </span>
+        <button class="btn-submit" onclick="submitModal()">
+          Lock Meeting Slot
+          <svg viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <div id="modal-success">
+      <div class="succ-icon-wrap"><div class="succ-glow"></div><div class="succ-icon"><svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div></div>
+      <div><h3 class="succ-title">Growth Call Confirmed!</h3><p class="succ-time" id="succ-time">Tomorrow at <span>11:00 AM (EST)</span></p></div>
+      <div class="succ-fc">
+        <p class="succ-quote" id="succ-quote">"Hey, looking forward to our session. I'll personally review your setup beforehand so we can jump straight into high-ROI tactics."</p>
+        <div class="succ-sig"><div class="succ-av">TS</div><div><p class="succ-n">Tawheed Shafi</p><p class="succ-r">Founder, TOKA Systems</p></div></div>
+      </div>
+      <button class="btn-return" onclick="closeModal()">Return to Site</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+     SECTION 1 — canvas background + TOKA content on top
+════════════════════════════════════════════════════════ -->
+<div id="driver">
+
+  <!-- Sticky canvas: animation plays as background -->
+  <div id="sticky">
+    <canvas id="c"></canvas>
+  </div>
+
+  <!-- ─────────────────────────────────────────────────────
+       TOKA CONTENT LAYER
+       margin-top: -100vh pulls this up so it starts
+       at the very top of the page, overlaying the canvas.
+  ────────────────────────────────────────────────────── -->
+  <div id="toka-content">
+
+    <!-- Fixed decorative elements -->
+    <div class="watermark"><span class="watermark-text">TOKA</span></div>
+    <div class="guide guide-l"></div>
+    <div class="guide guide-r"></div>
+
+    <!-- ── Main ──────────────────────────────────────── -->
+    <main>
+
+
+      <!-- ═══ HERO (header lives inside here) ════════ -->
+      <div class="hero">
+
+        <!-- Header inside hero -->
+        <header>
+          <div class="header-inner">
+            <a href="#" class="logo">
+              <div class="logo-icon"><div class="logo-icon-inner">T</div></div>
+              <span class="logo-text">TOKA<span>.</span></span>
+            </a>
+            <button class="nav-cta" onclick="openModal()">
+              <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+              Book Call
+            </button>
+          </div>
+        </header>
+
+        <!-- Systems Audit Online badge — directly below header -->
+        <div style="text-align:center; padding-top:14px; padding-bottom:4px;">
+          <span class="badge">
+            <span class="ping-wrap"><span class="ping-ring"></span><span class="ping-core"></span></span>
+            Systems Audit Online
+          </span>
+        </div>
+
+        <div class="hero-badge" style="margin-top:36px;">
+          <span class="badge">
+            <span class="ping-wrap"><span class="ping-ring"></span><span class="ping-core"></span></span>
+            Engineering Growth For D2C Brands &amp; Ambitious Businesses
+          </span>
+        </div>
+        <h1 class="hero-h1">Build More Than<br>a Website.</h1>
+        <h1 class="hero-h1-grad">Build a Business<br>That Scales.</h1>
+        <p class="hero-copy">
+          Your website is only one piece of the puzzle. At <strong>TOKA</strong>, we engineer complete
+          growth systems — from high-converting D2C websites and Shopify experiences to Meta Ads,
+          AI agents, WhatsApp automation, voice AI, and conversion optimization. Everything works
+          together to help you attract, convert, and retain more customers.
+        </p>
+        <div class="cta-row">
+          <button class="btn-primary" onclick="openModal()">
+            <svg class="btn-icon" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            Book a Free Growth Strategy Call
+            <svg class="btn-icon" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+          </button>
+          <button class="btn-secondary">
+            Explore Our Work
+            <svg class="btn-icon" viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          </button>
+        </div>
+        <div class="trust-bar">
+          <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg>
+          <span>Helping D2C brands and growing businesses build systems that generate more revenue — not just more traffic.</span>
+        </div>
+      </div>
+
+      <!-- ═══ SUBSECTION 01: BUSINESS DESCRIPTION ════ -->
+      <section class="section">
+        <div>
+          <span class="section-label">SUBSECTION 01 // OVERVIEW</span>
+          <h2 class="section-title">Build More Than a Website. <span>Build a Business.</span></h2>
+        </div>
+
+        <div class="grid12">
+          <!-- Left card -->
+          <div class="col-5">
+            <div class="glass-card glow-card">
+              <div>
+                <div class="icon-box" style="margin-bottom:14px;">
+                  <svg viewBox="0 0 24 24" style="color:#f27d26;"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg>
+                </div>
+                <h3 style="font-family:var(--fd);font-weight:700;font-size:20px;color:#fff;margin-bottom:10px;">Engineering Growth Systems</h3>
+                <p style="color:#cbd5e1;font-size:13px;line-height:1.65;">
+                  At TOKA, we partner with ambitious founders to engineer complete, self-reinforcing growth engines. We replace disconnected agency boilerplate campaigns with custom-built high-converting technical infrastructure.
+                </p>
+              </div>
+              <button class="btn-primary" onclick="openModal()" style="width:100%;">
+                <svg class="btn-icon" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                Book Free Growth Call
+              </button>
+            </div>
+          </div>
+
+          <!-- Right card -->
+          <div class="col-5r">
+            <div class="glass-card">
+              <div>
+                <span style="font-family:var(--fm);font-size:9px;color:var(--orange);font-weight:700;text-transform:uppercase;letter-spacing:.1em;background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.05);padding:3px 10px;border-radius:4px;display:inline-block;margin-bottom:14px;">Our Core Objective</span>
+                <h3 style="font-family:var(--fd);font-weight:700;font-size:20px;color:#fff;margin-bottom:10px;">The Scaling Standard</h3>
+                <p style="color:#94a3b8;font-size:13px;line-height:1.65;">
+                  Our architecture delivers real compounding returns for your brand's balance sheet by addressing the full scale funnel in real time.
+                </p>
+              </div>
+              <div class="checklist">
+                <div class="check-item"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg><span>Lower Customer Acquisition Cost</span></div>
+                <div class="check-item"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg><span>Double-Digit CRO conversion boosts</span></div>
+                <div class="check-item"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg><span>Automated operations &amp; chat funnels</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ═══ SUBSECTION 02: SCALE PILLARS ═══════════ -->
+      <section class="section">
+        <div style="margin-bottom:16px;">
+          <span class="section-label">SUBSECTION 02 // SCALE PILLARS</span>
+          <h2 class="section-title">Six Integrated Scale Engines. <span>Alternating Layout.</span></h2>
+          <p class="section-sub">Each module is strictly aligned to the left or right side of the screen, creating a beautiful staggered pattern.</p>
+        </div>
+
+        <!-- PILLAR 01 — LEFT -->
+        <div class="pillar-row">
+          <div class="pillar-left">
+            <div class="pillar-card">
+              <div class="pillar-card-header">
+                <div class="pillar-card-hd-left">
+                  <div class="icon-box"><svg viewBox="0 0 24 24" style="color:#f27d26;"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg></div>
+                  <div><span class="pillar-num">Pillar 01</span><span class="pillar-cat">Build</span></div>
+                </div>
+                <span class="live-badge">Live</span>
+              </div>
+              <h3 class="pillar-title">Premium D2C &amp; Shopify Engineering</h3>
+              <p class="pillar-desc">Premium Shopify experiences and headless D2C web engines custom engineered for maximum page load speeds, ultimate brand trust, and immediate conversions.</p>
+              <div class="pillar-details">
+                <div class="detail-item"><span class="dot"></span><span>Custom Shopify Liquid &amp; modular sections for rapid iteration</span></div>
+                <div class="detail-item"><span class="dot"></span><span>Page load speed optimized to 95+ mobile Lighthouse score</span></div>
+              </div>
+              <div class="pillar-footer">Interact with sandbox <svg viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PILLAR 02 — RIGHT -->
+        <div class="pillar-row">
+          <div class="pillar-right">
+            <div class="pillar-card">
+              <div class="pillar-card-header">
+                <div class="pillar-card-hd-left">
+                  <div class="icon-box"><svg viewBox="0 0 24 24" style="color:#f59e0b;"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></div>
+                  <div><span class="pillar-num">Pillar 02</span><span class="pillar-cat">Scale</span></div>
+                </div>
+                <span class="live-badge">Live</span>
+              </div>
+              <h3 class="pillar-title">Meta Ads &amp; Paid Acquisition</h3>
+              <p class="pillar-desc">Data-driven Meta Ads (Facebook &amp; Instagram), creative analytics, and unified scaling frameworks designed to reliably turn cold traffic into high-value repeat customers.</p>
+              <div class="pillar-details">
+                <div class="detail-item"><span class="dot"></span><span>Full funnel Meta structure optimized for cost efficiency &amp; ROAS</span></div>
+                <div class="detail-item"><span class="dot"></span><span>Server-to-server CAPI setups for accurate attribution</span></div>
+              </div>
+              <div class="pillar-footer">Interact with sandbox <svg viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PILLAR 03 — LEFT -->
+        <div class="pillar-row">
+          <div class="pillar-left">
+            <div class="pillar-card">
+              <div class="pillar-card-header">
+                <div class="pillar-card-hd-left">
+                  <div class="icon-box"><svg viewBox="0 0 24 24" style="color:#fb923c;"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg></div>
+                  <div><span class="pillar-num">Pillar 03</span><span class="pillar-cat">Automate</span></div>
+                </div>
+                <span class="live-badge">Live</span>
+              </div>
+              <h3 class="pillar-title">Conversational WhatsApp Automation</h3>
+              <p class="pillar-desc">Intelligent chatbot workflows designed to automate 80% of routine customer care queries, driving high-retention conversational commerce.</p>
+              <div class="pillar-details">
+                <div class="detail-item"><span class="dot"></span><span>Abandoned checkout recovery sequences with high open-rate messages</span></div>
+                <div class="detail-item"><span class="dot"></span><span>Conversational upselling &amp; personalized VIP discount flows</span></div>
+              </div>
+              <div class="pillar-footer">Interact with sandbox <svg viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PILLAR 04 — RIGHT -->
+        <div class="pillar-row">
+          <div class="pillar-right">
+            <div class="pillar-card">
+              <div class="pillar-card-header">
+                <div class="pillar-card-hd-left">
+                  <div class="icon-box"><svg viewBox="0 0 24 24" style="color:#f27d26;"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><line x1="9" y1="1" x2="9" y2="4"/><line x1="15" y1="1" x2="15" y2="4"/><line x1="9" y1="20" x2="9" y2="23"/><line x1="15" y1="20" x2="15" y2="23"/><line x1="20" y1="9" x2="23" y2="9"/><line x1="20" y1="14" x2="23" y2="14"/><line x1="1" y1="9" x2="4" y2="9"/><line x1="1" y1="14" x2="4" y2="14"/></svg></div>
+                  <div><span class="pillar-num">Pillar 04</span><span class="pillar-cat">Automate</span></div>
+                </div>
+                <span class="live-badge">Live</span>
+              </div>
+              <h3 class="pillar-title">AI Voice Agents &amp; Dialers</h3>
+              <p class="pillar-desc">Autonomous, human-like AI voice agents that handle outbound scheduling, lead qualifications, and instant inbound helpdesk responses 24/7.</p>
+              <div class="pillar-details">
+                <div class="detail-item"><span class="dot"></span><span>Google Calendar, HubSpot &amp; WhatsApp CRM booking integrations</span></div>
+                <div class="detail-item"><span class="dot"></span><span>Smart qualified outbound calling driving high growth call conversion</span></div>
+              </div>
+              <div class="pillar-footer">Interact with sandbox <svg viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PILLAR 05 — LEFT -->
+        <div class="pillar-row">
+          <div class="pillar-left">
+            <div class="pillar-card">
+              <div class="pillar-card-header">
+                <div class="pillar-card-hd-left">
+                  <div class="icon-box"><svg viewBox="0 0 24 24" style="color:#fbbf24;"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg></div>
+                  <div><span class="pillar-num">Pillar 05</span><span class="pillar-cat">Scale</span></div>
+                </div>
+                <span class="live-badge">Live</span>
+              </div>
+              <h3 class="pillar-title">Conversion Optimization &amp; Analytics</h3>
+              <p class="pillar-desc">Rigorous user behavior tracking, heatmaps analysis, A/B split-testing, and dynamic optimization of checkout layers to capture leaked profit margins.</p>
+              <div class="pillar-details">
+                <div class="detail-item"><span class="dot"></span><span>A/B split testing of high-impact landing pages, CTAs &amp; checkouts</span></div>
+                <div class="detail-item"><span class="dot"></span><span>Post-purchase upselling funnels increasing average basket by 20%+</span></div>
+              </div>
+              <div class="pillar-footer">Interact with sandbox <svg viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PILLAR 06 — RIGHT -->
+        <div class="pillar-row">
+          <div class="pillar-right">
+            <div class="pillar-card">
+              <div class="pillar-card-header">
+                <div class="pillar-card-hd-left">
+                  <div class="icon-box"><svg viewBox="0 0 24 24" style="color:#f97316;"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>
+                  <div><span class="pillar-num">Pillar 06</span><span class="pillar-cat">Scale</span></div>
+                </div>
+                <span class="live-badge">Live</span>
+              </div>
+              <h3 class="pillar-title">Unified Growth System Dashboard</h3>
+              <p class="pillar-desc">All-in-one metrics integration, linking your Shopify backend, Meta Ad Manager, CRM, and bot channels into a clean, actionable unified tracking hub.</p>
+              <div class="pillar-details">
+                <div class="detail-item"><span class="dot"></span><span>Real-time blended ROAS, LTV to CAC ratios &amp; system velocity</span></div>
+                <div class="detail-item"><span class="dot"></span><span>Custom predictive alerts detecting conversion drops instantly</span></div>
+              </div>
+              <div class="pillar-footer">Interact with sandbox <svg viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ═══ SUBSECTION 03: TRUST & FOUNDER ═════════ -->
+      <section class="section">
+        <div style="margin-bottom:24px;">
+          <span class="section-label" style="font-size:9px;">SUBSECTION 03 // PARTNERSHIP &amp; METRICS</span>
+          <h2 class="section-title" style="font-size:clamp(20px,2.8vw,28px);">Trusted by 15+ High-Growth Brands. <span>The Founder Statement.</span></h2>
+        </div>
+
+        <div class="grid12">
+          <!-- Founder card -->
+          <div class="col-5">
+            <div class="founder-card">
+              <div class="quote-head">
+                <svg viewBox="0 0 24 24"><path d="M3 21c3 0 7-1 7-8V5c0-1.25-.756-2.017-2-2H4c-1.25 0-2 .75-2 2v11c0 1.25.75 2 2 2h4c1.25 0 2-.75 2-2v-5c0-1.25-.75-2-2-2H3"/><path d="M11 21c3 0 7-1 7-8V5c0-1.25-.757-2.017-2-2h-4c-1.25 0-2 .75-2 2v11c0 1.25.75 2 2 2h4c1.25 0 2-.75 2-2v-5c0-1.25-.75-2-2-2h-4"/></svg>
+                <span class="quote-label">Founder's Vision</span>
+              </div>
+              <p class="quote-text">"We partner with founders who want more than a beautiful website. We build integrated, fully scalable web systems that help your brand acquire customers cheaper, convert them at double-digit rates, and automate tedious backend tasks with AI."</p>
+              <div class="founder-sig">
+                <div class="founder-avatar">TS</div>
+                <div><p class="founder-name">Tawheed Shafi</p><p class="founder-role">Founder, TOKA Systems</p></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Stats -->
+          <div class="col-5r">
+            <div class="stats-grid">
+              <div class="stat-card">
+                <div class="stat-row"><svg viewBox="0 0 24 24" style="color:#f27d26;"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg><span class="stat-meta">Metric</span></div>
+                <div><p class="stat-value">40+</p><p class="stat-label">Projects Delivered</p></div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-row"><svg viewBox="0 0 24 24" style="color:#f59e0b;"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg><span class="stat-meta">Metric</span></div>
+                <div><p class="stat-value">15+</p><p class="stat-label">Business Partners</p></div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-row"><svg viewBox="0 0 24 24" style="color:#fb923c;"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg><span class="stat-meta">Metric</span></div>
+                <div><p class="stat-value">3+</p><p class="stat-label">Years of Experience</p></div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-row"><svg viewBox="0 0 24 24" style="color:#f27d26;" class="fill-current"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><span class="stat-meta">Metric</span></div>
+                <div><p class="stat-value">100%</p><p class="stat-label">Client Satisfaction</p></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div><!-- end #toka-content -->
+
+</div><!-- end #driver (section 1) -->
+
+<!-- ═══════════════════════════════════════════════════════
+     SECTION 2 — Frame animation bg + Brand Showcase overlay
+════════════════════════════════════════════════════════ -->
+<div id="driver2">
+  <div id="sticky2">
+
+    <!-- Layer 1: scroll-scrubbed JPG frames -->
+    <canvas id="c2"></canvas>
+
+    <!-- dark vignette over canvas for legibility -->
+    <div style="position:absolute;inset:0;z-index:5;pointer-events:none;
+      background:radial-gradient(ellipse 80% 80% at 50% 40%,transparent 30%,rgba(0,0,0,.55) 100%);"></div>
+
+    <!-- Layer 2: brand showcase slider -->
+    <div id="sec2-overlay">
+
+      <!-- ─── Top header ─── -->
+      <div id="sec2-header">
+        <div>
+          <div class="sec2-badge" style="margin-bottom:14px;">
+            <span class="ping-wrap"><span class="ping-ring"></span><span class="ping-core"></span></span>
+            Client Success Stories
+          </div>
+          <h2 class="sec2-title">Brands that<br><em>Scaled With Us.</em></h2>
+        </div>
+        <div class="sec2-right-card">
+          <div>
+            <div class="sec2-stat-num">15+</div>
+            <div class="sec2-stat-label">Business Partners</div>
+            <div class="sec2-stat-sub">Audited · Optimized · Scaled</div>
+          </div>
+          <div style="width:1px;height:48px;background:rgba(255,255,255,.06);"></div>
+          <div>
+            <div class="sec2-stat-num">40+</div>
+            <div class="sec2-stat-label">Projects Delivered</div>
+            <div class="sec2-stat-sub">Real Results. Real ROAS.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ─── Brand slider tray ─── -->
+      <div id="sec2-tray">
+        <div class="tray-band">
+          <div class="slider-label-row">
+            <span class="slider-label">✦ Our Portfolio — drag or use arrows ✦</span>
+            <span class="slider-count" id="rail-count">01 / 08</span>
+          </div>
+
+          <div id="brand-rail-wrap">
+            <!-- Prev arrow -->
+            <button class="rail-nav" id="rail-prev" aria-label="Previous">
+              <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
+            </button>
+            <!-- Next arrow -->
+            <button class="rail-nav" id="rail-next" aria-label="Next">
+              <svg viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+
+            <div id="brand-rail">
+              <!-- Cards injected by JS -->
+            </div>
+          </div>
+
+          <!-- dots -->
+          <div class="sec2-dots" id="sec2-dots"></div>
+        </div>
+      </div>
+
+    </div><!-- /sec2-overlay -->
+
+    <!-- scroll progress bar -->
+    <div id="sec2-progress"><div id="sec2-progress-bar"></div></div>
+
+  </div><!-- /sticky2 -->
+</div><!-- /driver2 -->
+
+<!-- ═══════════════════════════════════════════════════════
+     SECTION 3 — Tubes Interactive Background + Strategic Call Process
+════════════════════════════════════════════════════════ -->
+<div id="driver3">
+  <div id="sticky3">
+
+    <!-- 3D Tubes WebGL canvas -->
+    <canvas id="tubes-canvas"></canvas>
+
+    <!-- Dark vignette for legibility -->
+    <div id="sec3-vignette"></div>
+
+    <!-- Content overlay -->
+    <div id="sec3-overlay">
+
+      <!-- Header -->
+      <span class="sec3-eyebrow">
+        <span class="ping-wrap"><span class="ping-ring"></span><span class="ping-core"></span></span>
+        Growth Methodology
+      </span>
+      <h2 class="sec3-title">Our 4-Step Strategic Call <em>Process</em></h2>
+      <p class="sec3-sub">Every audit call follows this specific organic path. Click any card to explore our detailed workflows, active templates, and 60-day roadmap.</p>
+
+      <!-- Steps grid wrapper -->
+      <div class="sec3-steps-wrapper">
+        <div class="sec3-connector"></div>
+        <div id="sec3-steps-grid">
+
+          <!-- STEP 01 -->
+          <div class="sec3-card" id="sec3-card-1" onclick="toggleSec3Step(1)">
+            <div class="sec3-card-top">
+              <span class="sec3-step-label">Step 01</span>
+              <div class="sec3-icon-box">
+                <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+              </div>
+            </div>
+            <p class="sec3-card-sub">Where you are winning right now</p>
+            <h3 class="sec3-card-title">Current Situation</h3>
+            <p class="sec3-card-brief">We anchor the strategy on your native strengths before suggesting any changes — preserving winning formulas that generate real revenue.</p>
+            <div class="sec3-card-footer">
+              <span class="sec3-tagline">Leverage Existing Assets</span>
+              <span class="sec3-explore">Explore
+                <svg viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+              </span>
+            </div>
+          </div>
+
+          <!-- STEP 02 -->
+          <div class="sec3-card" id="sec3-card-2" onclick="toggleSec3Step(2)">
+            <div class="sec3-card-top">
+              <span class="sec3-step-label">Step 02</span>
+              <div class="sec3-icon-box">
+                <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+              </div>
+            </div>
+            <p class="sec3-card-sub">Performance &amp; optimization audit</p>
+            <h3 class="sec3-card-title">The Diagnosis</h3>
+            <p class="sec3-card-brief">A scientific audit of website CRO, retention cohort performance, and raw Meta ad accounts to diagnose and eliminate scaling roadblocks.</p>
+            <div class="sec3-card-footer">
+              <span class="sec3-tagline">Solve Core Growth Leaks</span>
+              <span class="sec3-explore">Explore
+                <svg viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+              </span>
+            </div>
+          </div>
+
+          <!-- STEP 03 -->
+          <div class="sec3-card" id="sec3-card-3" onclick="toggleSec3Step(3)">
+            <div class="sec3-card-top">
+              <span class="sec3-step-label">Step 03</span>
+              <div class="sec3-icon-box">
+                <svg viewBox="0 0 24 24"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+              </div>
+            </div>
+            <p class="sec3-card-sub">Simple Meta deployment roadmap</p>
+            <h3 class="sec3-card-title">Creative Strategy</h3>
+            <p class="sec3-card-brief">A jargon-free creative framework designed for non-marketers to launch high-conversion hooks, testimonials, and offers on Meta channels.</p>
+            <div class="sec3-card-footer">
+              <span class="sec3-tagline">Jargon-Free Blueprint</span>
+              <span class="sec3-explore">Explore
+                <svg viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+              </span>
+            </div>
+          </div>
+
+          <!-- STEP 04 -->
+          <div class="sec3-card" id="sec3-card-4" onclick="toggleSec3Step(4)">
+            <div class="sec3-card-top">
+              <span class="sec3-step-label">Step 04</span>
+              <div class="sec3-icon-box">
+                <svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+              </div>
+            </div>
+            <p class="sec3-card-sub">Timeline &amp; onboarding milestones</p>
+            <h3 class="sec3-card-title">The 2-Month Plan</h3>
+            <p class="sec3-card-brief">A step-by-step 60-day roadmap detailing launch milestones, onboarding checklists, and exact expectations once you partner with us.</p>
+            <div class="sec3-card-footer">
+              <span class="sec3-tagline">Sustained Launch Strategy</span>
+              <span class="sec3-explore">Explore
+                <svg viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+              </span>
+            </div>
+          </div>
+
+        </div><!-- /sec3-steps-grid -->
+      </div><!-- /sec3-steps-wrapper -->
+
+      <!-- Expandable Detail Panel -->
+      <div id="sec3-detail-panel">
+        <div class="sec3-panel-inner">
+          <div class="sec3-panel-header">
+            <div style="display:flex;align-items:center;gap:10px;">
+              <span class="sec3-panel-step-pill" id="sec3-panel-pill">STEP 01</span>
+              <div>
+                <p class="sec3-panel-title" id="sec3-panel-title">Current Situation</p>
+                <p class="sec3-panel-sub" id="sec3-panel-sub">Where you are winning right now</p>
+              </div>
+            </div>
+            <button class="sec3-close-btn" onclick="closeSec3Detail()">
+              <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+              Close
+            </button>
+          </div>
+          <div id="sec3-panel-body"></div>
+        </div>
+      </div><!-- /sec3-detail-panel -->
+
+      <!-- CTA -->
+      <div class="sec3-cta-row">
+        <button class="btn-primary" onclick="openModal()" style="font-size:12px;padding:14px 28px;border-radius:14px;">
+          <svg class="btn-icon" viewBox="0 0 24 24"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg>
+          Book Your Analysis Call
+          <svg class="btn-icon" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+        </button>
+        <div class="sec3-trust-row">
+          <span class="sec3-trust-item">
+            <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg>
+            100% Free Strategy Blueprint
+          </span>
+          <span class="sec3-dot-sep"></span>
+          <span class="sec3-trust-item">
+            <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg>
+            Tailored Prep Materials Included
+          </span>
+        </div>
+      </div>
+
+      <!-- Click hint -->
+      <div id="sec3-click-hint">
+        <svg viewBox="0 0 24 24"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/><path d="m9 12 2 2 4-4"/></svg>
+        Click canvas to randomize colors
+      </div>
+
+    </div><!-- /sec3-overlay -->
+  </div><!-- /sticky3 -->
+</div><!-- /driver3 -->
+
+<!-- ═══════════════════════════════════════════════════════
+     SCRIPTS
+════════════════════════════════════════════════════════ -->
+<script>
+/* ── Booking Modal ─────────────────────────────────── */
+(function() {
+  const slots = [
+    { date:'Tomorrow', time:'10:00 AM (EST)', available:true },
+    { date:'Tomorrow', time:'11:00 AM (EST)', available:true },
+    { date:'Tomorrow', time:'1:30 PM (EST)',  available:false },
+    { date:'Tomorrow', time:'3:00 PM (EST)',  available:true },
+    { date:'Next Day', time:'9:30 AM (EST)',  available:true },
+    { date:'Next Day', time:'11:00 AM (EST)', available:true },
+    { date:'Next Day', time:'2:00 PM (EST)',  available:true },
+    { date:'Next Day', time:'4:30 PM (EST)',  available:false },
+  ];
+  let selDate = 'Tomorrow', selTime = '11:00 AM (EST)';
+  const grid = document.getElementById('slot-grid');
+  slots.forEach((s, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'slot-btn' + (!s.available ? '' : (s.date===selDate && s.time===selTime ? ' active' : ''));
+    btn.disabled = !s.available;
+    btn.innerHTML = `<span class="slot-date">${s.date}</span><span class="slot-time">${s.time}</span>`;
+    btn.addEventListener('click', () => {
+      selDate = s.date; selTime = s.time;
+      grid.querySelectorAll('.slot-btn').forEach((b,j) => b.classList.toggle('active', j===i));
+    });
+    grid.appendChild(btn);
+  });
+
+  window.openModal  = () => document.getElementById('modal-overlay').classList.add('open');
+  window.closeModal = () => {
+    document.getElementById('modal-overlay').classList.remove('open');
+    document.getElementById('modal-form').style.display = '';
+    document.getElementById('modal-success').classList.remove('show');
+  };
+  window.submitModal = () => {
+    const name    = document.getElementById('f-name').value.trim();
+    const email   = document.getElementById('f-email').value.trim();
+    const website = document.getElementById('f-website').value.trim();
+    if (!name || !email || !website) { alert('Please fill in Name, Email and Website.'); return; }
+    document.getElementById('succ-time').innerHTML = `${selDate} at <span>${selTime}</span>`;
+    document.getElementById('succ-quote').textContent = `"Hey ${name}, looking forward to our strategy session. I'll personally review your setup at ${website} beforehand so we can jump straight into high-ROI tactics."`;
+    document.getElementById('modal-form').style.display = 'none';
+    document.getElementById('modal-success').classList.add('show');
+  };
+  document.getElementById('modal-overlay').addEventListener('click', e => {
+    if (e.target === document.getElementById('modal-overlay')) closeModal();
+  });
+})();
+</script>
+
+<!-- SECTION 1: canvas synced to content scroll -->
+<script>
+(() => {
+  const START = 31, END = 149;
+  const SRCS  = [];
+  for (let n = START; n <= END; n++)
+    SRCS.push('./ezgif-8a1896989cae1678-jpg/ezgif-frame-' + String(n).padStart(3,'0') + '.jpg');
+  const TOTAL = SRCS.length;
+
+  const canvas  = document.getElementById('c');
+  const ctx     = canvas.getContext('2d', { alpha: false });
+  const driver  = document.getElementById('driver');
+  const loader  = document.getElementById('loader');
+  const barFill = document.getElementById('bar-fill');
+  const pctEl   = document.getElementById('pct');
+
+  const imgs = new Array(TOTAL).fill(null);
+  let loaded = 0, W = 0, H = 0, currentF = 0, lastF = -1;
+  let dirty = false, unlocked = false;
+  const UNLOCK_AT = 12;
+
+  const resize = () => { W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; };
+
+  const coverDraw = img => {
+    if (!img || !img.complete || !img.naturalWidth) return;
+    const s = Math.max(W / img.naturalWidth, H / img.naturalHeight);
+    ctx.drawImage(img, (W - img.naturalWidth*s)*.5, (H - img.naturalHeight*s)*.5, img.naturalWidth*s, img.naturalHeight*s);
+  };
+
+  const render = f => {
+    const lo = Math.floor(f), hi = Math.min(lo+1, TOTAL-1), blend = f-lo;
+    ctx.clearRect(0,0,W,H);
+    coverDraw(imgs[lo]);
+    if (blend > .004 && imgs[hi]?.complete) { ctx.save(); ctx.globalAlpha = blend; coverDraw(imgs[hi]); ctx.restore(); }
+  };
+
+  /*
+    Scroll progress = how far into the driver we've scrolled.
+    driver.offsetHeight = toka-content height (margin-top:-100vh cancels sticky height).
+    So the animation plays through all frames as you read the entire content.
+  */
+  const onScroll = () => {
+    const max = driver.offsetHeight - window.innerHeight;
+    currentF = Math.min(Math.max(window.scrollY / max, 0), 1) * (TOTAL - 1);
+    dirty = true;
+  };
+
+  const loop = () => {
+    requestAnimationFrame(loop);
+    if (!unlocked || !dirty) return;
+    dirty = false;
+    if (Math.abs(currentF - lastF) > .0003) { render(currentF); lastF = currentF; }
+  };
+
+  const preload = () => {
+    SRCS.forEach((src, i) => {
+      const img = new Image();
+      img.decoding = 'async';
+      img.onload = () => {
+        imgs[i] = img; loaded++;
+        const p = Math.round(loaded/TOTAL*100);
+        barFill.style.width = p + '%'; pctEl.textContent = p + '%';
+        if (i === 0) { resize(); render(0); }
+        if (loaded >= UNLOCK_AT && !unlocked) {
+          unlocked = true;
+          loader.classList.add('fade');
+          setTimeout(() => loader.remove(), 900);
+        }
+      };
+      img.onerror = () => { loaded++; };
+      img.src = src;
+    });
+  };
+
+  resize(); preload(); onScroll(); loop();
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', () => { resize(); render(currentF); }, { passive: true });
+})();
+</script>
+
+<!-- SECTION 2: scroll-scrubbed frames + brand showcase overlay -->
+<script>
+(() => {
+  /* ════════════════════════════════════════
+     A) FRAME SCRUBBER (background canvas)
+  ════════════════════════════════════════ */
+  const FOLDER = './ezgif-14adde550f73c2df-jpg/ezgif-frame-';
+  const TOTAL  = 150;
+  const SRCS   = [];
+  for (let n = 1; n <= TOTAL; n++) SRCS.push(FOLDER + String(n).padStart(3,'0') + '.jpg');
+
+  const canvas = document.getElementById('c2');
+  const ctx    = canvas.getContext('2d', { alpha: false });
+  const driver = document.getElementById('driver2');
+
+  const imgs = new Array(TOTAL).fill(null);
+  let W = 0, H = 0, currentF = 0, lastF = -1, dirty = false;
+
+  /* ════════════════════════════════════════
+     B) UI VISIBILITY & PROGRESS
+     (declared first so onScroll can call updateUI)
+  ════════════════════════════════════════ */
+  const header  = document.getElementById('sec2-header');
+  const tray    = document.getElementById('sec2-tray');
+  const progBar = document.getElementById('sec2-progress-bar');
+
+  function updateUI(t) {
+    if (!header || !tray || !progBar) return;
+    if (t > .05) header.classList.add('visible');
+    else         header.classList.remove('visible');
+    if (t > .08) tray.classList.add('visible');
+    else         tray.classList.remove('visible');
+    progBar.style.width = (t * 100) + '%';
+  }
+
+  /* ════════════════════════════════════════
+     A) FRAME SCRUBBER (background canvas)
+  ════════════════════════════════════════ */
+  const resize = () => { W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; };
+
+  const coverDraw = img => {
+    if (!img || !img.complete || !img.naturalWidth) return;
+    const s = Math.max(W / img.naturalWidth, H / img.naturalHeight);
+    ctx.drawImage(img, (W - img.naturalWidth*s)*.5, (H - img.naturalHeight*s)*.5, img.naturalWidth*s, img.naturalHeight*s);
+  };
+
+  const render = f => {
+    const lo = Math.floor(f), hi = Math.min(lo+1, TOTAL-1), blend = f-lo;
+    ctx.clearRect(0,0,W,H); coverDraw(imgs[lo]);
+    if (blend > .004 && imgs[hi]?.complete) { ctx.save(); ctx.globalAlpha = blend; coverDraw(imgs[hi]); ctx.restore(); }
+  };
+
+  const onScroll = () => {
+    const rect = driver.getBoundingClientRect();
+    const t = Math.min(Math.max(-rect.top / (driver.offsetHeight - window.innerHeight), 0), 1);
+    currentF = t * (TOTAL - 1);
+    dirty = true;
+    updateUI(t);
+  };
+
+  const loop = () => {
+    requestAnimationFrame(loop);
+    if (!dirty) return; dirty = false;
+    if (Math.abs(currentF - lastF) > .0003) { render(currentF); lastF = currentF; }
+  };
+
+  const preload = () => {
+    SRCS.forEach((src, i) => {
+      const img = new Image(); img.decoding = 'async';
+      img.onload = () => { imgs[i] = img; if (i === 0) { resize(); render(0); } };
+      img.onerror = () => {};
+      img.src = src;
+    });
+  };
+
+  resize(); preload(); onScroll(); loop();
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', () => { resize(); render(currentF); }, { passive: true });
+
+
+  /* ════════════════════════════════════════
+     C) BRAND CARDS DATA
+  ════════════════════════════════════════ */
+  const BRANDS = [
+    { id:'abit',       name:'Abit Keser Mahal',   cat:'Luxury Hospitality',          metric:'3.4x Bookings', mc:'purple',
+      desc:'Engineered an ultra-premium digital hospitality catalog capturing royal palace heritage with high-end editorial styling.',
+      link:'Explore', img:'https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=600&q=80' },
+    { id:'optional',   name:'The Optional',        cat:"Kashmir's 1st Skincare",      metric:'5.1x ROAS',     mc:'green',
+      desc:'Scaled the region\'s pioneer organic cosmetics label nationally with high-performance e-commerce & Meta ads.',
+      link:'Scale Yours', img:'https://images.unsplash.com/photo-1608248597481-496100c80836?auto=format&fit=crop&w=600&q=80' },
+    { id:'aleesha',    name:'Aleesha Recruitment', cat:'Global Headhunting & HR',     metric:'412% Leads',    mc:'orange',
+      desc:'Re-engineered the digital client-acquisition funnel for a premier talent advisory with B2B social campaigns.',
+      link:'Generate Leads', img:'https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=600&q=80' },
+    { id:'bhat',       name:'Bhat Electric Motors', cat:'Industrial Stockist',        metric:'14.2x Meta ROI', mc:'green',
+      desc:'Market dominance for J&K\'s primary electric motor distributor via location-precise lead generation campaigns.',
+      link:'Claim Leads', img:'https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=600&q=80' },
+    { id:'sigma',      name:'Sigma Traders',       cat:'GST & GeM Authority',         metric:'₹12Cr+ Filed',  mc:'purple',
+      desc:'Positioned the region\'s leading GST consulting firm with a pristine high-trust client workspace.',
+      link:'Partner', img:'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=600&q=80' },
+    { id:'maango',     name:'Maango Trip',         cat:'Premium Air Tours',           metric:'12,000+ Bookings', mc:'orange',
+      desc:'Built a world-class flight booking engine with targeted global meta campaigns for exceptional passenger volumes.',
+      link:'Book Tour', img:'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&w=600&q=80' },
+    { id:'blank1',     name:'Your Brand Here',     cat:'Next Success Story',          metric:'Slot Available',mc:'orange',
+      desc:'This premium slot is reserved for our next high-growth partner. Ready to see your metrics here next quarter?',
+      link:'Secure Slot', img:'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=600&q=80', blank:true },
+    { id:'blank2',     name:'Your Brand Here',     cat:'Custom Brand Campaign',       metric:'Scale Next',    mc:'purple',
+      desc:'Connect with our growth team to architect a robust design-led digital engineering plan for your brand.',
+      link:'Launch Growth', img:'https://images.unsplash.com/photo-1634017839464-5c339ebe3cb4?auto=format&fit=crop&w=600&q=80', blank:true },
+  ];
+
+  // triple for infinite scroll
+  const EXTENDED = [...BRANDS, ...BRANDS, ...BRANDS];
+
+  /* ════════════════════════════════════════
+     D) BUILD BRAND RAIL CARDS
+  ════════════════════════════════════════ */
+  const rail     = document.getElementById('brand-rail');
+  const dotsWrap = document.getElementById('sec2-dots');
+  const countEl  = document.getElementById('rail-count');
+
+  EXTENDED.forEach((b, idx) => {
+    const card = document.createElement('div');
+    card.className = 'bc' + (b.blank ? ' bc-blank' : '');
+
+    if (b.blank) {
+      card.innerHTML = `
+        <div style="width:44px;height:44px;border-radius:50%;border:2px dashed rgba(255,255,255,.12);
+          display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,.3);font-size:22px;">+</div>
+        <div>
+          <div style="font-family:var(--fm);font-size:8px;text-transform:uppercase;letter-spacing:.12em;
+            color:var(--orange);margin-bottom:6px;">SLOT AVAILABLE</div>
+          <div style="font-family:var(--fd);font-size:14px;font-weight:700;color:#fff;margin-bottom:6px;">${b.name}</div>
+          <div style="font-size:11px;color:#94a3b8;line-height:1.55;">${b.desc}</div>
+        </div>
+        <div class="bc-link" style="margin-top:8px;">
+          <span>${b.link}</span>
+          <svg viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+        </div>`;
+    } else {
+      card.innerHTML = `
+        <div class="bc-img-wrap">
+          <img src="${b.img}" alt="${b.name}" loading="lazy" />
+          <div class="bc-img-grad"></div>
+          <div class="bc-metric ${b.mc}">${b.metric}</div>
+        </div>
+        <div class="bc-body">
+          <div class="bc-cat"><span class="bc-cat-dot"></span>${b.cat}</div>
+          <div class="bc-name">${b.name}</div>
+          <div class="bc-desc">${b.desc}</div>
+          <div class="bc-footer">
+            <div class="bc-link">
+              <span>${b.link}</span>
+              <svg viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+            </div>
+          </div>
+        </div>`;
+    }
+    rail.appendChild(card);
+  });
+
+  // build dots
+  let activeIdx = 0;
+  BRANDS.forEach((_, i) => {
+    const d = document.createElement('button');
+    d.className = 'sec2-dot' + (i===0?' active':'');
+    d.addEventListener('click', () => scrollToCard(i));
+    dotsWrap.appendChild(d);
+  });
+
+
+  /* ════════════════════════════════════════
+     E) AUTO-SCROLL + DRAG RAIL
+  ════════════════════════════════════════ */
+  let paused = false, dragging = false, startX = 0, startScroll = 0;
+  const SPEED = 0.55;
+
+  const getCardW = () => {
+    const c = rail.firstElementChild;
+    return c ? c.getBoundingClientRect().width + 12 : 232;
+  };
+
+  // set initial scroll to middle set
+  setTimeout(() => {
+    const mid = rail.scrollWidth / 3;
+    rail.scrollLeft = mid;
+  }, 80);
+
+  // infinite scroll loop
+  function autoScroll() {
+    if (!paused && !dragging) {
+      rail.scrollLeft += SPEED;
+      const max = rail.scrollWidth / 3;
+      if (rail.scrollLeft >= max * 2) rail.scrollLeft -= max;
+      else if (rail.scrollLeft <= 10) rail.scrollLeft += max;
+    }
+    requestAnimationFrame(autoScroll);
+  }
+  autoScroll();
+
+  /* ─────────────────────────────────────────────────────
+     F) CENTER-CARD LIFT + FRAME→SLIDE SYNC
+     Each animation frame of the scroll we:
+       1. Find which card is closest to the rail's centre
+       2. Apply a scroll-driven vertical float (sine wave)
+          so the centre card bobs up as scroll progresses
+       3. Nudge the rail to keep cards in sync with frames
+  ──────────────────────────────────────────────────────*/
+  let sectionT = 0; // 0→1 progress through section 2
+
+  // store the latest t from onScroll (already defined above)
+  // we tap into it via a shared ref
+  const sec2State = { t: 0 };
+
+  // patch updateUI to also capture t for the card animator
+  const _origUpdateUI = updateUI;
+  updateUI = function(t) {
+    _origUpdateUI(t);
+    sec2State.t = t;
+  };
+
+  // The float animator runs every rAF, separate from auto-scroll
+  let lastCenterIdx = -1;
+  function animateCenterCard() {
+    const railRect  = rail.getBoundingClientRect();
+    const railMid   = railRect.left + railRect.width / 2;
+    const cards     = rail.children;
+    let   closestEl = null, closestDist = Infinity;
+
+    for (let i = 0; i < cards.length; i++) {
+      const r    = cards[i].getBoundingClientRect();
+      const dist = Math.abs(r.left + r.width / 2 - railMid);
+      if (dist < closestDist) { closestDist = dist; closestEl = cards[i]; }
+    }
+
+    // Remove old center class from all, add to new center
+    if (closestEl) {
+      for (let i = 0; i < cards.length; i++) cards[i].classList.remove('bc-center');
+      closestEl.classList.add('bc-center');
+    }
+
+    // Scroll-driven sine float: amplitude 14px, tied to section scroll progress
+    // As t goes 0→1 the wave completes ~2 full cycles, giving a gentle bob
+    const t    = sec2State.t;
+    const lift = Math.sin(t * Math.PI * 2.5) * 14; // ±14 px
+    if (closestEl) {
+      // Use CSS custom property for smooth GPU-composited transform
+      closestEl.style.transform = `translateY(${-Math.abs(lift)}px) scale(${lift > 0 ? 1.025 : 1})`;
+      closestEl.style.transition = 'transform .25s cubic-bezier(.16,1,.3,1), border-color .4s, box-shadow .35s';
+    }
+
+    /* Frame → Slide sync:
+       Split the 0→1 section progress across BRANDS.length cards.
+       Every time the "frame band" moves to a new card region,
+       softly push the rail so that card drifts toward center. */
+    const targetCardIdx = Math.min(
+      Math.floor(t * BRANDS.length),
+      BRANDS.length - 1
+    );
+    if (targetCardIdx !== lastCenterIdx && !paused && !dragging) {
+      lastCenterIdx = targetCardIdx;
+      const cw   = getCardW();
+      const base = rail.scrollWidth / 3;
+      // Nudge — not a hard snap, just a gentle push toward the target
+      const targetLeft = base + targetCardIdx * cw;
+      const diff       = targetLeft - rail.scrollLeft;
+      // Only nudge if we're more than 1 card away (don't fight the auto-scroll)
+      if (Math.abs(diff) > cw * 1.2) {
+        rail.scrollLeft += diff * 0.04; // very gentle drift
+      }
+    }
+
+    requestAnimationFrame(animateCenterCard);
+  }
+  animateCenterCard();
+
+  /* ─────────────────────────────────────────────────────
+     G) DOT / COUNT UPDATE ON RAIL SCROLL
+  ──────────────────────────────────────────────────────*/
+  rail.addEventListener('scroll', () => {
+    const cw = getCardW();
+    const base = rail.scrollWidth / 3;
+    const off  = rail.scrollLeft - base;
+    const rel  = Math.round(off / cw);
+    activeIdx  = ((rel % BRANDS.length) + BRANDS.length) % BRANDS.length;
+    dotsWrap.querySelectorAll('.sec2-dot').forEach((d,i) => d.classList.toggle('active', i===activeIdx));
+    countEl.textContent = String(activeIdx+1).padStart(2,'0') + ' / ' + String(BRANDS.length).padStart(2,'0');
+  }, { passive:true });
+
+  function scrollToCard(i) {
+    const cw   = getCardW();
+    const base = rail.scrollWidth / 3;
+    rail.scrollTo({ left: base + i*cw, behavior:'smooth' });
+  }
+
+  // nav arrows
+  document.getElementById('rail-prev').addEventListener('click', () => {
+    const i = ((activeIdx - 1) + BRANDS.length) % BRANDS.length;
+    scrollToCard(i);
+  });
+  document.getElementById('rail-next').addEventListener('click', () => {
+    const i = (activeIdx + 1) % BRANDS.length;
+    scrollToCard(i);
+  });
+
+  // hover pause
+  const railWrap = document.getElementById('brand-rail-wrap');
+  railWrap.addEventListener('mouseenter', () => paused = true);
+  railWrap.addEventListener('mouseleave', () => { paused = false; dragging = false; });
+
+  // drag scroll (mouse)
+  rail.addEventListener('mousedown', e => {
+    dragging = true; paused = true;
+    startX = e.pageX - rail.offsetLeft;
+    startScroll = rail.scrollLeft;
+    rail.classList.add('dragging');
+  });
+  rail.addEventListener('mousemove', e => {
+    if (!dragging) return;
+    e.preventDefault();
+    const x = e.pageX - rail.offsetLeft;
+    rail.scrollLeft = startScroll - (x - startX) * 1.4;
+  });
+  rail.addEventListener('mouseup',    () => { dragging = false; paused = false; rail.classList.remove('dragging'); });
+  rail.addEventListener('mouseleave', () => { dragging = false; rail.classList.remove('dragging'); });
+
+  // touch scroll
+  let touchStartX = 0, touchStartSL = 0;
+  rail.addEventListener('touchstart', e => {
+    paused = true;
+    touchStartX  = e.touches[0].pageX;
+    touchStartSL = rail.scrollLeft;
+  }, { passive: true });
+  rail.addEventListener('touchmove', e => {
+    const dx = touchStartX - e.touches[0].pageX;
+    rail.scrollLeft = touchStartSL + dx;
+  }, { passive: true });
+  rail.addEventListener('touchend', () => {
+    paused = false;
+    // infinite loop guard after touch
+    const max = rail.scrollWidth / 3;
+    if (rail.scrollLeft >= max * 2) rail.scrollLeft -= max;
+    else if (rail.scrollLeft <= 10) rail.scrollLeft += max;
+  }, { passive: true });
+
+})();
+</script>
+
+<!-- SECTION 3: Tubes background + Strategic Call Process -->
+<script type="module">
+(async () => {
+  /* ─────────────────────────────────────────────────
+     A) TUBES BACKGROUND
+  ───────────────────────────────────────────────── */
+  const canvas = document.getElementById('tubes-canvas');
+  if (!canvas) return;
+
+  // Resize canvas to fill viewport
+  const resizeTubes = () => {
+    canvas.width  = window.innerWidth;
+    canvas.height = window.innerHeight;
+  };
+  resizeTubes();
+  window.addEventListener('resize', resizeTubes, { passive: true });
+
+  let tubesApp = null;
+
+  try {
+    const mod = await import('https://cdn.jsdelivr.net/npm/threejs-components@0.0.19/build/cursors/tubes1.min.js');
+    const TubesCursor = mod.default;
+
+    tubesApp = TubesCursor(canvas, {
+      tubes: {
+        colors: ['#f27d26', '#fb923c', '#fbbf24'],
+        lights: {
+          intensity: 220,
+          colors: ['#f27d26', '#ff8c42', '#ffd700', '#ff6b35']
+        }
+      }
+    });
+  } catch (err) {
+    console.warn('Tubes CDN failed, falling back to gradient canvas.', err);
+    // Graceful fallback: animated gradient on canvas
+    const ctx = canvas.getContext('2d');
+    let t = 0;
+    const drawFallback = () => {
+      t += 0.004;
+      const W = canvas.width, H = canvas.height;
+      const grd = ctx.createRadialGradient(W*.5 + Math.sin(t)*.18*W, H*.5 + Math.cos(t*.7)*.14*H, W*.05,
+                                            W*.5, H*.5, W*.85);
+      grd.addColorStop(0,   `rgba(242,125,38,${0.18 + Math.sin(t)*0.06})`);
+      grd.addColorStop(0.4, 'rgba(15,10,5,0.95)');
+      grd.addColorStop(1,   'rgba(0,0,0,1)');
+      ctx.fillStyle = grd; ctx.fillRect(0,0,W,H);
+      requestAnimationFrame(drawFallback);
+    };
+    drawFallback();
+  }
+
+  /* Randomize colors on click */
+  const sticky3 = document.getElementById('sticky3');
+  const randHex = () => '#' + Math.floor(Math.random()*16777215).toString(16).padStart(6,'0');
+  sticky3.addEventListener('click', e => {
+    // Only randomize if click is NOT on a card/button
+    if (e.target.closest('.sec3-card, button, .sec3-cta-row')) return;
+    if (!tubesApp) return;
+    try {
+      tubesApp.tubes.setColors([randHex(), randHex(), randHex()]);
+      tubesApp.tubes.setLightsColors([randHex(), randHex(), randHex(), randHex()]);
+    } catch(_) {}
+  });
+
+  /* ─────────────────────────────────────────────────
+     B) OVERLAY ENTRANCE (IntersectionObserver)
+  ───────────────────────────────────────────────── */
+  const overlay = document.getElementById('sec3-overlay');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) overlay.classList.add('visible');
+      else overlay.classList.remove('visible');
+    });
+  }, { threshold: 0.12 });
+  observer.observe(document.getElementById('sticky3'));
+
+  /* ─────────────────────────────────────────────────
+     C) STEP CARD INTERACTIONS
+  ───────────────────────────────────────────────── */
+
+  // Detail content for each step
+  const SEC3_STEPS = [
+    {
+      id: 1, pill: 'STEP 01',
+      title: 'Current Situation',
+      sub: 'Where you are winning right now',
+      body: `
+        <div class="det-highlight">
+          <span class="det-highlight-label">Brand Baseline Assessment</span>
+          <div class="det-highlight-body">
+            <svg viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+            <span class="det-text">Current Winning Angle: <span style="color:#94a3b8;font-weight:400">"Strong organic product-market fit"</span></span>
+          </div>
+          <p class="det-caption">Many brands waste thousands fixing things that aren't broken. Our analysis preserves your winning formulas, ensuring modifications build on top of existing momentum.</p>
+        </div>
+        <div class="det-grid2">
+          <div class="det-mini">
+            <h5>Audit Metric Floor</h5>
+            <p>We establish a clear baseline of your blended CAC and LTV to ensure positive cashflow scaling from day one.</p>
+          </div>
+          <div class="det-mini">
+            <h5>Loyalty Lift Analysis</h5>
+            <p>Analyzing returning customer rates to determine if ad budgets can support aggressive acquisition with high retention support.</p>
+          </div>
+        </div>
+      `
+    },
+    {
+      id: 2, pill: 'STEP 02',
+      title: 'The Diagnosis',
+      sub: 'Performance & optimization audit',
+      body: `
+        <div class="det-highlight">
+          <span class="det-highlight-label">Targeted Diagnostic Focus</span>
+          <div class="det-highlight-body">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            <span class="det-text">Primary Bottleneck: <span style="color:#f27d26">Complete Growth Strategy</span></span>
+          </div>
+          <p class="det-caption">Our analysis call bypasses standard checklists to look directly at your brand's custom bottleneck. We tackle it head-on.</p>
+        </div>
+        <span style="font-family:var(--fm);font-size:9px;text-transform:uppercase;letter-spacing:.12em;color:#64748b;font-weight:700;display:block;margin-bottom:8px;">Core Diagnosis Elements Audited:</span>
+        <div class="det-audit-list">
+          <div class="det-audit-item">
+            <span class="det-audit-dot"></span>
+            <div><p class="det-audit-title">Performance Optimization</p><p class="det-audit-desc">Slicing ad manager variables to locate high-performing asset silos with strong ROAS.</p></div>
+          </div>
+          <div class="det-audit-item">
+            <span class="det-audit-dot"></span>
+            <div><p class="det-audit-title">Retention Optimization</p><p class="det-audit-desc">Auditing 30, 60, and 90-day repurchase cohorts for high customer lifetime value.</p></div>
+          </div>
+          <div class="det-audit-item">
+            <span class="det-audit-dot"></span>
+            <div><p class="det-audit-title">Website CRO Speed Audit</p><p class="det-audit-desc">Mapping exact friction points causing cart abandonment on mobile devices.</p></div>
+          </div>
+        </div>
+      `
+    },
+    {
+      id: 3, pill: 'STEP 03',
+      title: 'Creative Strategy',
+      sub: 'Simple Meta deployment roadmap',
+      body: `
+        <span style="font-family:var(--fm);font-size:9px;text-transform:uppercase;letter-spacing:.12em;color:#64748b;font-weight:700;display:block;margin-bottom:12px;">Three Creative Pillars — Jargon-Free Blueprint:</span>
+        <div class="det-pillars">
+          <div class="det-pillar">
+            <div class="det-pillar-icon">
+              <svg viewBox="0 0 24 24"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3H14z"/><path d="M7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"/></svg>
+            </div>
+            <h5>High-Converting Hooks</h5>
+            <p>Scroll-stopping opening frames engineered to capture attention in under 2 seconds and reduce CPM dramatically.</p>
+          </div>
+          <div class="det-pillar">
+            <div class="det-pillar-icon">
+              <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            </div>
+            <h5>Social Proof Templates</h5>
+            <p>UGC-style testimonial frameworks proven to build trust fast and increase add-to-cart rates by 30%+.</p>
+          </div>
+          <div class="det-pillar">
+            <div class="det-pillar-icon">
+              <svg viewBox="0 0 24 24"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
+            </div>
+            <h5>Offer Architecture</h5>
+            <p>Irresistible bundled offer structures that increase AOV, reduce objections, and drive impulse purchase conversions.</p>
+          </div>
+        </div>
+      `
+    },
+    {
+      id: 4, pill: 'STEP 04',
+      title: 'The 2-Month Plan',
+      sub: 'Timeline & onboarding milestones',
+      body: `
+        <div class="det-timeline">
+          <div class="det-week">
+            <div class="det-week-line"><div class="det-week-dot"></div><div class="det-week-vline"></div></div>
+            <div class="det-week-content">
+              <p class="det-week-label">Week 1–2</p>
+              <p class="det-week-title">Discovery & System Audit</p>
+              <p class="det-week-desc">Full access granted to Meta Ads, Shopify analytics, WhatsApp flows. Deep baseline audit of all active channels and current conversion rates.</p>
+            </div>
+          </div>
+          <div class="det-week">
+            <div class="det-week-line"><div class="det-week-dot"></div><div class="det-week-vline"></div></div>
+            <div class="det-week-content">
+              <p class="det-week-label">Week 3–4</p>
+              <p class="det-week-title">Strategy Build & Creative Sprint</p>
+              <p class="det-week-desc">Funnel architecture designed, first creative batch produced, landing pages optimized. A/B tests configured and launched with tracking.</p>
+            </div>
+          </div>
+          <div class="det-week">
+            <div class="det-week-line"><div class="det-week-dot"></div><div class="det-week-vline"></div></div>
+            <div class="det-week-content">
+              <p class="det-week-label">Week 5–6</p>
+              <p class="det-week-title">Launch & Rapid Optimization</p>
+              <p class="det-week-desc">Campaigns live, automation flows triggered. Real-time performance data reviewed daily with rapid creative pivots to maximize early ROAS.</p>
+            </div>
+          </div>
+          <div class="det-week">
+            <div class="det-week-line"><div class="det-week-dot"></div><div class="det-week-vline"></div></div>
+            <div class="det-week-content">
+              <p class="det-week-label">Week 7–8</p>
+              <p class="det-week-title">Scale & Compound</p>
+              <p class="det-week-desc">Winning creatives scaled aggressively. Retention automation active. Dashboard reporting set up with blended ROAS, LTV, and CAC tracked live.</p>
+            </div>
+          </div>
+        </div>
+      `
+    }
+  ];
+
+  let activeStep = null;
+
+  window.toggleSec3Step = function(id) {
+    const panel = document.getElementById('sec3-detail-panel');
+    const step  = SEC3_STEPS.find(s => s.id === id);
+    if (!step) return;
+
+    // If same card clicked again — close
+    if (activeStep === id) {
+      closeSec3Detail();
+      return;
+    }
+
+    activeStep = id;
+
+    // Update active card styles
+    SEC3_STEPS.forEach(s => {
+      const card = document.getElementById('sec3-card-' + s.id);
+      if (card) card.classList.toggle('active', s.id === id);
+    });
+
+    // Populate panel
+    document.getElementById('sec3-panel-pill').textContent  = step.pill;
+    document.getElementById('sec3-panel-title').textContent = step.title;
+    document.getElementById('sec3-panel-sub').textContent   = step.sub;
+    document.getElementById('sec3-panel-body').innerHTML    = step.body;
+
+    // Open panel
+    panel.classList.add('open');
+    // Scroll panel into view gently
+    setTimeout(() => panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 80);
+  };
+
+  window.closeSec3Detail = function() {
+    activeStep = null;
+    document.getElementById('sec3-detail-panel').classList.remove('open');
+    SEC3_STEPS.forEach(s => {
+      const card = document.getElementById('sec3-card-' + s.id);
+      if (card) card.classList.remove('active');
+    });
+  };
+
+})();
+</script>
+
+</body>
+</html>

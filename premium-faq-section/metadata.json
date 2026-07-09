@@ -1,0 +1,6 @@
+{
+  "name": "Premium FAQ Section",
+  "description": "An interactive, highly polished FAQ section with smooth transitions and elegant typography, built to match the reference design.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

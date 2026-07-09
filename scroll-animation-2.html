@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Scroll Animation</title>
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html { scroll-behavior: auto; }
+
+    body {
+      background: #000;
+      overflow-x: hidden;
+    }
+
+    /* ── Loader ──────────────────────────────────────── */
+    #loader {
+      position: fixed;
+      inset: 0;
+      z-index: 999;
+      background: #000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: opacity 0.6s ease;
+    }
+    #loader.fade { opacity: 0; pointer-events: none; }
+
+    #bar-track {
+      width: 120px;
+      height: 1px;
+      background: rgba(255,255,255,0.12);
+      overflow: hidden;
+    }
+    #bar-fill {
+      height: 100%;
+      width: 0%;
+      background: #fff;
+      transition: width 0.06s linear;
+    }
+
+    /* ── Scroll driver ───────────────────────────────── */
+    #driver {
+      height: 700vh;
+      position: relative;
+    }
+
+    /* ── Sticky canvas container ─────────────────────── */
+    #sticky {
+      position: sticky;
+      top: 0;
+      width: 100%;
+      height: 100vh;
+      overflow: hidden;
+      background: #000;
+    }
+
+    canvas {
+      display: block;
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="loader">
+    <div id="bar-track"><div id="bar-fill"></div></div>
+  </div>
+
+  <div id="driver">
+    <div id="sticky">
+      <canvas id="c"></canvas>
+    </div>
+  </div>
+
+  <script>
+  (() => {
+
+    /* ── Frame source list ───────────────────────────── */
+    const FOLDER = './ezgif-71b04d0f83edf7b8-jpg/ezgif-frame-';
+    const TOTAL  = 150;
+    const SRCS   = [];
+    for (let n = 1; n <= TOTAL; n++)
+      SRCS.push(FOLDER + String(n).padStart(3, '0') + '.jpg');
+
+    /* ── DOM refs ────────────────────────────────────── */
+    const canvas  = document.getElementById('c');
+    const ctx     = canvas.getContext('2d', { alpha: false });
+    const driver  = document.getElementById('driver');
+    const loader  = document.getElementById('loader');
+    const barFill = document.getElementById('bar-fill');
+
+    /* ── State ───────────────────────────────────────── */
+    const imgs  = new Array(TOTAL).fill(null);
+    let loaded  = 0;
+    let W = 0, H = 0;
+
+    let targetF  = 0;   // exact frame index from scroll
+    let currentF = 0;   // smoothed display frame
+    let lastF    = -1;
+    let unlocked = false;
+
+    const LERP   = 0.22; // smoothing factor (lower = silkier)
+    const UNLOCK = 10;   // frames needed before reveal
+
+    /* ── Resize ──────────────────────────────────────── */
+    const resize = () => {
+      W = canvas.width  = window.innerWidth;
+      H = canvas.height = window.innerHeight;
+    };
+
+    /* ── Cover-fill draw ─────────────────────────────── */
+    const draw = (img) => {
+      if (!img || !img.complete || !img.naturalWidth) return false;
+      const s = Math.max(W / img.naturalWidth, H / img.naturalHeight);
+      const x = (W - img.naturalWidth  * s) * 0.5;
+      const y = (H - img.naturalHeight * s) * 0.5;
+      ctx.drawImage(img, x, y, img.naturalWidth * s, img.naturalHeight * s);
+      return true;
+    };
+
+    /* ── Render: crossfade floor to ceil ──────────────── */
+    const render = (f) => {
+      const lo    = Math.floor(f);
+      const hi    = Math.min(lo + 1, TOTAL - 1);
+      const blend = f - lo;
+
+      ctx.clearRect(0, 0, W, H);
+      draw(imgs[lo]);
+
+      if (blend > 0.004 && imgs[hi] && imgs[hi].complete) {
+        ctx.save();
+        ctx.globalAlpha = blend;
+        draw(imgs[hi]);
+        ctx.restore();
+      }
+    };
+
+    /* ── Scroll to frame index ───────────────────────── */
+    const onScroll = () => {
+      const scrolled  = window.scrollY;
+      const maxScroll = driver.offsetHeight - window.innerHeight;
+      const t = Math.min(Math.max(scrolled / maxScroll, 0), 1);
+      targetF = t * (TOTAL - 1);
+    };
+
+    /* ── RAF loop ────────────────────────────────────── */
+    const loop = () => {
+      requestAnimationFrame(loop);
+      if (!unlocked) return;
+
+      const diff = targetF - currentF;
+      currentF += diff * LERP;
+      if (Math.abs(diff) < 0.0005) currentF = targetF;
+
+      if (Math.abs(currentF - lastF) > 0.0003) {
+        render(currentF);
+        lastF = currentF;
+      }
+    };
+
+    /* ── Preload all frames ──────────────────────────── */
+    const preload = () => {
+      SRCS.forEach((src, i) => {
+        const img    = new Image();
+        img.decoding = 'async';
+
+        img.onload = () => {
+          imgs[i] = img;
+          loaded++;
+          barFill.style.width = Math.round((loaded / TOTAL) * 100) + '%';
+
+          if (i === 0) { resize(); render(0); }
+
+          if (loaded >= UNLOCK && !unlocked) {
+            unlocked = true;
+            loader.classList.add('fade');
+            setTimeout(() => loader.remove(), 700);
+          }
+        };
+
+        img.onerror = () => { loaded++; };
+        img.src = src;
+      });
+    };
+
+    /* ── Init ────────────────────────────────────────── */
+    resize();
+    preload();
+    onScroll();
+    loop();
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', () => { resize(); render(currentF); }, { passive: true });
+
+  })();
+  </script>
+
+</body>
+</html>

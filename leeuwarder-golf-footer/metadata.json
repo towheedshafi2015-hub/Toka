@@ -1,0 +1,6 @@
+{
+  "name": "Leeuwarder Golf Footer",
+  "description": "A highly polished, responsive glassmorphic footer section featuring an auto-scrolling customer reviews slider and a modern, transparent golf club footer layout.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
