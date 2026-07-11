@@ -1777,6 +1777,37 @@
       document.readyState === 'loading'
         ? document.addEventListener('DOMContentLoaded', init)
         : init();
+  </script>
+
+  <!-- ── Lenis Smooth Scroll ── -->
+  <script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
+  <script>
+    (function() {
+      function initLenis() {
+        if (typeof Lenis === 'undefined') return;
+        const lenis = new Lenis({
+          duration: 1.1,
+          easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+          direction: 'vertical',
+          gestureDirection: 'vertical',
+          smooth: true,
+          mouseMultiplier: 0.95,
+          smoothTouch: false, // Keep native touch scrolling on mobile for responsiveness
+          infinite: false
+        });
+
+        function raf(time) {
+          lenis.raf(time);
+          requestAnimationFrame(raf);
+        }
+        requestAnimationFrame(raf);
+
+        // Expose globally
+        window.lenis = lenis;
+      }
+      document.readyState === 'loading'
+        ? document.addEventListener('DOMContentLoaded', initLenis)
+        : initLenis();
     })();
   </script>
 
@@ -2506,14 +2537,16 @@
   const onScroll = () => {
     const max = driver.offsetHeight - window.innerHeight;
     currentF = Math.min(Math.max(window.scrollY / max, 0), 1) * (TOTAL - 1);
-    dirty = true;
   };
 
   const loop = () => {
     requestAnimationFrame(loop);
-    if (!unlocked || !dirty) return;
-    dirty = false;
-    if (Math.abs(currentF - lastF) > .0003) { render(currentF); lastF = currentF; }
+    if (!unlocked) return;
+    const diff = currentF - lastF;
+    if (Math.abs(diff) > 0.0003) {
+      lastF += diff * 0.15;
+      render(lastF);
+    }
   };
 
   const preload = () => {
@@ -2598,14 +2631,16 @@
     const rect = driver.getBoundingClientRect();
     const t = Math.min(Math.max(-rect.top / (driver.offsetHeight - window.innerHeight), 0), 1);
     currentF = t * (TOTAL - 1);
-    dirty = true;
     updateUI(t);
   };
 
   const loop = () => {
     requestAnimationFrame(loop);
-    if (!dirty) return; dirty = false;
-    if (Math.abs(currentF - lastF) > .0003) { render(currentF); lastF = currentF; }
+    const diff = currentF - lastF;
+    if (Math.abs(diff) > 0.0003) {
+      lastF += diff * 0.15;
+      render(lastF);
+    }
   };
 
   const preload = () => {
