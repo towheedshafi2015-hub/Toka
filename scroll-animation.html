@@ -2862,10 +2862,17 @@
         }
         .toka-marquee-track {
           display:flex;gap:24px;
+          /* Explicit min-width ensures mobile browsers don't collapse the track */
+          min-width:max-content;
           animation: toka-marquee-ltr 50s linear infinite;
+          -webkit-animation: toka-marquee-ltr 50s linear infinite;
           will-change:transform;
+          -webkit-transform: translateZ(0);
+          transform: translateZ(0);
+          backface-visibility: hidden;
+          -webkit-backface-visibility: hidden;
         }
-        .toka-marquee-track:hover { animation-play-state:paused; }
+        .toka-marquee-track:hover { animation-play-state:paused; -webkit-animation-play-state:paused; }
         .toka-review-card {
           width:380px;flex-shrink:0;
           background:rgba(255,255,255,.04);
@@ -3126,11 +3133,11 @@
               <ul style="list-style:none;display:flex;flex-direction:column;gap:14px;margin:0;padding:0;">
                 <li style="display:flex;align-items:flex-start;gap:10px;">
                   <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#f27d26" stroke-width="2" style="margin-top:1px;flex-shrink:0;"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-                  <span style="font-family:'Inter',sans-serif;font-size:13px;color:rgba(241,245,249,.7);line-height:1.55;">Dubai, UAE — Remote-First<br>Serving Clients Worldwide</span>
+                  <span style="font-family:'Inter',sans-serif;font-size:13px;color:rgba(241,245,249,.7);line-height:1.55;">Srinagar, Jammu &amp; Kashmir<br>India — Remote-First</span>
                 </li>
                 <li style="display:flex;align-items:center;gap:10px;">
                   <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#f27d26" stroke-width="2" style="flex-shrink:0;"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-                  <a href="mailto:hello@toka.agency" style="font-family:'Inter',sans-serif;font-size:13px;color:rgba(241,245,249,.7);text-decoration:none;transition:color .25s ease;" onmouseover="this.style.color='#f27d26'" onmouseout="this.style.color='rgba(241,245,249,.7)'">hello@toka.agency</a>
+                  <a href="mailto:tawheedshafi2@gmail.com" style="font-family:'Inter',sans-serif;font-size:13px;color:rgba(241,245,249,.7);text-decoration:none;transition:color .25s ease;" onmouseover="this.style.color='#f27d26'" onmouseout="this.style.color='rgba(241,245,249,.7)'">tawheedshafi2@gmail.com</a>
                 </li>
                 <li style="display:flex;align-items:center;gap:10px;">
                   <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#f27d26" stroke-width="2" style="flex-shrink:0;"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.5 12 19.79 19.79 0 0 1 1.21 3.18C1.25 2.1 2 1.4 3 1.4h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.09 8.37a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21 15.43v1.49"/></svg>
@@ -3142,31 +3149,34 @@
             <div>
               <p style="font-family:'JetBrains Mono',monospace;font-size:9px;text-transform:uppercase;letter-spacing:.18em;color:rgba(241,245,249,.35);margin:0 0 10px;">Connect</p>
               <div style="display:flex;flex-direction:column;gap:8px;">
-                <a href="https://instagram.com" target="_blank" rel="noreferrer" style="font-family:'Inter',sans-serif;font-size:12px;color:rgba(241,245,249,.6);text-decoration:none;display:inline-flex;align-items:center;gap:5px;transition:all .25s ease;" onmouseover="this.style.color='#f27d26';this.style.paddingLeft='4px'" onmouseout="this.style.color='rgba(241,245,249,.6)';this.style.paddingLeft='0'">Instagram <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#f27d26" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>
-                <a href="https://linkedin.com" target="_blank" rel="noreferrer" style="font-family:'Inter',sans-serif;font-size:12px;color:rgba(241,245,249,.6);text-decoration:none;display:inline-flex;align-items:center;gap:5px;transition:all .25s ease;" onmouseover="this.style.color='#f27d26';this.style.paddingLeft='4px'" onmouseout="this.style.color='rgba(241,245,249,.6)';this.style.paddingLeft='0'">LinkedIn <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#f27d26" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>
-                <a href="https://twitter.com" target="_blank" rel="noreferrer" style="font-family:'Inter',sans-serif;font-size:12px;color:rgba(241,245,249,.6);text-decoration:none;display:inline-flex;align-items:center;gap:5px;transition:all .25s ease;" onmouseover="this.style.color='#f27d26';this.style.paddingLeft='4px'" onmouseout="this.style.color='rgba(241,245,249,.6)';this.style.paddingLeft='0'">Twitter / X <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#f27d26" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>
+                <a href="https://www.instagram.com/thetokaofficial/" target="_blank" rel="noreferrer" style="font-family:'Inter',sans-serif;font-size:12px;color:rgba(241,245,249,.6);text-decoration:none;display:inline-flex;align-items:center;gap:5px;transition:all .25s ease;" onmouseover="this.style.color='#f27d26';this.style.paddingLeft='4px'" onmouseout="this.style.color='rgba(241,245,249,.6)';this.style.paddingLeft='0'">Instagram <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#f27d26" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>
+                <a href="https://www.linkedin.com/in/tawheed-shafi-362a29231/" target="_blank" rel="noreferrer" style="font-family:'Inter',sans-serif;font-size:12px;color:rgba(241,245,249,.6);text-decoration:none;display:inline-flex;align-items:center;gap:5px;transition:all .25s ease;" onmouseover="this.style.color='#f27d26';this.style.paddingLeft='4px'" onmouseout="this.style.color='rgba(241,245,249,.6)';this.style.paddingLeft='0'">LinkedIn <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#f27d26" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>
+                <a href="https://www.facebook.com/thetokaofficial/" target="_blank" rel="noreferrer" style="font-family:'Inter',sans-serif;font-size:12px;color:rgba(241,245,249,.6);text-decoration:none;display:inline-flex;align-items:center;gap:5px;transition:all .25s ease;" onmouseover="this.style.color='#f27d26';this.style.paddingLeft='4px'" onmouseout="this.style.color='rgba(241,245,249,.6)';this.style.paddingLeft='0'">Facebook <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#f27d26" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>
               </div>
             </div>
           </div>
 
           <!-- CENTER: Brand + CTA -->
           <div style="display:flex;flex-direction:column;align-items:center;text-align:center;gap:24px;">
-            <!-- Logo mark -->
-            <div style="position:relative;">
-              <div style="position:absolute;inset:0;background:rgba(242,125,38,.35);border-radius:50%;filter:blur(20px);transform:scale(.8);"></div>
-              <svg viewBox="0 0 100 100" width="80" height="80" style="position:relative;z-index:1;" aria-label="TOKA logo">
-                <defs>
-                  <linearGradient id="tokaGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                    <stop offset="0%" stop-color="#f27d26"/>
-                    <stop offset="100%" stop-color="#f59e0b"/>
-                  </linearGradient>
-                </defs>
-                <!-- T shape simplified wordmark icon -->
-                <rect x="20" y="18" width="60" height="8" rx="4" fill="url(#tokaGrad)"/>
-                <rect x="46" y="22" width="8" height="52" rx="4" fill="url(#tokaGrad)"/>
-                <!-- Glow dot -->
-                <circle cx="50" cy="82" r="4" fill="#f59e0b" opacity=".9"/>
-              </svg>
+            <!-- Real TOKA Brand Logo -->
+            <div style="position:relative;display:inline-block;">
+              <!-- Orange glow behind the logo -->
+              <div style="position:absolute;inset:-10px;background:radial-gradient(ellipse,rgba(242,125,38,.3) 0%,transparent 70%);pointer-events:none;z-index:0;"></div>
+              <img
+                src="toka-logo.png"
+                alt="TOKA — Tawheed Shafi Logo"
+                width="120"
+                height="120"
+                style="
+                  position:relative;z-index:1;
+                  width:120px;height:120px;
+                  object-fit:contain;
+                  filter:drop-shadow(0 0 16px rgba(242,125,38,.4)) brightness(1.05);
+                  transition:transform .4s ease,filter .4s ease;
+                "
+                onmouseover="this.style.transform='scale(1.08) rotate(2deg)';this.style.filter='drop-shadow(0 0 24px rgba(242,125,38,.6)) brightness(1.1)'"
+                onmouseout="this.style.transform='scale(1) rotate(0deg)';this.style.filter='drop-shadow(0 0 16px rgba(242,125,38,.4)) brightness(1.05)'"
+              />
             </div>
 
             <div>
@@ -3187,7 +3197,7 @@
                 Book Free Strategy Call
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
               </button>
-              <a href="mailto:hello@toka.agency" style="
+              <a href="mailto:tawheedshafi2@gmail.com" style="
                 background:rgba(242,125,38,.08);color:#f27d26;
                 font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:600;
                 padding:12px 24px;border-radius:99px;border:1px solid rgba(242,125,38,.25);
