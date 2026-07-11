@@ -2831,6 +2831,579 @@
   </div><!-- /sec4-scroll -->
 </div><!-- /driver4 -->
 
+<!-- ═══════════════════════════════════════════════════════════════════
+     SECTION 5 — TESTIMONIALS + FOOTER
+     Animated WebGL gradient background (orange/dark palette)
+     + Marquee Testimonial Slider
+     + Glass Footer Card
+═══════════════════════════════════════════════════════════════════ -->
+<section id="sec5-footer" style="position:relative;width:100%;overflow:hidden;background:#060607;">
+
+  <!-- WebGL Gradient Canvas (full bleed background) -->
+  <canvas id="footer-gradient-canvas" style="position:absolute;inset:0;width:100%;height:100%;display:block;pointer-events:none;z-index:0;"></canvas>
+
+  <!-- Noise overlay for texture -->
+  <div style="position:absolute;inset:0;z-index:1;pointer-events:none;opacity:.04;
+    background-image:url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwBAMAAAClLOS0AAAAElBMVEUAAAAAAAAAAAAAAAAAAAAAAADgKxmiAAAABnRSTlMCCgkGBAVJOAVJAAAASklEQVQ4y2NgGAWjYBSMglEwCgY/YGRgZBQUYmJiZGQEkYwMjIyMgoKCjIyMIJKBgRFIMjIyAklGRkYGRkFBYEcwMDIyMjAOUQAA1I4HwVwZAkYAAAAASUVORK5CYII=');
+    background-size:200px;background-repeat:repeat;">
+  </div>
+
+  <!-- Content wrapper -->
+  <div style="position:relative;z-index:10;">
+
+    <!-- ── TESTIMONIALS SLIDER ───────────────────────────── -->
+    <div id="testimonials-section" style="width:100%;padding:80px 0 48px;overflow:hidden;">
+
+      <!-- Keyframes -->
+      <style>
+        @keyframes toka-marquee-ltr {
+          0%   { transform: translateX(0%); }
+          100% { transform: translateX(-50%); }
+        }
+        .toka-marquee-track {
+          display:flex;gap:24px;
+          animation: toka-marquee-ltr 50s linear infinite;
+          will-change:transform;
+        }
+        .toka-marquee-track:hover { animation-play-state:paused; }
+        .toka-review-card {
+          width:380px;flex-shrink:0;
+          background:rgba(255,255,255,.04);
+          backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+          border:1px solid rgba(255,255,255,.08);
+          border-radius:20px;padding:28px;
+          display:flex;flex-direction:column;justify-content:space-between;
+          transition:transform .35s ease,background .35s ease,border-color .35s ease;
+          cursor:default;
+        }
+        .toka-review-card:hover {
+          transform:scale(1.025);
+          background:rgba(242,125,38,.07);
+          border-color:rgba(242,125,38,.25);
+        }
+        /* Fade edges */
+        #testimonials-section .toka-fade-left {
+          position:absolute;left:0;top:0;bottom:0;width:120px;
+          background:linear-gradient(to right, #060607 0%, transparent 100%);
+          z-index:5;pointer-events:none;
+        }
+        #testimonials-section .toka-fade-right {
+          position:absolute;right:0;top:0;bottom:0;width:120px;
+          background:linear-gradient(to left, #060607 0%, transparent 100%);
+          z-index:5;pointer-events:none;
+        }
+        /* Section header entrance */
+        .toka-footer-section-header { opacity:0; transform:translateY(24px); transition:opacity .7s ease,transform .7s ease; }
+        .toka-footer-section-header.visible { opacity:1; transform:translateY(0); }
+        /* Footer card entrance */
+        #toka-glass-footer-card { opacity:0; transform:translateY(32px); transition:opacity .8s .1s ease,transform .8s .1s ease; }
+        #toka-glass-footer-card.visible { opacity:1; transform:translateY(0); }
+      </style>
+
+      <!-- Section Header -->
+      <div class="toka-footer-section-header" style="max-width:1280px;margin:0 auto 48px;padding:0 48px;display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:24px;">
+        <div>
+          <p style="font-family:'JetBrains Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:.18em;color:#f27d26;margin-bottom:10px;display:flex;align-items:center;gap:6px;">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#f27d26" stroke-width="2.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            Client Success Stories
+          </p>
+          <h2 style="font-family:'Space Grotesk',sans-serif;font-size:clamp(28px,3.5vw,40px);font-weight:800;color:#f1f5f9;letter-spacing:-.025em;line-height:1.1;margin:0;">
+            Results that speak<br><span style="color:#f27d26;">louder than promises</span>
+          </h2>
+        </div>
+        <!-- Rating badge -->
+        <div style="background:rgba(242,125,38,.08);border:1px solid rgba(242,125,38,.2);border-radius:16px;padding:16px 24px;display:flex;flex-direction:column;align-items:flex-end;gap:4px;">
+          <div style="display:flex;align-items:center;gap:8px;">
+            <span style="color:#f1f5f9;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:16px;">Excellent</span>
+            <div style="display:flex;gap:3px;">
+              <div style="width:20px;height:20px;background:#f27d26;border-radius:4px;display:flex;align-items:center;justify-content:center;" title="5 stars">★</div>
+              <div style="width:20px;height:20px;background:#f27d26;border-radius:4px;display:flex;align-items:center;justify-content:center;">★</div>
+              <div style="width:20px;height:20px;background:#f27d26;border-radius:4px;display:flex;align-items:center;justify-content:center;">★</div>
+              <div style="width:20px;height:20px;background:#f27d26;border-radius:4px;display:flex;align-items:center;justify-content:center;">★</div>
+              <div style="width:20px;height:20px;background:#f27d26;border-radius:4px;display:flex;align-items:center;justify-content:center;">★</div>
+            </div>
+          </div>
+          <p style="font-family:'Inter',sans-serif;font-size:11px;color:rgba(241,245,249,.6);">Based on <strong style="color:#f1f5f9;">240+ reviews</strong></p>
+          <p style="font-family:'JetBrains Mono',monospace;font-size:10px;color:#f27d26;letter-spacing:.06em;">Average Rating: 4.9 / 5.0</p>
+        </div>
+      </div>
+
+      <!-- Scrolling track container -->
+      <div style="position:relative;width:100%;overflow:hidden;">
+        <div class="toka-fade-left"></div>
+        <div class="toka-fade-right"></div>
+        <div class="toka-marquee-track" id="toka-marquee" style="padding:8px 0 24px;">
+
+          <!-- REVIEW CARDS (will be doubled by JS) -->
+          <!-- Card 1 -->
+          <div class="toka-review-card">
+            <div>
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
+                <div style="display:flex;gap:3px;">
+                  <span style="color:#f27d26;font-size:14px;">★★★★★</span>
+                </div>
+                <span style="font-family:'JetBrains Mono',monospace;font-size:9px;background:rgba(242,125,38,.12);color:#f27d26;border:1px solid rgba(242,125,38,.2);padding:3px 9px;border-radius:99px;display:flex;align-items:center;gap:4px;">
+                  <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                  Verified Client
+                </span>
+              </div>
+              <h3 style="font-family:'Space Grotesk',sans-serif;font-size:15px;font-weight:700;color:#f1f5f9;margin:0 0 10px;line-height:1.3;">"Revenue tripled in 90 days"</h3>
+              <p style="font-family:'Inter',sans-serif;font-size:13px;color:rgba(241,245,249,.65);line-height:1.65;margin:0;">TOKA rebuilt our entire Shopify funnel and launched a Meta Ads system that generated 3× our previous monthly revenue within the first 90 days. Absolutely unmatched ROI.</p>
+            </div>
+            <div style="border-top:1px solid rgba(255,255,255,.07);padding-top:14px;margin-top:16px;display:flex;align-items:center;justify-content:space-between;gap:8px;">
+              <div>
+                <p style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:13px;color:#f1f5f9;margin:0;">Ahmad R.</p>
+                <p style="font-family:'Inter',sans-serif;font-size:11px;color:rgba(241,245,249,.45);margin:2px 0 0;">Founder, D2C Supplement Brand</p>
+              </div>
+              <div style="background:rgba(242,125,38,.12);border:1px solid rgba(242,125,38,.2);border-radius:10px;padding:5px 10px;display:flex;align-items:center;gap:5px;">
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#f27d26" stroke-width="2.5"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+                <span style="font-family:'JetBrains Mono',monospace;font-size:10px;color:#f27d26;font-weight:600;">+3× Revenue</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 2 -->
+          <div class="toka-review-card">
+            <div>
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
+                <span style="color:#f27d26;font-size:14px;">★★★★★</span>
+                <span style="font-family:'JetBrains Mono',monospace;font-size:9px;background:rgba(242,125,38,.12);color:#f27d26;border:1px solid rgba(242,125,38,.2);padding:3px 9px;border-radius:99px;display:flex;align-items:center;gap:4px;">
+                  <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                  Verified Client
+                </span>
+              </div>
+              <h3 style="font-family:'Space Grotesk',sans-serif;font-size:15px;font-weight:700;color:#f1f5f9;margin:0 0 10px;line-height:1.3;">"WhatsApp automation changed everything"</h3>
+              <p style="font-family:'Inter',sans-serif;font-size:13px;color:rgba(241,245,249,.65);line-height:1.65;margin:0;">The AI-powered WhatsApp flows they built reduced our support tickets by 68% and increased our cart recovery rate to 34%. The team is incredibly strategic and fast to deliver.</p>
+            </div>
+            <div style="border-top:1px solid rgba(255,255,255,.07);padding-top:14px;margin-top:16px;display:flex;align-items:center;justify-content:space-between;gap:8px;">
+              <div>
+                <p style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:13px;color:#f1f5f9;margin:0;">Priya S.</p>
+                <p style="font-family:'Inter',sans-serif;font-size:11px;color:rgba(241,245,249,.45);margin:2px 0 0;">CMO, Fashion E-Commerce</p>
+              </div>
+              <div style="background:rgba(242,125,38,.12);border:1px solid rgba(242,125,38,.2);border-radius:10px;padding:5px 10px;display:flex;align-items:center;gap:5px;">
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#f27d26" stroke-width="2.5"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+                <span style="font-family:'JetBrains Mono',monospace;font-size:10px;color:#f27d26;font-weight:600;">68% Fewer Tickets</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 3 -->
+          <div class="toka-review-card">
+            <div>
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
+                <span style="color:#f27d26;font-size:14px;">★★★★★</span>
+                <span style="font-family:'JetBrains Mono',monospace;font-size:9px;background:rgba(242,125,38,.12);color:#f27d26;border:1px solid rgba(242,125,38,.2);padding:3px 9px;border-radius:99px;display:flex;align-items:center;gap:4px;">
+                  <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                  Verified Client
+                </span>
+              </div>
+              <h3 style="font-family:'Space Grotesk',sans-serif;font-size:15px;font-weight:700;color:#f1f5f9;margin:0 0 10px;line-height:1.3;">"Best investment we made this year"</h3>
+              <p style="font-family:'Inter',sans-serif;font-size:13px;color:rgba(241,245,249,.65);line-height:1.65;margin:0;">From a clunky website to a fully optimised growth machine in 3 weeks. TOKA handled design, dev, Shopify, and our ad account all at once. Our ROAS went from 1.4× to 4.8× in 6 weeks.</p>
+            </div>
+            <div style="border-top:1px solid rgba(255,255,255,.07);padding-top:14px;margin-top:16px;display:flex;align-items:center;justify-content:space-between;gap:8px;">
+              <div>
+                <p style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:13px;color:#f1f5f9;margin:0;">James T.</p>
+                <p style="font-family:'Inter',sans-serif;font-size:11px;color:rgba(241,245,249,.45);margin:2px 0 0;">CEO, UK Nutrition Brand</p>
+              </div>
+              <div style="background:rgba(242,125,38,.12);border:1px solid rgba(242,125,38,.2);border-radius:10px;padding:5px 10px;display:flex;align-items:center;gap:5px;">
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#f27d26" stroke-width="2.5"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+                <span style="font-family:'JetBrains Mono',monospace;font-size:10px;color:#f27d26;font-weight:600;">ROAS 1.4→4.8×</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 4 -->
+          <div class="toka-review-card">
+            <div>
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
+                <span style="color:#f27d26;font-size:14px;">★★★★★</span>
+                <span style="font-family:'JetBrains Mono',monospace;font-size:9px;background:rgba(242,125,38,.12);color:#f27d26;border:1px solid rgba(242,125,38,.2);padding:3px 9px;border-radius:99px;display:flex;align-items:center;gap:4px;">
+                  <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                  Verified Client
+                </span>
+              </div>
+              <h3 style="font-family:'Space Grotesk',sans-serif;font-size:15px;font-weight:700;color:#f1f5f9;margin:0 0 10px;line-height:1.3;">"Our conversion rate jumped 220%"</h3>
+              <p style="font-family:'Inter',sans-serif;font-size:13px;color:rgba(241,245,249,.65);line-height:1.65;margin:0;">TOKA audited our landing pages and made targeted CRO fixes in just 2 weeks. Our conversion rate increased from 1.2% to 3.8%. Paid for itself in the first month, easily.</p>
+            </div>
+            <div style="border-top:1px solid rgba(255,255,255,.07);padding-top:14px;margin-top:16px;display:flex;align-items:center;justify-content:space-between;gap:8px;">
+              <div>
+                <p style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:13px;color:#f1f5f9;margin:0;">Layla M.</p>
+                <p style="font-family:'Inter',sans-serif;font-size:11px;color:rgba(241,245,249,.45);margin:2px 0 0;">Head of Growth, Beauty DTC</p>
+              </div>
+              <div style="background:rgba(242,125,38,.12);border:1px solid rgba(242,125,38,.2);border-radius:10px;padding:5px 10px;display:flex;align-items:center;gap:5px;">
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#f27d26" stroke-width="2.5"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+                <span style="font-family:'JetBrains Mono',monospace;font-size:10px;color:#f27d26;font-weight:600;">CVR +220%</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 5 -->
+          <div class="toka-review-card">
+            <div>
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
+                <span style="color:#f27d26;font-size:14px;">★★★★★</span>
+                <span style="font-family:'JetBrains Mono',monospace;font-size:9px;background:rgba(242,125,38,.12);color:#f27d26;border:1px solid rgba(242,125,38,.2);padding:3px 9px;border-radius:99px;display:flex;align-items:center;gap:4px;">
+                  <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                  Verified Client
+                </span>
+              </div>
+              <h3 style="font-family:'Space Grotesk',sans-serif;font-size:15px;font-weight:700;color:#f1f5f9;margin:0 0 10px;line-height:1.3;">"Scaled to £200k/month profitably"</h3>
+              <p style="font-family:'Inter',sans-serif;font-size:13px;color:rgba(241,245,249,.65);line-height:1.65;margin:0;">We were stuck at £40k/month for a year. TOKA redesigned our ad strategy, rebuilt our back-end automations, and within 4 months we crossed £200k/month with a healthy 28% margin.</p>
+            </div>
+            <div style="border-top:1px solid rgba(255,255,255,.07);padding-top:14px;margin-top:16px;display:flex;align-items:center;justify-content:space-between;gap:8px;">
+              <div>
+                <p style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:13px;color:#f1f5f9;margin:0;">Callum H.</p>
+                <p style="font-family:'Inter',sans-serif;font-size:11px;color:rgba(241,245,249,.45);margin:2px 0 0;">Founder, Apparel Brand</p>
+              </div>
+              <div style="background:rgba(242,125,38,.12);border:1px solid rgba(242,125,38,.2);border-radius:10px;padding:5px 10px;display:flex;align-items:center;gap:5px;">
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#f27d26" stroke-width="2.5"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+                <span style="font-family:'JetBrains Mono',monospace;font-size:10px;color:#f27d26;font-weight:600;">£40k→£200k/mo</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card 6 -->
+          <div class="toka-review-card">
+            <div>
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
+                <span style="color:#f27d26;font-size:14px;">★★★★★</span>
+                <span style="font-family:'JetBrains Mono',monospace;font-size:9px;background:rgba(242,125,38,.12);color:#f27d26;border:1px solid rgba(242,125,38,.2);padding:3px 9px;border-radius:99px;display:flex;align-items:center;gap:4px;">
+                  <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                  Verified Client
+                </span>
+              </div>
+              <h3 style="font-family:'Space Grotesk',sans-serif;font-size:15px;font-weight:700;color:#f1f5f9;margin:0 0 10px;line-height:1.3;">"AI agents saved us 80 hours/month"</h3>
+              <p style="font-family:'Inter',sans-serif;font-size:13px;color:rgba(241,245,249,.65);line-height:1.65;margin:0;">The custom AI agents TOKA built handle our order queries, refund requests, and follow-ups automatically. We scaled the team's output without hiring a single new person. Game changer.</p>
+            </div>
+            <div style="border-top:1px solid rgba(255,255,255,.07);padding-top:14px;margin-top:16px;display:flex;align-items:center;justify-content:space-between;gap:8px;">
+              <div>
+                <p style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:13px;color:#f1f5f9;margin:0;">Nour A.</p>
+                <p style="font-family:'Inter',sans-serif;font-size:11px;color:rgba(241,245,249,.45);margin:2px 0 0;">Operations Lead, Health Tech</p>
+              </div>
+              <div style="background:rgba(242,125,38,.12);border:1px solid rgba(242,125,38,.2);border-radius:10px;padding:5px 10px;display:flex;align-items:center;gap:5px;">
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#f27d26" stroke-width="2.5"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+                <span style="font-family:'JetBrains Mono',monospace;font-size:10px;color:#f27d26;font-weight:600;">80hrs/mo Saved</span>
+              </div>
+            </div>
+          </div>
+
+        </div><!-- /toka-marquee -->
+      </div><!-- /overflow-hidden -->
+    </div><!-- /testimonials-section -->
+
+
+    <!-- ── GLASS FOOTER CARD ─────────────────────────────── -->
+    <div style="max-width:1280px;margin:0 auto;padding:0 24px 48px;" id="toka-glass-footer-card">
+      <div style="
+        width:100%;
+        background:rgba(8,8,9,.55);
+        backdrop-filter:blur(32px);-webkit-backdrop-filter:blur(32px);
+        border:1px solid rgba(255,255,255,.08);
+        border-radius:40px 40px 24px 24px;
+        padding:56px 48px 40px;
+        box-shadow:0 32px 80px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,255,255,.06);
+        position:relative;overflow:hidden;
+      ">
+        <!-- Radial glow in card -->
+        <div style="position:absolute;top:-15%;left:50%;transform:translateX(-50%);width:60%;height:45%;background:radial-gradient(ellipse,rgba(242,125,38,.12) 0%,transparent 70%);pointer-events:none;"></div>
+        <!-- Subtle grid lines -->
+        <div style="position:absolute;inset:0;border-radius:inherit;overflow:hidden;pointer-events:none;opacity:.04;background-image:linear-gradient(rgba(255,255,255,.5) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.5) 1px,transparent 1px);background-size:60px 60px;"></div>
+
+        <div style="position:relative;z-index:2;display:grid;grid-template-columns:1fr;gap:48px;" class="toka-footer-grid">
+          <style>
+            @media(min-width:1024px){
+              .toka-footer-grid{ grid-template-columns:1fr 1fr 1fr !important; }
+            }
+            @media(min-width:768px) and (max-width:1023px){
+              .toka-footer-grid{ grid-template-columns:1fr 1fr !important; }
+            }
+          </style>
+
+          <!-- LEFT: Contact -->
+          <div style="display:flex;flex-direction:column;gap:28px;">
+            <div>
+              <h4 style="font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:700;color:#f1f5f9;text-transform:uppercase;letter-spacing:.1em;border-bottom:1px solid rgba(255,255,255,.07);padding-bottom:10px;margin:0 0 20px;">Contact</h4>
+              <ul style="list-style:none;display:flex;flex-direction:column;gap:14px;margin:0;padding:0;">
+                <li style="display:flex;align-items:flex-start;gap:10px;">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#f27d26" stroke-width="2" style="margin-top:1px;flex-shrink:0;"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                  <span style="font-family:'Inter',sans-serif;font-size:13px;color:rgba(241,245,249,.7);line-height:1.55;">Dubai, UAE — Remote-First<br>Serving Clients Worldwide</span>
+                </li>
+                <li style="display:flex;align-items:center;gap:10px;">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#f27d26" stroke-width="2" style="flex-shrink:0;"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                  <a href="mailto:hello@toka.agency" style="font-family:'Inter',sans-serif;font-size:13px;color:rgba(241,245,249,.7);text-decoration:none;transition:color .25s ease;" onmouseover="this.style.color='#f27d26'" onmouseout="this.style.color='rgba(241,245,249,.7)'">hello@toka.agency</a>
+                </li>
+                <li style="display:flex;align-items:center;gap:10px;">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#f27d26" stroke-width="2" style="flex-shrink:0;"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.5 12 19.79 19.79 0 0 1 1.21 3.18C1.25 2.1 2 1.4 3 1.4h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.09 8.37a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21 15.43v1.49"/></svg>
+                  <a href="tel:+97100000000" style="font-family:'Inter',sans-serif;font-size:13px;color:rgba(241,245,249,.7);text-decoration:none;transition:color .25s ease;" onmouseover="this.style.color='#f27d26'" onmouseout="this.style.color='rgba(241,245,249,.7)'">+971 · Available via WhatsApp</a>
+                </li>
+              </ul>
+            </div>
+            <!-- Social -->
+            <div>
+              <p style="font-family:'JetBrains Mono',monospace;font-size:9px;text-transform:uppercase;letter-spacing:.18em;color:rgba(241,245,249,.35);margin:0 0 10px;">Connect</p>
+              <div style="display:flex;flex-direction:column;gap:8px;">
+                <a href="https://instagram.com" target="_blank" rel="noreferrer" style="font-family:'Inter',sans-serif;font-size:12px;color:rgba(241,245,249,.6);text-decoration:none;display:inline-flex;align-items:center;gap:5px;transition:all .25s ease;" onmouseover="this.style.color='#f27d26';this.style.paddingLeft='4px'" onmouseout="this.style.color='rgba(241,245,249,.6)';this.style.paddingLeft='0'">Instagram <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#f27d26" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>
+                <a href="https://linkedin.com" target="_blank" rel="noreferrer" style="font-family:'Inter',sans-serif;font-size:12px;color:rgba(241,245,249,.6);text-decoration:none;display:inline-flex;align-items:center;gap:5px;transition:all .25s ease;" onmouseover="this.style.color='#f27d26';this.style.paddingLeft='4px'" onmouseout="this.style.color='rgba(241,245,249,.6)';this.style.paddingLeft='0'">LinkedIn <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#f27d26" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>
+                <a href="https://twitter.com" target="_blank" rel="noreferrer" style="font-family:'Inter',sans-serif;font-size:12px;color:rgba(241,245,249,.6);text-decoration:none;display:inline-flex;align-items:center;gap:5px;transition:all .25s ease;" onmouseover="this.style.color='#f27d26';this.style.paddingLeft='4px'" onmouseout="this.style.color='rgba(241,245,249,.6)';this.style.paddingLeft='0'">Twitter / X <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#f27d26" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>
+              </div>
+            </div>
+          </div>
+
+          <!-- CENTER: Brand + CTA -->
+          <div style="display:flex;flex-direction:column;align-items:center;text-align:center;gap:24px;">
+            <!-- Logo mark -->
+            <div style="position:relative;">
+              <div style="position:absolute;inset:0;background:rgba(242,125,38,.35);border-radius:50%;filter:blur(20px);transform:scale(.8);"></div>
+              <svg viewBox="0 0 100 100" width="80" height="80" style="position:relative;z-index:1;" aria-label="TOKA logo">
+                <defs>
+                  <linearGradient id="tokaGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#f27d26"/>
+                    <stop offset="100%" stop-color="#f59e0b"/>
+                  </linearGradient>
+                </defs>
+                <!-- T shape simplified wordmark icon -->
+                <rect x="20" y="18" width="60" height="8" rx="4" fill="url(#tokaGrad)"/>
+                <rect x="46" y="22" width="8" height="52" rx="4" fill="url(#tokaGrad)"/>
+                <!-- Glow dot -->
+                <circle cx="50" cy="82" r="4" fill="#f59e0b" opacity=".9"/>
+              </svg>
+            </div>
+
+            <div>
+              <h3 style="font-family:'Space Grotesk',sans-serif;font-size:28px;font-weight:800;color:#f1f5f9;letter-spacing:-.03em;margin:0 0 6px;">TOKA</h3>
+              <p style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#f27d26;letter-spacing:.1em;margin:0;font-style:italic;">Build More Than a Website.<br>Build a Business.</p>
+            </div>
+
+            <!-- CTA Buttons -->
+            <div style="display:flex;flex-direction:column;gap:10px;width:100%;max-width:260px;">
+              <button onclick="openModal()" style="
+                background:#f27d26;color:#080809;
+                font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:700;
+                padding:13px 24px;border-radius:99px;border:none;cursor:pointer;
+                display:flex;align-items:center;justify-content:center;gap:8px;
+                transition:background .25s ease,transform .2s ease,box-shadow .25s ease;
+                box-shadow:0 0 0 0 rgba(242,125,38,0);
+              " onmouseover="this.style.background='#fb923c';this.style.transform='scale(1.03)';this.style.boxShadow='0 8px 24px rgba(242,125,38,.3)'" onmouseout="this.style.background='#f27d26';this.style.transform='scale(1)';this.style.boxShadow='0 0 0 0 rgba(242,125,38,0)'">
+                Book Free Strategy Call
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+              </button>
+              <a href="mailto:hello@toka.agency" style="
+                background:rgba(242,125,38,.08);color:#f27d26;
+                font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:600;
+                padding:12px 24px;border-radius:99px;border:1px solid rgba(242,125,38,.25);
+                display:flex;align-items:center;justify-content:center;gap:8px;
+                text-decoration:none;transition:all .25s ease;
+              " onmouseover="this.style.background='rgba(242,125,38,.15)';this.style.borderColor='rgba(242,125,38,.5)'" onmouseout="this.style.background='rgba(242,125,38,.08)';this.style.borderColor='rgba(242,125,38,.25)'">
+                Send a Message
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+              </a>
+            </div>
+          </div>
+
+          <!-- RIGHT: Navigation -->
+          <div>
+            <h4 style="font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:700;color:#f1f5f9;text-transform:uppercase;letter-spacing:.1em;border-bottom:1px solid rgba(255,255,255,.07);padding-bottom:10px;margin:0 0 20px;">Quick Links</h4>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px 24px;">
+              <a href="#" style="font-family:'Inter',sans-serif;font-size:13px;color:rgba(241,245,249,.6);text-decoration:none;display:flex;align-items:center;gap:5px;transition:all .25s ease;" onmouseover="this.style.color='#f27d26';this.style.paddingLeft='4px'" onmouseout="this.style.color='rgba(241,245,249,.6)';this.style.paddingLeft='0'">
+                <span style="width:4px;height:4px;background:#f27d26;border-radius:50%;flex-shrink:0;"></span>Our Services
+              </a>
+              <a href="#" style="font-family:'Inter',sans-serif;font-size:13px;color:rgba(241,245,249,.6);text-decoration:none;display:flex;align-items:center;gap:5px;transition:all .25s ease;" onmouseover="this.style.color='#f27d26';this.style.paddingLeft='4px'" onmouseout="this.style.color='rgba(241,245,249,.6)';this.style.paddingLeft='0'">
+                <span style="width:4px;height:4px;background:#f27d26;border-radius:50%;flex-shrink:0;"></span>Case Studies
+              </a>
+              <a href="#" style="font-family:'Inter',sans-serif;font-size:13px;color:rgba(241,245,249,.6);text-decoration:none;display:flex;align-items:center;gap:5px;transition:all .25s ease;" onmouseover="this.style.color='#f27d26';this.style.paddingLeft='4px'" onmouseout="this.style.color='rgba(241,245,249,.6)';this.style.paddingLeft='0'">
+                <span style="width:4px;height:4px;background:#f27d26;border-radius:50%;flex-shrink:0;"></span>Shopify Builds
+              </a>
+              <a href="#" style="font-family:'Inter',sans-serif;font-size:13px;color:rgba(241,245,249,.6);text-decoration:none;display:flex;align-items:center;gap:5px;transition:all .25s ease;" onmouseover="this.style.color='#f27d26';this.style.paddingLeft='4px'" onmouseout="this.style.color='rgba(241,245,249,.6)';this.style.paddingLeft='0'">
+                <span style="width:4px;height:4px;background:#f27d26;border-radius:50%;flex-shrink:0;"></span>Meta Ads
+              </a>
+              <a href="#" style="font-family:'Inter',sans-serif;font-size:13px;color:rgba(241,245,249,.6);text-decoration:none;display:flex;align-items:center;gap:5px;transition:all .25s ease;" onmouseover="this.style.color='#f27d26';this.style.paddingLeft='4px'" onmouseout="this.style.color='rgba(241,245,249,.6)';this.style.paddingLeft='0'">
+                <span style="width:4px;height:4px;background:#f27d26;border-radius:50%;flex-shrink:0;"></span>AI Automation
+              </a>
+              <a href="#" style="font-family:'Inter',sans-serif;font-size:13px;color:rgba(241,245,249,.6);text-decoration:none;display:flex;align-items:center;gap:5px;transition:all .25s ease;" onmouseover="this.style.color='#f27d26';this.style.paddingLeft='4px'" onmouseout="this.style.color='rgba(241,245,249,.6)';this.style.paddingLeft='0'">
+                <span style="width:4px;height:4px;background:#f27d26;border-radius:50%;flex-shrink:0;"></span>WhatsApp Flows
+              </a>
+              <a href="#" style="font-family:'Inter',sans-serif;font-size:13px;color:rgba(241,245,249,.6);text-decoration:none;display:flex;align-items:center;gap:5px;transition:all .25s ease;" onmouseover="this.style.color='#f27d26';this.style.paddingLeft='4px'" onmouseout="this.style.color='rgba(241,245,249,.6)';this.style.paddingLeft='0'">
+                <span style="width:4px;height:4px;background:#f27d26;border-radius:50%;flex-shrink:0;"></span>CRO & Analytics
+              </a>
+              <a href="#" style="font-family:'Inter',sans-serif;font-size:13px;color:rgba(241,245,249,.6);text-decoration:none;display:flex;align-items:center;gap:5px;transition:all .25s ease;" onmouseover="this.style.color='#f27d26';this.style.paddingLeft='4px'" onmouseout="this.style.color='rgba(241,245,249,.6)';this.style.paddingLeft='0'">
+                <span style="width:4px;height:4px;background:#f27d26;border-radius:50%;flex-shrink:0;"></span>Contact Us
+              </a>
+            </div>
+          </div>
+
+        </div><!-- /grid -->
+
+        <!-- Bottom legal bar -->
+        <div style="border-top:1px solid rgba(255,255,255,.07);margin-top:44px;padding-top:28px;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:16px;position:relative;z-index:2;">
+          <!-- Trust badges -->
+          <div style="display:flex;flex-wrap:wrap;align-items:center;gap:10px;">
+            <div style="background:rgba(242,125,38,.1);border:1px solid rgba(242,125,38,.2);border-radius:10px;padding:5px 12px;display:flex;align-items:center;gap:6px;">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#f27d26" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+              <span style="font-family:'JetBrains Mono',monospace;font-size:10px;color:#f27d26;font-weight:600;">Verified Agency</span>
+            </div>
+            <div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:5px 12px;">
+              <span style="font-family:'JetBrains Mono',monospace;font-size:10px;color:rgba(241,245,249,.5);">Meta Business Partner</span>
+            </div>
+            <div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:5px 12px;">
+              <span style="font-family:'JetBrains Mono',monospace;font-size:10px;color:rgba(241,245,249,.5);">Shopify Partner</span>
+            </div>
+          </div>
+          <!-- Legal pill -->
+          <div style="background:#f5f0e8;border-radius:99px;padding:8px 20px;display:flex;flex-wrap:wrap;align-items:center;gap:12px;box-shadow:0 4px 16px rgba(0,0,0,.25);">
+            <a href="#" style="font-family:'Inter',sans-serif;font-size:11px;font-weight:600;color:#1a1a1a;text-decoration:none;" onmouseover="this.style.color='#f27d26'" onmouseout="this.style.color='#1a1a1a'">Privacy Policy</a>
+            <span style="width:3px;height:3px;background:#888;border-radius:50%;"></span>
+            <a href="#" style="font-family:'Inter',sans-serif;font-size:11px;font-weight:600;color:#1a1a1a;text-decoration:none;" onmouseover="this.style.color='#f27d26'" onmouseout="this.style.color='#1a1a1a'">Terms of Service</a>
+            <span style="width:3px;height:3px;background:#888;border-radius:50%;"></span>
+            <span style="font-family:'Inter',sans-serif;font-size:11px;color:#888;">©2026 TOKA</span>
+          </div>
+        </div>
+
+      </div><!-- /footer inner card -->
+    </div><!-- /toka-glass-footer-card -->
+
+  </div><!-- /content wrapper -->
+</section><!-- /sec5-footer -->
+
+<!-- SECTION 5 SCRIPTS -->
+<script>
+(function(){
+  /* ── Double the marquee cards for seamless loop ── */
+  const track = document.getElementById('toka-marquee');
+  if (track) {
+    const original = Array.from(track.children);
+    original.forEach(card => track.appendChild(card.cloneNode(true)));
+  }
+
+  /* ── Intersection Observer for entrance animations ── */
+  const header = document.querySelector('.toka-footer-section-header');
+  const footerCard = document.getElementById('toka-glass-footer-card');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        io.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  if (header) io.observe(header);
+  if (footerCard) io.observe(footerCard);
+
+  /* ── WebGL2 Animated Gradient for Footer Background ── */
+  const canvas = document.getElementById('footer-gradient-canvas');
+  if (!canvas) return;
+
+  const section = document.getElementById('sec5-footer');
+
+  function resize() {
+    canvas.width  = section.offsetWidth;
+    canvas.height = section.offsetHeight;
+    if (gl) gl.viewport(0, 0, canvas.width, canvas.height);
+  }
+
+  let gl, prog, raf, t0 = performance.now();
+
+  const VS = `#version 300 es
+  precision highp float;
+  in vec2 a_pos;
+  void main(){ gl_Position = vec4(a_pos, 0., 1.); }`;
+
+  const FS = `#version 300 es
+  precision highp float;
+  uniform float u_time;
+  uniform vec2  u_res;
+  out vec4 fragColor;
+
+  float hash(vec2 p){ return fract(sin(dot(p, vec2(127.1,311.7)))*43758.5453); }
+  float noise(vec2 p){
+    vec2 i=floor(p), f=fract(p);
+    vec2 u=f*f*(3.-2.*f);
+    return mix(mix(hash(i),hash(i+vec2(1,0)),u.x),
+               mix(hash(i+vec2(0,1)),hash(i+vec2(1,1)),u.x),u.y);
+  }
+  float fbm(vec2 p){
+    float v=0.,a=.5;
+    for(int i=0;i<5;i++){ v+=a*noise(p); p*=2.1; a*=.5; }
+    return v;
+  }
+
+  void main(){
+    vec2 uv = gl_FragCoord.xy / u_res;
+    float t = u_time * 0.18;
+
+    /* Flowing distortion */
+    vec2 q = vec2(fbm(uv + t*0.4), fbm(uv + vec2(1.7, 9.2) + t*0.35));
+    vec2 r = vec2(fbm(uv + 1.7*q + vec2(1.7, 9.2) + t*0.5),
+                  fbm(uv + 1.7*q + vec2(8.3, 2.8) + t*0.45));
+    float f = fbm(uv + 1.9*r);
+
+    /* Colour palette: orange to deep amber to near-black */
+    vec3 col = mix(
+      vec3(0.032, 0.028, 0.025),         /* almost black */
+      vec3(0.949, 0.490, 0.149),         /* TOKA orange  */
+      clamp(f * f * 2.8, 0., 1.)
+    );
+    col = mix(col, vec3(0.6, 0.25, 0.04), clamp(length(q) * 0.8, 0., 1.));
+
+    /* Vignette */
+    vec2 vig = uv * (1. - uv.yx);
+    float v = pow(vig.x * vig.y * 16., 0.4);
+    col *= v * 0.65 + 0.35;
+
+    fragColor = vec4(col, 1.);
+  }`;
+
+  function mkShader(type, src) {
+    const s = gl.createShader(type);
+    gl.shaderSource(s, src); gl.compileShader(s);
+    if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) { console.warn(gl.getShaderInfoLog(s)); return null; }
+    return s;
+  }
+
+  function initGL() {
+    gl = canvas.getContext('webgl2', { alpha: false, antialias: false });
+    if (!gl) return false;
+    const vs = mkShader(gl.VERTEX_SHADER, VS);
+    const fs = mkShader(gl.FRAGMENT_SHADER, FS);
+    if (!vs || !fs) return false;
+    prog = gl.createProgram();
+    gl.attachShader(prog, vs); gl.attachShader(prog, fs); gl.linkProgram(prog);
+    if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) return false;
+    gl.useProgram(prog);
+    const buf = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1,3,-1,-1,3]), gl.STATIC_DRAW);
+    const loc = gl.getAttribLocation(prog, 'a_pos');
+    gl.enableVertexAttribArray(loc);
+    gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
+    return true;
+  }
+
+  function frame(now) {
+    const t = (now - t0) * .001;
+    gl.uniform1f(gl.getUniformLocation(prog, 'u_time'), t);
+    gl.uniform2f(gl.getUniformLocation(prog, 'u_res'), canvas.width, canvas.height);
+    gl.clearColor(0.03, 0.02, 0.02, 1); gl.clear(gl.COLOR_BUFFER_BIT);
+    gl.drawArrays(gl.TRIANGLES, 0, 3);
+    raf = requestAnimationFrame(frame);
+  }
+
+  /* Only start animating when the footer is close to visible (perf) */
+  const startObserver = new IntersectionObserver(entries => {
+    if (entries[0].isIntersecting) {
+      resize();
+      new ResizeObserver(resize).observe(section);
+      if (initGL()) { raf = requestAnimationFrame(frame); }
+      else {
+        canvas.style.display = 'none';
+        section.style.background = 'radial-gradient(ellipse at 30% 60%, rgba(242,125,38,.18) 0%, transparent 55%), radial-gradient(ellipse at 70% 30%, rgba(251,146,60,.08) 0%, transparent 50%), #060607';
+      }
+      startObserver.disconnect();
+    }
+  }, { threshold: 0.01 });
+  startObserver.observe(section);
+})();
+</script>
+
 <!-- SECTION 4: Plasma background + FAQ (rebuilt) -->
 <script type="module">
 (async () => {
