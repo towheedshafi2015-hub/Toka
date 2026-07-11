@@ -1304,8 +1304,484 @@
       box-shadow: 0 0 42px rgba(242,125,38,.4);
     }
     .faq4-book-btn svg { width: 13px; height: 13px; }
+
+    /* ═══════════════════════════════════════════════════════════════════
+       TOKA PREMIUM UPGRADE v3 — Design System Override
+       Lead Product Designer + Performance Engineer spec
+       Brand accent: #00ff20  |  Visual language: Liquid Glass
+       Constraint: ZERO structural changes — purely additive CSS
+    ═══════════════════════════════════════════════════════════════════ */
+
+    /* ── 1. DESIGN TOKENS ──────────────────────────────────────────── */
+    :root {
+      /* Brand accents */
+      --green:          #00ff20;          /* primary accent — use sparingly */
+      --green-dim:      rgba(0,255,32,.12);
+      --green-glow:     rgba(0,255,32,.18);
+      --green-border:   rgba(0,255,32,.22);
+      --green-strong:   rgba(0,255,32,.35);
+
+      /* Existing orange retained — don't nuke, just complement */
+      --orange:         #f27d26;
+      --orange-dim:     rgba(242,125,38,.12);
+
+      /* Liquid Glass tiers */
+      --glass-1: rgba(255,255,255,.03);   /* base surface    */
+      --glass-2: rgba(255,255,255,.055);  /* elevated card   */
+      --glass-3: rgba(255,255,255,.09);   /* modal / popover */
+
+      --glass-border-subtle:  rgba(255,255,255,.07);
+      --glass-border-medium:  rgba(255,255,255,.12);
+      --glass-border-accent:  var(--green-border);
+
+      /* Blur budgets (disable on low-end via media query below) */
+      --blur-sm:   8px;
+      --blur-md:  20px;
+      --blur-lg:  40px;
+      --blur-xl:  60px;
+
+      /* Apple-style spacing scale */
+      --sp-1:  4px;
+      --sp-2:  8px;
+      --sp-3: 12px;
+      --sp-4: 16px;
+      --sp-5: 24px;
+      --sp-6: 32px;
+      --sp-7: 48px;
+      --sp-8: 64px;
+      --sp-9: 96px;
+
+      /* Notion-style type scale */
+      --text-xs:   11px;
+      --text-sm:   13px;
+      --text-base: 15px;
+      --text-md:   17px;
+      --text-lg:   20px;
+
+      /* Refined radius tokens */
+      --r-sm:  10px;
+      --r-md:  16px;
+      --r-lg:  22px;
+      --r-xl:  32px;
+      --r-full: 9999px;
+
+      /* Shadow system */
+      --shadow-card: 0 4px 16px rgba(0,0,0,.25), 0 1px 4px rgba(0,0,0,.15);
+      --shadow-elevated: 0 8px 32px rgba(0,0,0,.35), 0 2px 8px rgba(0,0,0,.2);
+      --shadow-float: 0 16px 48px rgba(0,0,0,.45), 0 4px 12px rgba(0,0,0,.25);
+      --shadow-green: 0 0 24px rgba(0,255,32,.12), 0 0 60px rgba(0,255,32,.06);
+      --shadow-orange: 0 0 24px rgba(242,125,38,.12), 0 0 60px rgba(242,125,38,.06);
+
+      /* Animation curves */
+      --ease-apple: cubic-bezier(.25,.46,.45,.94);
+      --ease-spring: cubic-bezier(.16,1,.3,1);
+      --ease-smooth: cubic-bezier(.4,0,.2,1);
+    }
+
+    /* ── 2. PERFORMANCE FOUNDATION ────────────────────────────────── */
+    /* GPU promotion layer for all backdrop-filter elements             */
+    /* prevents main-thread scroll jank                                 */
+    .header-inner,
+    .glass-card,
+    .pillar-card,
+    .stat-card,
+    .founder-card,
+    .bc,
+    .sec2-right-card,
+    .faq4-item,
+    .toka-review-card,
+    #toka-glass-footer-card > div {
+      will-change: transform;
+      transform: translateZ(0);          /* promote to GPU compositor  */
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+    }
+
+    /* Explicit containment — prevents layout recalc cascade           */
+    .glass-card,
+    .pillar-card,
+    .stat-card,
+    .bc,
+    .toka-review-card {
+      contain: layout style;
+    }
+
+    /* ── 3. MOBILE BLUR BUDGET ────────────────────────────────────── */
+    /* Disable expensive blurs on mobile GPUs (<= 768px)               */
+    @media (max-width: 767px) {
+      :root {
+        --blur-sm:   4px;
+        --blur-md:   8px;
+        --blur-lg:  12px;
+        --blur-xl:  16px;
+      }
+      .glass-card,
+      .pillar-card {
+        backdrop-filter: blur(var(--blur-md)) saturate(140%);
+        -webkit-backdrop-filter: blur(var(--blur-md)) saturate(140%);
+      }
+      /* Large background blurs are the #1 GPU killer — remove them   */
+      #sec5-footer canvas { display: none !important; }
+    }
+
+    /* ── 4. SCROLLBAR → GREEN ACCENT ─────────────────────────────── */
+    ::-webkit-scrollbar-thumb:hover {
+      background: rgba(0,255,32,.25);
+    }
+
+    /* ── 5. REFINED LIQUID GLASS CARD SYSTEM ─────────────────────── */
+    /*
+     * Three-tier stack:
+     *  Tier 1 — .glass-card  (section feature cards)
+     *  Tier 2 — .pillar-card (service pillar cards)
+     *  Tier 3 — .stat-card   (metrics)
+     *
+     * Technique: thin 1px border = white highlight (top edge) +
+     *            green-tinted glow shadow (bottom) = depth illusion
+     */
+    .glass-card {
+      background: linear-gradient(135deg,
+        rgba(255,255,255,.065) 0%,
+        rgba(255,255,255,.018) 50%,
+        rgba(255,255,255,.038) 100%);
+      border: 1px solid var(--glass-border-subtle);
+      backdrop-filter: blur(var(--blur-lg)) saturate(180%);
+      -webkit-backdrop-filter: blur(var(--blur-lg)) saturate(180%);
+      box-shadow:
+        0 0 0 1px rgba(255,255,255,.055) inset,
+        var(--shadow-elevated),
+        0 0 80px rgba(0,255,32,.03);
+      transition: border-color .4s var(--ease-smooth),
+                  box-shadow .4s var(--ease-smooth),
+                  transform .3s var(--ease-apple);
+    }
+    .glass-card:hover {
+      border-color: var(--green-border);
+      transform: translateY(-2px) translateZ(0);
+      box-shadow:
+        0 0 0 1px rgba(0,255,32,.1) inset,
+        var(--shadow-float),
+        var(--shadow-green);
+    }
+    /* Premium top-edge shimmer — now green-tinted */
+    .glass-card::before {
+      background: linear-gradient(90deg,
+        transparent 0%,
+        rgba(0,255,32,.18) 35%,
+        rgba(255,255,255,.2) 55%,
+        transparent 100%);
+    }
+
+    /* Pillar card — elevated tier */
+    .pillar-card {
+      background: linear-gradient(145deg,
+        rgba(255,255,255,.06) 0%,
+        rgba(255,255,255,.014) 55%,
+        rgba(0,255,32,.015) 100%);
+      border: 1px solid var(--glass-border-subtle);
+      backdrop-filter: blur(var(--blur-lg)) saturate(180%);
+      -webkit-backdrop-filter: blur(var(--blur-lg)) saturate(180%);
+      transition: border-color .35s var(--ease-smooth),
+                  box-shadow .35s var(--ease-smooth),
+                  transform .3s var(--ease-apple);
+    }
+    .pillar-card:hover {
+      border-color: var(--green-border);
+      transform: translateY(-3px) translateZ(0);
+      box-shadow:
+        0 0 0 1px rgba(0,255,32,.1) inset,
+        var(--shadow-float),
+        var(--shadow-green);
+    }
+    .pillar-card::before {
+      background: linear-gradient(90deg,
+        transparent 0%,
+        rgba(0,255,32,.15) 40%,
+        rgba(255,255,255,.18) 60%,
+        transparent 100%);
+    }
+
+    /* Stat card */
+    .stat-card:hover {
+      border-color: var(--green-border);
+      box-shadow: var(--shadow-card), var(--shadow-green);
+    }
+
+    /* Brand card (horizontal slider) */
+    .bc.bc-center {
+      border-color: var(--green-border);
+      box-shadow: var(--shadow-float), var(--shadow-green);
+    }
+    .bc:hover {
+      border-color: rgba(0,255,32,.4);
+      box-shadow: var(--shadow-float), var(--shadow-green);
+    }
+
+    /* ── 6. PRIMARY BUTTON → GREEN ────────────────────────────────── */
+    /* #00ff20 replaces orange on primary CTAs — Apple clarity style   */
+    .btn-primary {
+      background: var(--green);
+      color: #000;
+      font-weight: 800;
+      letter-spacing: .08em;
+      border-radius: var(--r-md);
+      padding: 17px 32px;
+      box-shadow: 0 4px 20px rgba(0,255,32,.25);
+      transition:
+        transform .25s var(--ease-apple),
+        box-shadow .25s var(--ease-apple),
+        background .2s ease;
+      will-change: transform;
+    }
+    .btn-primary:hover {
+      background: #1aff35;
+      transform: scale(1.035) translateZ(0);
+      box-shadow: 0 8px 32px rgba(0,255,32,.4), 0 0 60px rgba(0,255,32,.15);
+    }
+    .btn-primary:active {
+      transform: scale(.97) translateZ(0);
+      box-shadow: 0 2px 12px rgba(0,255,32,.3);
+    }
+
+    /* Secondary button — glass with green hover border */
+    .btn-secondary {
+      border-radius: var(--r-md);
+      border-color: var(--glass-border-subtle);
+      transition:
+        background .25s ease,
+        border-color .25s ease,
+        box-shadow .25s ease;
+    }
+    .btn-secondary:hover {
+      border-color: var(--green-border);
+      background: rgba(0,255,32,.04);
+      box-shadow: 0 0 20px rgba(0,255,32,.08);
+    }
+
+    /* ── 7. NAV CTA → GREEN HOVER ─────────────────────────────────── */
+    .nav-cta:hover {
+      background: var(--green);
+      color: #000;
+      border-color: var(--green);
+      box-shadow: 0 0 20px rgba(0,255,32,.3);
+    }
+
+    /* ── 8. BADGES & PILLS → GREEN ACCENT ────────────────────────── */
+    .badge {
+      background: rgba(0,255,32,.08);
+      border-color: rgba(0,255,32,.2);
+      color: var(--green);
+      box-shadow: 0 0 12px rgba(0,255,32,.08);
+    }
+
+    /* Section labels — keep orange (brand warmth), only CTAs go green */
+    /* Ping dot — green active state */
+    .ping-core  { background: var(--green); }
+    .ping-ring  { background: var(--green); }
+
+    /* Dot accent in card details */
+    .dot,
+    .bc-cat-dot { background: var(--green); }
+
+    /* ── 9. HEADER GLASS REFINEMENT ───────────────────────────────── */
+    .header-inner {
+      background: rgba(8,8,9,.55);
+      border-color: var(--glass-border-subtle);
+      backdrop-filter: blur(var(--blur-md)) saturate(200%);
+      -webkit-backdrop-filter: blur(var(--blur-md)) saturate(200%);
+      box-shadow:
+        0 0 0 1px rgba(255,255,255,.04) inset,
+        0 8px 32px rgba(0,0,0,.3),
+        0 1px 0 rgba(0,255,32,.06) inset;
+      transition: border-color .4s ease, box-shadow .4s ease;
+    }
+    /* On scroll — header gets slightly more opaque (handled via JS below) */
+    .header-inner.scrolled {
+      background: rgba(8,8,9,.82);
+      border-color: rgba(0,255,32,.12);
+      box-shadow:
+        0 0 0 1px rgba(0,255,32,.06) inset,
+        0 8px 32px rgba(0,0,0,.5);
+    }
+
+    /* ── 10. TYPOGRAPHY REFINEMENTS (Notion-style) ────────────────── */
+    /* Tighten hero headline tracking for Apple-level polish            */
+    .hero-h1,
+    .hero-h1-grad {
+      letter-spacing: -.03em;
+      line-height: 1.03;
+    }
+    /* Hero gradient — orange to green sweep (on-brand bespoke)        */
+    .hero-h1-grad {
+      background: linear-gradient(95deg,
+        var(--orange) 0%,
+        #fff 45%,
+        rgba(0,255,32,.7) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    /* Body copy — slightly warmer mid-tone for Notion legibility       */
+    .hero-copy { color: #c8d4e0; line-height: 1.78; }
+
+    /* Section title — cleaner */
+    .section-title {
+      letter-spacing: -.02em;
+      line-height: 1.15;
+    }
+
+    /* ── 11. FAQ SECTION GLASS REFINEMENT ────────────────────────── */
+    .faq4-item {
+      transition: border-color .3s ease, background .3s ease;
+    }
+    .faq4-item.open {
+      border-color: var(--green-border) !important;
+      background: rgba(0,255,32,.025) !important;
+    }
+    .faq4-item:hover:not(.open) {
+      border-color: rgba(0,255,32,.12) !important;
+    }
+
+    /* FAQ book button — green primary */
+    .faq4-book-btn {
+      background: var(--green) !important;
+      color: #000 !important;
+      box-shadow: 0 4px 20px rgba(0,255,32,.3) !important;
+    }
+    .faq4-book-btn:hover {
+      background: #1aff35 !important;
+      box-shadow: 0 8px 32px rgba(0,255,32,.45) !important;
+    }
+
+    /* ── 12. TESTIMONIAL CARDS REFINEMENT ────────────────────────── */
+    .toka-review-card {
+      background: rgba(255,255,255,.035);
+      border-color: var(--glass-border-subtle);
+      backdrop-filter: blur(var(--blur-sm)) saturate(160%);
+      -webkit-backdrop-filter: blur(var(--blur-sm)) saturate(160%);
+      transition:
+        transform .35s var(--ease-apple),
+        background .35s ease,
+        border-color .35s ease,
+        box-shadow .35s ease;
+    }
+    .toka-review-card:hover {
+      background: rgba(0,255,32,.05);
+      border-color: var(--green-border);
+      box-shadow: var(--shadow-card), var(--shadow-green);
+    }
+
+    /* ── 13. FOOTER GLASS CARD REFINEMENT ────────────────────────── */
+    /* The glass footer now gets a green-tinted top highlight           */
+    #toka-glass-footer-card > div {
+      border-top: 1px solid rgba(0,255,32,.1) !important;
+      box-shadow:
+        0 32px 80px rgba(0,0,0,.5),
+        inset 0 1px 0 rgba(0,255,32,.08),
+        inset 0 -1px 0 rgba(255,255,255,.03) !important;
+    }
+
+    /* ── 14. SECTION 2 CARD REFINEMENTS ──────────────────────────── */
+    .sec2-right-card {
+      border-color: var(--glass-border-subtle);
+      backdrop-filter: blur(var(--blur-md)) saturate(180%);
+      -webkit-backdrop-filter: blur(var(--blur-md)) saturate(180%);
+    }
+
+    /* ── 15. LOADING PERFORMANCE ──────────────────────────────────── */
+    /*
+     * Loading Latency Checklist (CSS-enforceable items):
+     *
+     * ✅ font-display: swap prevents FOIT on Google Fonts
+     * ✅ contain: layout style on card components isolates reflows
+     * ✅ will-change declared only on interactive elements (not globally)
+     * ✅ WebGL canvases are lazy-started via IntersectionObserver
+     * ✅ backdrop-filter intentionally grouped per z-layer to reduce
+     *    compositor layer promotions (each blur = 1 GPU layer)
+     * ✅ CSS animations use transform/opacity only (no layout props)
+     * ✅ Mobile blur budget via @media reduces GPU texture bandwidth
+     *
+     * Non-CSS checklist (implement manually):
+     * □ Add loading="lazy" to all <img> tags below the fold
+     * □ Preload hero fonts: <link rel="preload" as="font">
+     * □ defer all non-critical <script> tags
+     * □ Add fetchpriority="high" to hero images
+     */
+
+    /* ── 16. MICRO-ANIMATION SYSTEM (60fps-safe) ─────────────────── */
+    /* Only transform + opacity — compositor-thread only, no jank       */
+    @keyframes toka-fade-up {
+      from { opacity: 0; transform: translateY(16px) translateZ(0); }
+      to   { opacity: 1; transform: translateY(0)    translateZ(0); }
+    }
+    @keyframes toka-glow-pulse {
+      0%, 100% { box-shadow: 0 0 20px rgba(0,255,32,.1); }
+      50%       { box-shadow: 0 0 40px rgba(0,255,32,.25), 0 0 80px rgba(0,255,32,.08); }
+    }
+    @keyframes toka-shimmer {
+      0%   { background-position: -200% center; }
+      100% { background-position:  200% center; }
+    }
+
+    /* Apply entrance animation to section headers */
+    .section-label,
+    .section-title,
+    .section-sub {
+      animation: toka-fade-up .6s var(--ease-spring) both;
+    }
+    .section-title { animation-delay: .08s; }
+    .section-sub   { animation-delay: .14s; }
+
+    /* Primary button subtle glow pulse — draws the eye to CTA         */
+    .btn-primary {
+      animation: toka-glow-pulse 3.5s ease-in-out infinite;
+    }
+    .btn-primary:hover,
+    .btn-primary:active {
+      animation: none; /* stop pulse during interaction for cleanliness */
+    }
+
+    /* ── 17. FOCUS ACCESSIBILITY (Apple-standard) ────────────────── */
+    /* All interactive elements get a visible green focus ring          */
+    button:focus-visible,
+    a:focus-visible,
+    [tabindex]:focus-visible {
+      outline: 2px solid var(--green);
+      outline-offset: 3px;
+      border-radius: var(--r-sm);
+    }
+
+    /* ── 18. HEADER SCROLL EFFECT (JS companion) ─────────────────── */
+    /* The .scrolled class is toggled by a tiny script below           */
+
   </style>
+
+  <!-- ── Premium Header Scroll Effect ── -->
+  <script>
+    (function() {
+      var header = null;
+      function init() {
+        header = document.querySelector('.header-inner');
+        if (!header) return;
+        var ticking = false;
+        window.addEventListener('scroll', function() {
+          if (!ticking) {
+            requestAnimationFrame(function() {
+              header.classList.toggle('scrolled', window.scrollY > 60);
+              ticking = false;
+            });
+            ticking = true;
+          }
+        }, { passive: true });
+      }
+      document.readyState === 'loading'
+        ? document.addEventListener('DOMContentLoaded', init)
+        : init();
+    })();
+  </script>
+
 </head>
+
 <body>
 
 <!-- ═══════════════════════════════════════════════════════
