@@ -7,7 +7,10 @@
   <meta name="description" content="TOKA engineers complete growth systems for D2C brands — Shopify, Meta Ads, AI agents, WhatsApp automation, and conversion optimization." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <!-- font-display:swap prevents render-blocking FOIT -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <!-- Preload first canvas frame so Section 1 is instant -->
+  <link rel="preload" as="image" href="./ezgif-8a1896989cae1678-jpg/ezgif-frame-031.jpg" />
 
   <style>
     /* ── Reset ─────────────────────────────────────────── */
@@ -1777,37 +1780,6 @@
       document.readyState === 'loading'
         ? document.addEventListener('DOMContentLoaded', init)
         : init();
-  </script>
-
-  <!-- ── Lenis Smooth Scroll ── -->
-  <script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
-  <script>
-    (function() {
-      function initLenis() {
-        if (typeof Lenis === 'undefined') return;
-        const lenis = new Lenis({
-          duration: 1.1,
-          easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-          direction: 'vertical',
-          gestureDirection: 'vertical',
-          smooth: true,
-          mouseMultiplier: 0.95,
-          smoothTouch: false, // Keep native touch scrolling on mobile for responsiveness
-          infinite: false
-        });
-
-        function raf(time) {
-          lenis.raf(time);
-          requestAnimationFrame(raf);
-        }
-        requestAnimationFrame(raf);
-
-        // Expose globally
-        window.lenis = lenis;
-      }
-      document.readyState === 'loading'
-        ? document.addEventListener('DOMContentLoaded', initLenis)
-        : initLenis();
     })();
   </script>
 
@@ -2512,7 +2484,8 @@
   const imgs = new Array(TOTAL).fill(null);
   let loaded = 0, W = 0, H = 0, currentF = 0, lastF = -1;
   let dirty = false, unlocked = false;
-  const UNLOCK_AT = 12;
+  // Unlock after just 5 frames — page reveals in ~300ms on fast connection
+  const UNLOCK_AT = 5;
 
   const resize = () => { W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; };
 
@@ -2550,9 +2523,13 @@
   };
 
   const preload = () => {
+    // Load first 5 frames with high priority, rest lazily
+    const EAGER = Math.min(UNLOCK_AT + 3, TOTAL);
     SRCS.forEach((src, i) => {
       const img = new Image();
       img.decoding = 'async';
+      // Lower fetch priority for later frames to not block critical resources
+      if (i >= EAGER && img.fetchPriority !== undefined) img.fetchPriority = 'low';
       img.onload = () => {
         imgs[i] = img; loaded++;
         const p = Math.round(loaded/TOTAL*100);
@@ -2561,11 +2538,17 @@
         if (loaded >= UNLOCK_AT && !unlocked) {
           unlocked = true;
           loader.classList.add('fade');
-          setTimeout(() => loader.remove(), 900);
+          setTimeout(() => loader.remove(), 600);
         }
       };
       img.onerror = () => { loaded++; };
-      img.src = src;
+      // Stagger non-critical frame loads to avoid network congestion
+      if (i < EAGER) {
+        img.src = src;
+      } else {
+        setTimeout(() => { img.src = src; }, 800 + (i - EAGER) * 8);
+      }
+      imgs[i] = img; // store ref so timeout can still assign
     });
   };
 
@@ -2575,7 +2558,7 @@
 })();
 </script>
 
-<!-- SECTION 2: scroll-scrubbed frames + brand showcase overlay -->
+<!-- SECTION 2: scroll-scrubbed frames + brand showcase overlay — frames load lazily when near viewport -->
 <script>
 (() => {
   /* ════════════════════════════════════════
@@ -2643,16 +2626,29 @@
     }
   };
 
+  let sec2FramesStarted = false;
+
   const preload = () => {
+    if (sec2FramesStarted) return;
+    sec2FramesStarted = true;
     SRCS.forEach((src, i) => {
       const img = new Image(); img.decoding = 'async';
+      // Low priority — these are background frames, not LCP
+      if (img.fetchPriority !== undefined) img.fetchPriority = 'low';
       img.onload = () => { imgs[i] = img; if (i === 0) { resize(); render(0); } };
       img.onerror = () => {};
-      img.src = src;
+      // Stagger loads so section-1 frames finish first
+      setTimeout(() => { img.src = src; }, i * 10);
     });
   };
 
-  resize(); preload(); onScroll(); loop();
+  // Only start downloading Section 2 frames when the user is approaching Section 2
+  const sec2Trigger = new IntersectionObserver(entries => {
+    if (entries[0].isIntersecting) { preload(); sec2Trigger.disconnect(); }
+  }, { rootMargin: '200% 0px' }); // pre-load 2 viewport heights ahead
+  sec2Trigger.observe(driver);
+
+  resize(); onScroll(); loop();
   window.addEventListener('scroll', onScroll, { passive: true });
   window.addEventListener('resize', () => { resize(); render(currentF); }, { passive: true });
 
@@ -2925,10 +2921,11 @@
 </script>
 
 <!-- SECTION 3: Tubes background + Strategic Call Process -->
+<!-- Section 3 tubes: lazy-loaded only when entering viewport -->
 <script type="module">
 (async () => {
   /* ─────────────────────────────────────────────────
-     A) TUBES BACKGROUND
+     A) TUBES BACKGROUND — lazy-init via IntersectionObserver
   ───────────────────────────────────────────────── */
   const canvas = document.getElementById('tubes-canvas');
   if (!canvas) return;
@@ -2942,38 +2939,48 @@
   window.addEventListener('resize', resizeTubes, { passive: true });
 
   let tubesApp = null;
+  let tubesStarted = false;
 
-  try {
-    const mod = await import('https://cdn.jsdelivr.net/npm/threejs-components@0.0.19/build/cursors/tubes1.min.js');
-    const TubesCursor = mod.default;
-
-    tubesApp = TubesCursor(canvas, {
-      tubes: {
-        colors: ['#00ff20', '#1aff35', '#fbbf24'],
-        lights: {
-          intensity: 220,
-          colors: ['#00ff20', '#ff8c42', '#ffd700', '#ff6b35']
+  const startTubes = async () => {
+    if (tubesStarted) return;
+    tubesStarted = true;
+    try {
+      const mod = await import('https://cdn.jsdelivr.net/npm/threejs-components@0.0.19/build/cursors/tubes1.min.js');
+      const TubesCursor = mod.default;
+      tubesApp = TubesCursor(canvas, {
+        tubes: {
+          colors: ['#00ff20', '#1aff35', '#fbbf24'],
+          lights: {
+            intensity: 220,
+            colors: ['#00ff20', '#ff8c42', '#ffd700', '#ff6b35']
+          }
         }
-      }
-    });
-  } catch (err) {
-    console.warn('Tubes CDN failed, falling back to gradient canvas.', err);
-    // Graceful fallback: animated gradient on canvas
-    const ctx = canvas.getContext('2d');
-    let t = 0;
-    const drawFallback = () => {
-      t += 0.004;
-      const W = canvas.width, H = canvas.height;
-      const grd = ctx.createRadialGradient(W*.5 + Math.sin(t)*.18*W, H*.5 + Math.cos(t*.7)*.14*H, W*.05,
-                                            W*.5, H*.5, W*.85);
-      grd.addColorStop(0,   `rgba(0,255,32,${0.18 + Math.sin(t)*0.06})`);
-      grd.addColorStop(0.4, 'rgba(15,10,5,0.95)');
-      grd.addColorStop(1,   'rgba(0,0,0,1)');
-      ctx.fillStyle = grd; ctx.fillRect(0,0,W,H);
-      requestAnimationFrame(drawFallback);
-    };
-    drawFallback();
-  }
+      });
+    } catch (err) {
+      console.warn('Tubes CDN failed, falling back to gradient canvas.', err);
+      // Graceful fallback: animated gradient on canvas
+      const ctx = canvas.getContext('2d');
+      let t = 0;
+      const drawFallback = () => {
+        t += 0.004;
+        const W = canvas.width, H = canvas.height;
+        const grd = ctx.createRadialGradient(W*.5 + Math.sin(t)*.18*W, H*.5 + Math.cos(t*.7)*.14*H, W*.05,
+                                              W*.5, H*.5, W*.85);
+        grd.addColorStop(0,   `rgba(0,255,32,${0.18 + Math.sin(t)*0.06})`);
+        grd.addColorStop(0.4, 'rgba(15,10,5,0.95)');
+        grd.addColorStop(1,   'rgba(0,0,0,1)');
+        ctx.fillStyle = grd; ctx.fillRect(0,0,W,H);
+        requestAnimationFrame(drawFallback);
+      };
+      drawFallback();
+    }
+  };
+
+  // Only boot Three.js tubes when section 3 is approaching viewport (saves ~2-4s on load)
+  const tubesObserver = new IntersectionObserver(entries => {
+    if (entries[0].isIntersecting) { startTubes(); tubesObserver.disconnect(); }
+  }, { rootMargin: '50% 0px' });
+  tubesObserver.observe(document.getElementById('sticky3'));
 
   /* Randomize colors on click */
   const sticky3 = document.getElementById('sticky3');
@@ -3929,12 +3936,13 @@
 <script type="module">
 (async () => {
   /* ─────────────────────────────────────────────────
-     A) PLASMA WEBGL2 SHADER
+     A) PLASMA WEBGL2 SHADER — lazy-started via IntersectionObserver
   ───────────────────────────────────────────────── */
   const canvas = document.getElementById('plasma-canvas');
   if (!canvas) return;
   let gl, prog, raf, W = 0, H = 0, t0 = performance.now();
   const mouse = { x: 0, y: 0 };
+  let plasmaStarted = false;
 
   const VS = `#version 300 es
   precision highp float;
@@ -4025,19 +4033,29 @@
     raf=requestAnimationFrame(frame);
   }
 
-  if(init()){
-    resize();
-    window.addEventListener('resize',resize,{passive:true});
-    document.getElementById('sticky4').addEventListener('mousemove',e=>{
-      const r=canvas.getBoundingClientRect();
-      mouse.x=e.clientX-r.left; mouse.y=e.clientY-r.top;
-    },{passive:true});
-    raf=requestAnimationFrame(frame);
-  } else {
-    // CSS fallback
-    document.getElementById('sticky4').style.background=
-      'radial-gradient(ellipse at 40% 55%, rgba(0,255,32,.22) 0%, transparent 55%), radial-gradient(ellipse at 65% 35%, rgba(251,191,36,.1) 0%, transparent 50%), #05050a';
-  }
+  const startPlasma = () => {
+    if (plasmaStarted) return;
+    plasmaStarted = true;
+    if(init()){
+      resize();
+      window.addEventListener('resize',resize,{passive:true});
+      document.getElementById('sticky4').addEventListener('mousemove',e=>{
+        const r=canvas.getBoundingClientRect();
+        mouse.x=e.clientX-r.left; mouse.y=e.clientY-r.top;
+      },{passive:true});
+      raf=requestAnimationFrame(frame);
+    } else {
+      // CSS fallback
+      document.getElementById('sticky4').style.background=
+        'radial-gradient(ellipse at 40% 55%, rgba(0,255,32,.22) 0%, transparent 55%), radial-gradient(ellipse at 65% 35%, rgba(251,191,36,.1) 0%, transparent 50%), #05050a';
+    }
+  };
+
+  // Start plasma only when user scrolls near Section 4 (saves significant GPU/CPU on initial load)
+  const plasmaObserver = new IntersectionObserver(entries => {
+    if (entries[0].isIntersecting) { startPlasma(); plasmaObserver.disconnect(); }
+  }, { rootMargin: '30% 0px' });
+  plasmaObserver.observe(document.getElementById('driver4'));
 
   /* ─────────────────────────────────────────────────
      B) STAGGERED ENTRANCE  (IntersectionObserver on each item)
@@ -4096,6 +4114,40 @@
   // Open first item by default once it's visible
   setTimeout(() => window.toggleFaq4('faq4-q1'), 800);
 
+})();
+</script>
+
+<!-- ── Lenis smooth scroll — deferred until after first paint ── -->
+<script>
+(function(){
+  // Load Lenis after the page is interactive to avoid blocking first render
+  function loadLenis() {
+    var s = document.createElement('script');
+    s.src = 'https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js';
+    s.onload = function() {
+      if (typeof Lenis === 'undefined') return;
+      var lenis = new Lenis({
+        duration: 1.1,
+        easing: function(t){ return Math.min(1, 1.001 - Math.pow(2, -10 * t)); },
+        direction: 'vertical',
+        gestureDirection: 'vertical',
+        smooth: true,
+        mouseMultiplier: 0.95,
+        smoothTouch: false,
+        infinite: false
+      });
+      function raf(time){ lenis.raf(time); requestAnimationFrame(raf); }
+      requestAnimationFrame(raf);
+      window.lenis = lenis;
+    };
+    document.body.appendChild(s);
+  }
+  // Use requestIdleCallback if available, otherwise defer 1.5s
+  if ('requestIdleCallback' in window) {
+    requestIdleCallback(loadLenis, { timeout: 2000 });
+  } else {
+    setTimeout(loadLenis, 1500);
+  }
 })();
 </script>
 
