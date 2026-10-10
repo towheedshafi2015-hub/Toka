@@ -1,5 +1,7 @@
 {
+  "cleanUrls": true,
   "rewrites": [
-    { "source": "/", "destination": "/scroll-animation.html" }
+    { "source": "/thank-you", "destination": "/thank-you.html" },
+    { "source": "/", "destination": "/index.html" }
   ]
 }

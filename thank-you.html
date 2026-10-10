@@ -1,0 +1,929 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Growth Call Confirmed — TOKA</title>
+  <meta name="description"
+    content="Your 1-on-1 Growth Strategy Session with Tawheed Shafi at TOKA is confirmed. Review pre-call details and next steps." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"
+    rel="stylesheet" />
+
+  <style>
+    /* ── Reset & Tokens ─────────────────────────────────── */
+    *,
+    *::before,
+    *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --orange: #00ff20;
+      --accent-green: #35e317;
+      --bg: #080809;
+      --bg-card: rgba(255, 255, 255, .03);
+      --border-card: rgba(255, 255, 255, .08);
+      --fs: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      --fd: 'Space Grotesk', sans-serif;
+      --fm: 'JetBrains Mono', monospace;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background: var(--bg);
+      color: #f1f5f9;
+      font-family: var(--fs);
+      overflow-x: hidden;
+      min-height: 100vh;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Ambient background lighting */
+    body::before {
+      content: '';
+      position: fixed;
+      top: -20%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 700px;
+      height: 700px;
+      background: radial-gradient(circle, rgba(0, 255, 32, .12) 0%, rgba(53, 227, 23, .04) 40%, transparent 70%);
+      filter: blur(80px);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    body::after {
+      content: '';
+      position: fixed;
+      bottom: -10%;
+      right: -10%;
+      width: 500px;
+      height: 500px;
+      background: radial-gradient(circle, rgba(0, 255, 32, .06) 0%, transparent 70%);
+      filter: blur(90px);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ── Guide lines ───────────────────────────────────── */
+    .guide {
+      position: fixed;
+      top: 0;
+      bottom: 0;
+      width: 1px;
+      pointer-events: none;
+      z-index: 1;
+      background: linear-gradient(to bottom, rgba(255, 255, 255, .03), rgba(255, 255, 255, .005), rgba(255, 255, 255, .03));
+    }
+
+    .guide-l {
+      left: 8%;
+    }
+
+    .guide-r {
+      right: 8%;
+    }
+
+    @media(min-width: 1024px) {
+      .guide-l {
+        left: 20%;
+      }
+
+      .guide-r {
+        right: 20%;
+      }
+    }
+
+    /* ── Container ─────────────────────────────────────── */
+    .wrap {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 0 24px;
+      position: relative;
+      z-index: 10;
+      width: 100%;
+    }
+
+    @media(min-width: 768px) {
+      .wrap {
+        padding: 0 40px;
+      }
+    }
+
+    /* ── Header ────────────────────────────────────────── */
+    header {
+      position: relative;
+      z-index: 30;
+      width: 100%;
+      padding: 16px 0;
+    }
+
+    .header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 68px;
+      border-radius: 18px;
+      border: 1px solid rgba(255, 255, 255, .08);
+      background: rgba(8, 8, 9, .75);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      padding: 0 24px;
+      box-shadow: 0 0 0 1px rgba(255, 255, 255, .04) inset, 0 12px 30px rgba(0, 0, 0, .4);
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+      text-decoration: none;
+    }
+
+    .logo-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      background: var(--orange);
+      padding: 1px;
+      box-shadow: 0 0 15px -3px rgba(0, 255, 32, .5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .logo-icon-inner {
+      width: 100%;
+      height: 100%;
+      border-radius: 7px;
+      background: var(--bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--fd);
+      font-weight: 700;
+      font-size: 14px;
+      color: #fff;
+    }
+
+    .logo-text {
+      font-family: var(--fd);
+      font-weight: 800;
+      font-size: 18px;
+      letter-spacing: .1em;
+      color: #fff;
+    }
+
+    .logo-text span {
+      color: var(--orange);
+    }
+
+    .header-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 14px;
+      border-radius: 9999px;
+      background: rgba(0, 255, 32, .08);
+      border: 1px solid rgba(0, 255, 32, .22);
+      font-family: var(--fm);
+      font-size: 11px;
+      color: var(--orange);
+      font-weight: 600;
+      letter-spacing: .04em;
+    }
+
+    .header-badge-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--orange);
+      box-shadow: 0 0 10px var(--orange);
+      animation: pulse 1.5s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.3); opacity: .7; }
+    }
+
+    /* ── Main Content ──────────────────────────────────── */
+    main {
+      flex: 1;
+      position: relative;
+      z-index: 10;
+      padding: 30px 0 80px;
+    }
+
+    /* ── Confirmation Hero ─────────────────────────────── */
+    .conf-hero {
+      text-align: center;
+      max-width: 740px;
+      margin: 0 auto 40px;
+    }
+
+    .conf-icon-wrap {
+      position: relative;
+      width: 88px;
+      height: 88px;
+      margin: 0 auto 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .conf-icon-ring {
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      background: rgba(0, 255, 32, .15);
+      border: 1px solid rgba(0, 255, 32, .3);
+      animation: ringSpread 2.2s cubic-bezier(0, 0, .2, 1) infinite;
+    }
+
+    @keyframes ringSpread {
+      75%, 100% {
+        transform: scale(1.4);
+        opacity: 0;
+      }
+    }
+
+    .conf-icon-core {
+      position: relative;
+      width: 76px;
+      height: 76px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, rgba(0, 255, 32, .25) 0%, rgba(8, 8, 9, .9) 100%);
+      border: 1px solid rgba(0, 255, 32, .5);
+      box-shadow: 0 0 30px rgba(0, 255, 32, .35), inset 0 0 15px rgba(0, 255, 32, .2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--orange);
+    }
+
+    .conf-icon-core svg {
+      width: 36px;
+      height: 36px;
+      stroke-width: 2.5;
+    }
+
+    .conf-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 5px 14px;
+      border-radius: 9999px;
+      background: rgba(255, 255, 255, .04);
+      border: 1px solid rgba(255, 255, 255, .1);
+      font-family: var(--fm);
+      font-size: 11px;
+      color: #94a3b8;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+
+    .conf-tag span {
+      color: var(--orange);
+      font-weight: 700;
+    }
+
+    .conf-title {
+      font-family: var(--fd);
+      font-size: clamp(32px, 5vw, 52px);
+      font-weight: 800;
+      letter-spacing: -.02em;
+      line-height: 1.1;
+      color: #fff;
+      margin-bottom: 16px;
+    }
+
+    .conf-title span {
+      background: linear-gradient(135deg, var(--orange) 0%, #ffffff 70%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .conf-sub {
+      font-size: 16px;
+      line-height: 1.65;
+      color: #cbd5e1;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    /* ── Details Glass Box ─────────────────────────────── */
+    .details-box {
+      border-radius: 20px;
+      border: 1px solid rgba(0, 255, 32, .2);
+      background: linear-gradient(135deg, rgba(255, 255, 255, .05) 0%, rgba(255, 255, 255, .02) 100%);
+      backdrop-filter: blur(30px);
+      -webkit-backdrop-filter: blur(30px);
+      padding: 28px;
+      margin-bottom: 32px;
+      box-shadow: 0 0 0 1px rgba(255, 255, 255, .04) inset, 0 16px 40px rgba(0, 0, 0, .4), 0 0 60px rgba(0, 255, 32, .06);
+    }
+
+    .details-header {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding-bottom: 18px;
+      border-bottom: 1px solid rgba(255, 255, 255, .07);
+      margin-bottom: 20px;
+    }
+
+    .details-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--fm);
+      font-size: 12px;
+      color: #fff;
+      font-weight: 600;
+    }
+
+    .details-badge svg {
+      width: 18px;
+      height: 18px;
+      color: var(--orange);
+    }
+
+    .invitee-greeting {
+      font-family: var(--fm);
+      font-size: 12px;
+      color: var(--orange);
+      letter-spacing: .02em;
+    }
+
+    .details-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+    }
+
+    .detail-item {
+      background: rgba(255, 255, 255, .02);
+      border: 1px solid rgba(255, 255, 255, .06);
+      border-radius: 12px;
+      padding: 14px 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .detail-item-lbl {
+      font-family: var(--fm);
+      font-size: 10px;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: #64748b;
+    }
+
+    .detail-item-val {
+      font-family: var(--fs);
+      font-size: 14px;
+      font-weight: 600;
+      color: #fff;
+    }
+
+    .detail-item-val.highlight {
+      color: var(--orange);
+      font-family: var(--fm);
+      font-weight: 600;
+      font-size: 13px;
+    }
+
+    /* ── Next Steps Section ────────────────────────────── */
+    .steps-card {
+      border-radius: 20px;
+      border: 1px solid rgba(255, 255, 255, .08);
+      background: rgba(255, 255, 255, .02);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      padding: 32px 28px;
+      margin-bottom: 32px;
+    }
+
+    .section-headline {
+      font-family: var(--fd);
+      font-size: 22px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 6px;
+    }
+
+    .section-subtitle {
+      font-size: 13px;
+      color: #94a3b8;
+      margin-bottom: 24px;
+    }
+
+    .steps-timeline {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .step-row {
+      display: flex;
+      gap: 18px;
+      align-items: flex-start;
+    }
+
+    .step-num {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      background: rgba(0, 255, 32, .1);
+      border: 1px solid rgba(0, 255, 32, .25);
+      color: var(--orange);
+      font-family: var(--fm);
+      font-size: 13px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .step-body {
+      flex: 1;
+    }
+
+    .step-title {
+      font-family: var(--fd);
+      font-size: 16px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 4px;
+    }
+
+    .step-desc {
+      font-size: 13px;
+      line-height: 1.6;
+      color: #94a3b8;
+    }
+
+    .step-desc strong {
+      color: #cbd5e1;
+    }
+
+    /* ── Prep Checklist ────────────────────────────────── */
+    .prep-box {
+      background: rgba(0, 255, 32, .03);
+      border: 1px solid rgba(0, 255, 32, .15);
+      border-radius: 16px;
+      padding: 20px;
+      margin-bottom: 32px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .prep-title {
+      font-family: var(--fd);
+      font-size: 15px;
+      font-weight: 700;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .prep-title svg {
+      width: 18px;
+      height: 18px;
+      color: var(--orange);
+    }
+
+    .prep-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .prep-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 13px;
+      color: #cbd5e1;
+      line-height: 1.5;
+    }
+
+    .prep-item svg {
+      width: 16px;
+      height: 16px;
+      color: var(--orange);
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    /* ── Founder Card ──────────────────────────────────── */
+    .founder-card {
+      border-radius: 18px;
+      border: 1px solid rgba(255, 255, 255, .08);
+      background: linear-gradient(135deg, rgba(255, 255, 255, .03) 0%, rgba(255, 255, 255, .01) 100%);
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      margin-bottom: 36px;
+    }
+
+    @media(min-width: 640px) {
+      .founder-card {
+        flex-direction: row;
+        align-items: center;
+        gap: 22px;
+      }
+    }
+
+    .founder-avatar {
+      width: 58px;
+      height: 58px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, #111 0%, #222 100%);
+      border: 1px solid rgba(0, 255, 32, .4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--fd);
+      font-weight: 800;
+      font-size: 20px;
+      color: var(--orange);
+      box-shadow: 0 0 20px rgba(0, 255, 32, .2);
+      flex-shrink: 0;
+    }
+
+    .founder-quote {
+      font-size: 13px;
+      line-height: 1.6;
+      color: #cbd5e1;
+      font-style: italic;
+      margin-bottom: 6px;
+    }
+
+    .founder-name {
+      font-family: var(--fd);
+      font-size: 14px;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .founder-role {
+      font-family: var(--fm);
+      font-size: 11px;
+      color: var(--orange);
+    }
+
+    /* ── Actions Row ───────────────────────────────────── */
+    .actions-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+    }
+
+    .btn-home {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--orange);
+      color: #000;
+      font-family: var(--fs);
+      font-weight: 700;
+      font-size: 13px;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      padding: 14px 28px;
+      border-radius: 12px;
+      text-decoration: none;
+      transition: transform .2s, box-shadow .2s;
+    }
+
+    .btn-home:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 30px rgba(0, 255, 32, .4);
+    }
+
+    .btn-home svg {
+      width: 16px;
+      height: 16px;
+    }
+
+    .btn-contact {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(255, 255, 255, .04);
+      color: #fff;
+      font-family: var(--fs);
+      font-weight: 600;
+      font-size: 13px;
+      padding: 14px 24px;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, .1);
+      text-decoration: none;
+      transition: background .2s, border-color .2s;
+    }
+
+    .btn-contact:hover {
+      background: rgba(255, 255, 255, .08);
+      border-color: rgba(255, 255, 255, .2);
+    }
+
+    .btn-contact svg {
+      width: 16px;
+      height: 16px;
+      color: var(--orange);
+    }
+
+    /* ── Footer ────────────────────────────────────────── */
+    footer {
+      border-top: 1px solid rgba(255, 255, 255, .06);
+      padding: 24px 0;
+      text-align: center;
+      font-size: 12px;
+      color: #64748b;
+      position: relative;
+      z-index: 10;
+    }
+
+    footer a {
+      color: #94a3b8;
+      text-decoration: none;
+      transition: color .2s;
+    }
+
+    footer a:hover {
+      color: var(--orange);
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Ambient vertical guide lines -->
+  <div class="guide guide-l"></div>
+  <div class="guide guide-r"></div>
+
+  <!-- Header -->
+  <header>
+    <div class="wrap">
+      <div class="header-inner">
+        <a href="/" class="logo">
+          <div class="logo-icon">
+            <div class="logo-icon-inner">T</div>
+          </div>
+          <span class="logo-text">TOKA<span>.</span></span>
+        </a>
+        <div class="header-badge">
+          <span class="header-badge-dot"></span>
+          <span>Growth Session Confirmed</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main>
+    <div class="wrap">
+      <!-- Confirmation Hero -->
+      <div class="conf-hero">
+        <div class="conf-icon-wrap">
+          <div class="conf-icon-ring"></div>
+          <div class="conf-icon-core">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+            </svg>
+          </div>
+        </div>
+
+        <div class="conf-tag">
+          <span>Official Confirmation</span> • High-ROI Strategy Session
+        </div>
+
+        <h1 class="conf-title">
+          You're on the <span>Calendar!</span>
+        </h1>
+
+        <p class="conf-sub" id="hero-subtext">
+          Your 30-Minute 1-on-1 Growth Diagnostic with <strong>Tawheed Shafi</strong> is officially locked in. A calendar
+          invitation with the video call link has been dispatched to your email.
+        </p>
+      </div>
+
+      <!-- Dynamic Booking Details Box -->
+      <div class="details-box">
+        <div class="details-header">
+          <div class="details-badge">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+              <line x1="16" y1="2" x2="16" y2="6"></line>
+              <line x1="8" y1="2" x2="8" y2="6"></line>
+              <line x1="3" y1="10" x2="21" y2="10"></line>
+            </svg>
+            Session Summary &amp; Access Details
+          </div>
+          <div class="invitee-greeting" id="invitee-greeting">
+            Verified Booking Record
+          </div>
+        </div>
+
+        <div class="details-grid">
+          <div class="detail-item">
+            <span class="detail-item-lbl">Scheduled Date &amp; Time</span>
+            <span class="detail-item-val highlight" id="slot-display">Calendar Invitation Sent to Email</span>
+          </div>
+
+          <div class="detail-item">
+            <span class="detail-item-lbl">Meeting Duration &amp; Format</span>
+            <span class="detail-item-val">30 Minutes • Google Meet / Video</span>
+          </div>
+
+          <div class="detail-item">
+            <span class="detail-item-lbl">Lead Growth Engineer</span>
+            <span class="detail-item-val">Tawheed Shafi (Founder, TOKA)</span>
+          </div>
+
+          <div class="detail-item">
+            <span class="detail-item-lbl">Confirmed For</span>
+            <span class="detail-item-val" id="invitee-display">Your Email Address</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Next Steps Roadmap -->
+      <div class="steps-card">
+        <h2 class="section-headline">What Happens Next?</h2>
+        <p class="section-subtitle">Here is our exact timeline leading up to your strategy session:</p>
+
+        <div class="steps-timeline">
+          <div class="step-row">
+            <div class="step-num">01</div>
+            <div class="step-body">
+              <h3 class="step-title">Accept the Calendar Invitation</h3>
+              <p class="step-desc">
+                Check your inbox (and spam/promotions folder just in case) for the invitation from Calendly/Google
+                Calendar. Click <strong>"Yes"</strong> to ensure the call is secured in your schedule and reminders are
+                activated.
+              </p>
+            </div>
+          </div>
+
+          <div class="step-row">
+            <div class="step-num">02</div>
+            <div class="step-body">
+              <h3 class="step-title">Pre-Call Systems &amp; Infrastructure Audit</h3>
+              <p class="step-desc">
+                Before we hop on the line, Tawheed will personally review your store footprint, page load speed, ad
+                funnels, and tracking setup so we can bypass introductory pleasantries and start with high-impact data.
+              </p>
+            </div>
+          </div>
+
+          <div class="step-row">
+            <div class="step-num">03</div>
+            <div class="step-body">
+              <h3 class="step-title">Actionable Growth Blueprint</h3>
+              <p class="step-desc">
+                During our 30 minutes, we isolate your primary conversion bottlenecks, outline systemized automation
+                opportunities, and map out high-margin scale mechanics tailored for your brand.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Preparation Checklist -->
+      <div class="prep-box">
+        <div class="prep-title">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="9 11 12 14 22 4"></polyline>
+            <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
+          </svg>
+          Quick Tips to Maximize Your Session
+        </div>
+        <ul class="prep-list">
+          <li class="prep-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+            <span><strong>Desktop recommended:</strong> Please join from a computer so we can screen share analytics,
+              live code, and funnel architecture without friction.</span>
+          </li>
+          <li class="prep-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+            <span><strong>Bring your #1 roadblock:</strong> Whether it is high Shopify bounce rates, Meta CPAs, or
+              customer service overhead, we will tackle it head-on.</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Founder Note -->
+      <div class="founder-card">
+        <div class="founder-avatar">TS</div>
+        <div>
+          <p class="founder-quote">
+            "We treat our clients' digital infrastructure with the exact same engineering rigor we demand of our own. No
+            cookie-cutter templates, no generic fluff—just predictable, high-margin scale."
+          </p>
+          <p class="founder-name">Tawheed Shafi</p>
+          <p class="founder-role">Founder &amp; Principal Architect, TOKA Systems</p>
+        </div>
+      </div>
+
+      <!-- Actions Row -->
+      <div class="actions-row">
+        <a href="/" class="btn-home">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="19" y1="12" x2="5" y2="12"></line>
+            <polyline points="12 19 5 12 12 5"></polyline>
+          </svg>
+          Return to Homepage
+        </a>
+        <a href="https://wa.me/?text=Hi%20Tawheed%2C%20I%20just%20scheduled%20a%20Growth%20Call%20with%20TOKA"
+          target="_blank" rel="noopener noreferrer" class="btn-contact">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path
+              d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z">
+            </path>
+          </svg>
+          Quick Question via WhatsApp
+        </a>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <div class="wrap">
+      <p>© 2026 TOKA Systems. All rights reserved. • High-Impact Engineering for D2C Brands.</p>
+    </div>
+  </footer>
+
+  <!-- Script to parse Calendly query parameters if passed upon redirection -->
+  <script>
+    (function () {
+      try {
+        const params = new URLSearchParams(window.location.search);
+        const inviteeName = params.get('invitee_full_name') || params.get('first_name');
+        const inviteeEmail = params.get('invitee_email');
+        const eventStartTime = params.get('event_start_time');
+        const eventTypeName = params.get('event_type_name');
+
+        if (inviteeName) {
+          document.getElementById('invitee-greeting').textContent = `Confirmed for ${inviteeName}`;
+          document.getElementById('hero-subtext').innerHTML =
+            `Welcome <strong>${inviteeName}</strong>. Your 1-on-1 Growth Diagnostic with <strong>Tawheed Shafi</strong> is officially locked in. We've sent full meeting credentials to your email.`;
+        }
+
+        if (inviteeEmail) {
+          const namePart = inviteeName ? `${inviteeName} &lt;${inviteeEmail}&gt;` : inviteeEmail;
+          document.getElementById('invitee-display').innerHTML = namePart;
+        }
+
+        if (eventStartTime) {
+          const dateObj = new Date(eventStartTime);
+          if (!isNaN(dateObj.getTime())) {
+            const formatted = dateObj.toLocaleString('en-US', {
+              weekday: 'short',
+              month: 'short',
+              day: 'numeric',
+              year: 'numeric',
+              hour: 'numeric',
+              minute: '2-digit',
+              timeZoneName: 'short'
+            });
+            document.getElementById('slot-display').textContent = formatted;
+          }
+        }
+      } catch (err) {
+        console.warn('Parameter parsing exception:', err);
+      }
+    })();
+  </script>
+</body>
+
+</html>
