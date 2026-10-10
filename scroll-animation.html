@@ -13,14 +13,14 @@
   <link
     href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;700;800&family=JetBrains+Mono:wght@400;500&display=swap"
     rel="stylesheet" />
-  <!-- Preload first canvas frame so Section 1 is instant -->
-  <link rel="preload" as="image" href="./ezgif-8a1896989cae1678-jpg/ezgif-frame-031.jpg" />
+  <!-- Preload first canvas frame with high priority for instant sub-second paint -->
+  <link rel="preload" as="image" href="./ezgif-8a1896989cae1678-jpg/ezgif-frame-031.jpg" fetchpriority="high" />
 
-  <!-- Calendly badge & popup widget -->
-  <link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet">
-  <script src="https://assets.calendly.com/assets/external/widget.js" type="text/javascript" async></script>
-  <!-- YouTube IFrame Player API for Case Study Video Reel -->
-  <script src="https://www.youtube.com/iframe_api"></script>
+  <!-- Calendly badge & popup widget (non-blocking) -->
+  <link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet" media="print" onload="this.media='all'">
+  <script src="https://assets.calendly.com/assets/external/widget.js" type="text/javascript" defer></script>
+  <!-- YouTube IFrame Player API for Case Study Video Reel (deferred) -->
+  <script src="https://www.youtube.com/iframe_api" defer></script>
 
   <style>
     /* Ensure Calendly badge & popup layers sit comfortably above graphics */
@@ -78,23 +78,9 @@
       background: rgba(0, 255, 32, .2);
     }
 
-    /* ── Loader ────────────────────────────────────────── */
+    /* ── Loader (Disabled for instant zero-wait page reveal) ── */
     #loader {
-      position: fixed;
-      inset: 0;
-      z-index: 9999;
-      background: #000;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 14px;
-      transition: opacity .8s ease;
-    }
-
-    #loader.fade {
-      opacity: 0;
-      pointer-events: none;
+      display: none !important;
     }
 
     #bar-track {
@@ -5715,15 +5701,7 @@
 
 <body>
 
-  <!-- ═══════════════════════════════════════════════════════
-     LOADER
-════════════════════════════════════════════════════════ -->
-  <div id="loader">
-    <div id="bar-track">
-      <div id="bar-fill"></div>
-    </div>
-    <span id="pct">Loading…</span>
-  </div>
+  <!-- Zero-wait instant first paint (No blocking loader) -->
 
   <!-- Calendly Growth Session Scheduler Connected (Replaced custom form popup) -->
 
@@ -6406,7 +6384,7 @@
 
       <!-- Stationary Background: Founder Frame 139 (Welcoming Open-Arms Pose) -->
       <div class="sec2-bg-layer">
-        <img id="sec2-bg-img" src="./ezgif-14adde550f73c2df-jpg/ezgif-frame-139.jpg" alt="TOKA Founder Background" />
+        <img id="sec2-bg-img" src="./ezgif-14adde550f73c2df-jpg/ezgif-frame-139.jpg" alt="TOKA Founder Background" loading="lazy" decoding="async" />
         <div class="sec2-bg-vignette"></div>
       </div>
 
@@ -6758,7 +6736,7 @@
     });
   </script>
 
-  <!-- SECTION 1: canvas synced to content scroll -->
+  <!-- SECTION 1: canvas synced to content scroll (High-Performance Zero-Wait Streaming) -->
   <script>
     (() => {
       const START = 31, END = 149;
@@ -6768,19 +6746,17 @@
       const TOTAL = SRCS.length;
 
       const canvas = document.getElementById('c');
+      if (!canvas) return;
       const ctx = canvas.getContext('2d', { alpha: false });
       const driver = document.getElementById('driver');
-      const loader = document.getElementById('loader');
-      const barFill = document.getElementById('bar-fill');
-      const pctEl = document.getElementById('pct');
 
       const imgs = new Array(TOTAL).fill(null);
-      let loaded = 0, W = 0, H = 0, currentF = 0, lastF = -1;
-      let dirty = false, unlocked = false;
-      // Unlock after just 5 frames — page reveals in ~300ms on fast connection
-      const UNLOCK_AT = 5;
+      let W = 0, H = 0, currentF = 0, lastF = -1;
 
-      const resize = () => { W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; };
+      const resize = () => {
+        W = canvas.width = window.innerWidth;
+        H = canvas.height = window.innerHeight;
+      };
 
       const coverDraw = img => {
         if (!img || !img.complete || !img.naturalWidth) return;
@@ -6788,64 +6764,110 @@
         ctx.drawImage(img, (W - img.naturalWidth * s) * .5, (H - img.naturalHeight * s) * .5, img.naturalWidth * s, img.naturalHeight * s);
       };
 
+      // Resilient fallback: finds the closest loaded frame to prevent any blank/white flashes
+      const getFrame = idx => {
+        const i = Math.round(idx);
+        if (imgs[i]?.complete && imgs[i].naturalWidth) return imgs[i];
+        for (let b = i - 1; b >= 0; b--) {
+          if (imgs[b]?.complete && imgs[b].naturalWidth) return imgs[b];
+        }
+        for (let f = i + 1; f < TOTAL; f++) {
+          if (imgs[f]?.complete && imgs[f].naturalWidth) return imgs[f];
+        }
+        return imgs[0];
+      };
+
       const render = f => {
         const lo = Math.floor(f), hi = Math.min(lo + 1, TOTAL - 1), blend = f - lo;
         ctx.clearRect(0, 0, W, H);
-        coverDraw(imgs[lo]);
-        if (blend > .004 && imgs[hi]?.complete) { ctx.save(); ctx.globalAlpha = blend; coverDraw(imgs[hi]); ctx.restore(); }
+        const imgLo = getFrame(lo);
+        coverDraw(imgLo);
+        const imgHi = imgs[hi];
+        if (blend > .004 && imgHi?.complete && imgHi.naturalWidth) {
+          ctx.save();
+          ctx.globalAlpha = blend;
+          coverDraw(imgHi);
+          ctx.restore();
+        }
       };
 
-      /*
-        Scroll progress = how far into the driver we've scrolled.
-        driver.offsetHeight = toka-content height (margin-top:-100vh cancels sticky height).
-        So the animation plays through all frames as you read the entire content.
-      */
       const onScroll = () => {
-        const max = driver.offsetHeight - window.innerHeight;
+        const max = driver ? (driver.offsetHeight - window.innerHeight) : 1;
         currentF = Math.min(Math.max(window.scrollY / max, 0), 1) * (TOTAL - 1);
+        streamAhead(Math.floor(currentF));
       };
 
       const loop = () => {
         requestAnimationFrame(loop);
-        if (!unlocked) return;
         const diff = currentF - lastF;
         if (Math.abs(diff) > 0.0003) {
-          lastF += diff * 0.15;
+          lastF += diff * 0.16;
           render(lastF);
         }
       };
 
-      const preload = () => {
-        // Load first 5 frames with high priority, rest lazily
-        const EAGER = Math.min(UNLOCK_AT + 3, TOTAL);
-        SRCS.forEach((src, i) => {
-          const img = new Image();
-          img.decoding = 'async';
-          // Lower fetch priority for later frames to not block critical resources
-          if (i >= EAGER && img.fetchPriority !== undefined) img.fetchPriority = 'low';
-          img.onload = () => {
-            imgs[i] = img; loaded++;
-            const p = Math.round(loaded / TOTAL * 100);
-            barFill.style.width = p + '%'; pctEl.textContent = p + '%';
-            if (i === 0) { resize(); render(0); }
-            if (loaded >= UNLOCK_AT && !unlocked) {
-              unlocked = true;
-              loader.classList.add('fade');
-              setTimeout(() => loader.remove(), 600);
-            }
-          };
-          img.onerror = () => { loaded++; };
-          // Stagger non-critical frame loads to avoid network congestion
-          if (i < EAGER) {
-            img.src = src;
-          } else {
-            setTimeout(() => { img.src = src; }, 800 + (i - EAGER) * 8);
+      const loadFrame = i => {
+        if (imgs[i]) return;
+        const img = new Image();
+        img.decoding = 'async';
+        if (img.fetchPriority !== undefined && i > 3) img.fetchPriority = 'low';
+        img.onload = () => {
+          imgs[i] = img;
+          if (i === 0 && lastF < 0) {
+            resize();
+            render(0);
           }
-          imgs[i] = img; // store ref so timeout can still assign
-        });
+        };
+        img.src = SRCS[i];
+        imgs[i] = img;
       };
 
-      resize(); preload(); onScroll(); loop();
+      // Stream frames ahead of current scroll position
+      const streamAhead = centerIdx => {
+        const radius = 12;
+        const start = Math.max(0, centerIdx - 3);
+        const end = Math.min(TOTAL, centerIdx + radius);
+        for (let i = start; i < end; i++) {
+          if (!imgs[i]) loadFrame(i);
+        }
+      };
+
+      // Phase 1: Instant First Frame Paint (< 100ms)
+      resize();
+      loadFrame(0);
+      for (let i = 1; i < 4; i++) loadFrame(i);
+
+      // Phase 2: Background idle stream when network/CPU is 100% free
+      const startIdleStream = () => {
+        let nextToLoad = 4;
+        const idleChunk = deadline => {
+          while ((deadline.timeRemaining() > 6 || deadline.didTimeout) && nextToLoad < TOTAL) {
+            loadFrame(nextToLoad);
+            nextToLoad++;
+          }
+          if (nextToLoad < TOTAL) {
+            if ('requestIdleCallback' in window) {
+              requestIdleCallback(idleChunk, { timeout: 2000 });
+            } else {
+              setTimeout(() => idleChunk({ timeRemaining: () => 10, didTimeout: true }), 80);
+            }
+          }
+        };
+
+        if ('requestIdleCallback' in window) {
+          requestIdleCallback(idleChunk, { timeout: 1200 });
+        } else {
+          setTimeout(() => idleChunk({ timeRemaining: () => 10, didTimeout: true }), 250);
+        }
+      };
+
+      if (document.readyState === 'complete') {
+        setTimeout(startIdleStream, 200);
+      } else {
+        window.addEventListener('load', () => setTimeout(startIdleStream, 200));
+      }
+
+      loop();
       window.addEventListener('scroll', onScroll, { passive: true });
       window.addEventListener('resize', () => { resize(); render(currentF); }, { passive: true });
     })();
